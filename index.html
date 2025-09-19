@@ -11,16 +11,16 @@
     
     <style>
         :root {
-            --primary-color: #f44336;
+            --primary-color: #f443;
             --secondary-color: #ed3c3c;
-            --background-color: #1a191f;
-            --text-color: #ffffff;
-            --card-background: #242424;
-            --nav-background: #000000;
-            --active-nav-color: #fff;
-            --inactive-nav-color: #cccccc;
-            --scroll-thumb: #1c2631;
-            --scroll-track: #646464;
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --card-background: #f0f0f0;
+            --nav-background: #ffffff;
+            --active-nav-color: #f44336;
+            --inactive-nav-color: #666666;
+            --scroll-thumb: #cccccc;
+            --scroll-track: #e0e0e0;
         }
 
         body {
@@ -28,7 +28,7 @@
             background-color: var(--background-color);
             color: var(--text-color);
             margin: 0;
-            padding-bottom: 70px; /* Space for the fixed navigation bar */
+            padding-bottom: 70px;
             overflow-x: hidden;
         }
 
@@ -62,7 +62,7 @@
         .section-title {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #fff;
+            color: #000000;
             margin-top: 20px;
             margin-bottom: 15px;
             text-transform: uppercase;
@@ -105,7 +105,8 @@
         /* --- Movie/Football List Styles --- */
         .movie-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            /* Changed this line to force 3 columns */
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             list-style: none;
             padding: 0;
@@ -145,15 +146,17 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
+        
+        /* The media query is now removed to force 3 columns on all screen sizes */
+        
         /* --- Football Section Styles --- */
         #football {
             padding: 20px 0;
         }
 
         .football-header {
-            background-color: #0b1a29;
-            color: #fff;
+            background-color: #e0e0e0;
+            color: #000;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
@@ -167,7 +170,7 @@
         }
         .football-header .subtitle {
             font-size: 0.9rem;
-            color: #aaa;
+            color: #666;
             margin-top: 5px;
             margin-bottom: 15px;
         }
@@ -177,14 +180,14 @@
             gap: 15px;
         }
         .datetime {
-            background-color: #0c2b4d;
+            background-color: #d0d0d0;
             padding: 8px 15px;
             border-radius: 5px;
             font-size: 0.8rem;
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #ddd;
+            color: #333;
         }
 
         .live-status {
@@ -207,15 +210,15 @@
         }
 
         .match-card {
-            background-color: #0b1a29;
+            background-color: #e0e0e0;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
-            position: relative; /* For pop-up positioning */
+            position: relative;
         }
         .league-title {
-            color: #fff;
+            color: #000;
             font-size: 1rem;
             font-weight: bold;
             margin-top: 0;
@@ -248,7 +251,7 @@
         .team h4 {
             margin: 0;
             font-size: 0.9rem;
-            color: #fff;
+            color: #000;
         }
         .vs-text {
             font-size: 1.5rem;
@@ -257,11 +260,11 @@
         }
         .match-info {
             margin-top: 20px;
-            background-color: #0c2b4d;
+            background-color: #d0d0d0;
             padding: 10px;
             border-radius: 5px;
             font-size: 0.9rem;
-            color: #ddd;
+            color: #333;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -273,8 +276,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #0c2b4d;
-            color: #ffdd05;
+            background-color: #d0d0d0;
+            color: #f44336;
             padding: 15px;
             text-decoration: none;
             font-weight: bold;
@@ -285,7 +288,7 @@
             cursor: pointer;
         }
         .watch-live-btn:hover {
-            background-color: #1a4a75;
+            background-color: #c0c0c0;
         }
         .watch-live-btn .material-icons {
             margin-left: 10px;
@@ -299,7 +302,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
+            background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(5px);
             z-index: 9999;
             justify-content: center;
@@ -308,13 +311,13 @@
         }
         
         .server-popup-content {
-            background-color: #0c2b4d;
+            background-color: #d0d0d0;
             padding: 20px;
             border-radius: 10px;
             width: 90%;
             max-width: 400px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            border: 1px solid #1a4a75;
+            border: 1px solid #c0c0c0;
             animation: fadeIn 0.3s ease-out;
             position: relative;
         }
@@ -329,25 +332,25 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 10px;
-            border-bottom: 1px solid #1a4a75;
+            border-bottom: 1px solid #c0c0c0;
             margin-bottom: 15px;
         }
         .popup-title {
             margin: 0;
             text-align: center;
-            color: #fff;
+            color: #000;
             font-size: 1.1rem;
             font-weight: bold;
             flex-grow: 1;
         }
         .close-btn {
-            color: #aaa;
+            color: #666;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
         }
         .close-btn:hover, .close-btn:focus {
-            color: #fff;
+            color: #000;
             text-decoration: none;
         }
 
@@ -370,10 +373,10 @@
             width: 100%;
             box-sizing: border-box;
             padding: 12px;
-            border: 1px solid #1a4a75;
+            border: 1px solid #c0c0c0;
             border-radius: 8px;
-            background-color: #0c2b4d;
-            color: #fff;
+            background-color: #d0d0d0;
+            color: #000;
             text-decoration: none;
             text-align: left;
             font-size: 0.9rem;
@@ -385,19 +388,19 @@
         }
 
         .server-btn:hover {
-            background-color: #1a4a75;
-            border-color: #ffdd05;
+            background-color: #c0c0c0;
+            border-color: #f44336;
         }
 
         .crown-icon {
             font-size: 1.2rem;
-            color: #ffdd05;
+            color: #f44336;
         }
         
         .copyright {
             text-align: center;
             font-size: 0.7rem;
-            color: #888;
+            color: #666;
             margin-top: 30px;
             line-height: 1.5;
         }
