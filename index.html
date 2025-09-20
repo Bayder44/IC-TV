@@ -18,7 +18,7 @@
             --card-background: #ffffff;
             --nav-background: #ffffff;
             --active-nav-color: #00000;
-            --inactive-nav-color: #666666;
+            --inactive-nav-color: #000000;
             --scroll-thumb: #cccccc;
             --scroll-track: #e0e0e0;
         }
@@ -155,7 +155,7 @@
         }
 
         .football-header {
-            background-color: #e0e0e0;
+            background-color: #003366;
             color: #000;
             padding: 20px;
             border-radius: 10px;
@@ -170,7 +170,7 @@
         }
         .football-header .subtitle {
             font-size: 0.9rem;
-            color: #666;
+            color: #000000;
             margin-top: 5px;
             margin-bottom: 15px;
         }
@@ -216,9 +216,10 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
             position: relative;
+            margin-bottom: 20px;
         }
         .league-title {
-            color: #000;
+            color: #000000;
             font-size: 1rem;
             font-weight: bold;
             margin-top: 0;
@@ -228,7 +229,7 @@
             gap: 10px;
         }
         .upcoming-status {
-            color: #ffdd00;
+            color: #ed3c3c;
             font-size: 0.8rem;
         }
         .teams {
@@ -256,7 +257,7 @@
         .vs-text {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #ffdd05;
+            color: #000000;
         }
         .match-info {
             margin-top: 20px;
@@ -311,7 +312,7 @@
         }
         
         .server-popup-content {
-            background-color: #d0d0d0;
+            background-color: #003366;
             padding: 20px;
             border-radius: 10px;
             width: 90%;
@@ -332,25 +333,25 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 10px;
-            border-bottom: 1px solid #c0c0c0;
+            border-bottom: 1px solid #ffffff;
             margin-bottom: 15px;
         }
         .popup-title {
             margin: 0;
             text-align: center;
-            color: #000;
+            color: #ffffff;
             font-size: 1.1rem;
             font-weight: bold;
             flex-grow: 1;
         }
         .close-btn {
-            color: #666;
+            color: #ffffff;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
         }
         .close-btn:hover, .close-btn:focus {
-            color: #000;
+            color: #000000;
             text-decoration: none;
         }
 
@@ -373,10 +374,10 @@
             width: 100%;
             box-sizing: border-box;
             padding: 12px;
-            border: 1px solid #c0c0c0;
+            border: 1px solid #ffffff;
             border-radius: 8px;
-            background-color: #d0d0d0;
-            color: #000;
+            background-color: #000000; /* Changed color */
+            color: #ffffff; /* Changed color to ensure readability */
             text-decoration: none;
             text-align: left;
             font-size: 0.9rem;
@@ -388,8 +389,8 @@
         }
 
         .server-btn:hover {
-            background-color: #c0c0c0;
-            border-color: #f44336;
+            background-color: #003366; /* Slightly lighter shade for hover effect */
+            border-color: #003366;
         }
 
         .crown-icon {
@@ -640,7 +641,7 @@
     <div id="football" class="content-section">
         <div class="football-header">
             <h2 class="title">⚽ IC_TV LIVE STREAMS</h2>
-            <p class="subtitle">Watch K-League & Other Matches Live</p>
+            <p class="subtitle">Watch Premier League & Other Matches Live</p>
             <div class="datetime-container">
                 <div class="datetime">
                     <span class="material-icons">calendar_today</span>
@@ -655,7 +656,55 @@
 
         <div class="live-status">
             <span class="material-icons">circle</span>
-            <span>Live Now: Mungyeong Sangmu WFC vs Hwacheon KSPO WFC - Select Server to Watch!</span>
+            <span>Live Now: Manchester United vs Chelsea - Select Server to Watch!</span>
+        </div>
+
+        <div class="match-card">
+            <h3 class="league-title">Premier League <span class="upcoming-status">⚫ LIVE NOW</span></h3>
+            <div class="teams">
+                <div class="team">
+                    <img src="https://i.imgur.com/uQy580g.png" alt="Manchester United Logo">
+                    <h4>Manchester United</h4>
+                </div>
+                <span class="vs-text">VS</span>
+                <div class="team">
+                    <img src="https://i.imgur.com/8N4Xq3g.png" alt="Chelsea Logo">
+                    <h4>Chelsea</h4>
+                </div>
+            </div>
+            <div class="match-info">
+                <span class="material-icons">access_time</span>
+                <span>Today, 5:30 PM (BST)</span>
+            </div>
+            <div class="watch-live-btn" id="show-mun-che-popup-btn">
+                WATCH LIVE
+                <span class="material-icons">play_circle_filled</span>
+            </div>
+            <div id="mun-che-popup" class="popup-container">
+                <div class="server-popup-content">
+                    <div class="popup-header">
+                         <h3 class="popup-title">Manchester United vs Chelsea</h3>
+                         <span class="close-btn">&times;</span>
+                    </div>
+                    <ul class="server-list">
+                        <li>
+                            <a href="intent://pull.niues.live/live/stream-9912104_lhd.m3u8?auth_key=1758387977-0-0-6daf1ec785395d0467baf8da4f769af6#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end" class="server-btn">
+                                <span class="material-icons crown-icon">👑</span> Server 1 (HD)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="intent://pull.niur.live/live/stream-9912060_lhd.m3u8?txSecret=acab40529f3e63e7ee5b955573df1bed&txTime=68cf260b#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end" class="server-btn">
+                                <span class="material-icons crown-icon">👑</span> Server 2 (HD)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="intent://pull.niues.live/live/stream-9912104_lsd.m3u8?auth_key=1758387977-0-0-6daf1ec785395d0467baf8da4f769af6#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end" class="server-btn">
+                                <span class="material-icons crown-icon">👑</span> Server 3 (SD)
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div class="match-card">
@@ -743,18 +792,26 @@
     const showServerPopupBtn = document.getElementById('show-server-popup-btn');
     const serverPopup = document.getElementById('server-popup');
     const serverCloseBtn = serverPopup.querySelector('.close-btn');
-    const serverButtons = document.querySelectorAll('.server-btn');
+    const serverButtons = serverPopup.querySelectorAll('.server-btn');
+    
+    // New Manchester United vs Chelsea Pop-up elements
+    const showMunChePopupBtn = document.getElementById('show-mun-che-popup-btn');
+    const munChePopup = document.getElementById('mun-che-popup');
+    const munCheCloseBtn = munChePopup.querySelector('.close-btn');
+    const munCheButtons = munChePopup.querySelectorAll('.server-btn');
+
+
     const appPackageName = 'com.genuine.leone';
     const appDownloadUrl = 'https://play.google.com/store/apps/details?id=' + appPackageName;
 
     // Function to show server pop-up
-    function showServerPopup() {
-        serverPopup.style.display = 'flex';
+    function showPopup(popupId) {
+        document.getElementById(popupId).style.display = 'flex';
     }
 
     // Function to hide server pop-up
-    function hideServerPopup() {
-        serverPopup.style.display = 'none';
+    function hidePopup(popupId) {
+        document.getElementById(popupId).style.display = 'none';
     }
 
     // Function to handle stream link clicks
@@ -778,16 +835,16 @@
         }, 2000); // 2 seconds delay to allow app to launch
     }
 
-    // Event listeners
+    // Event listeners for Mungyeong match
     if (showServerPopupBtn) {
         showServerPopupBtn.addEventListener('click', () => {
-            showServerPopup();
+            showPopup('server-popup');
         });
     }
 
     if (serverCloseBtn) {
         serverCloseBtn.addEventListener('click', () => {
-            hideServerPopup();
+            hidePopup('server-popup');
         });
     }
     
@@ -795,10 +852,34 @@
         button.addEventListener('click', (e) => {
             e.preventDefault();
             const streamUrl = e.currentTarget.getAttribute('data-stream');
-            hideServerPopup();
+            hidePopup('server-popup');
             handleStreamClick(streamUrl);
         });
     });
+
+    // Event listeners for Manchester United vs Chelsea match
+    if (showMunChePopupBtn) {
+        showMunChePopupBtn.addEventListener('click', () => {
+            showPopup('mun-che-popup');
+        });
+    }
+
+    if (munCheCloseBtn) {
+        munCheCloseBtn.addEventListener('click', () => {
+            hidePopup('mun-che-popup');
+        });
+    }
+
+    // These buttons already have the intent links directly, so no need for the handleStreamClick function
+    // munCheButtons.forEach(button => {
+    //     button.addEventListener('click', (e) => {
+    //         e.preventDefault();
+    //         const streamUrl = e.currentTarget.getAttribute('data-stream');
+    //         hidePopup('mun-che-popup');
+    //         handleStreamClick(streamUrl);
+    //     });
+    // });
+
 
     // Slideshow Script
     let slideIndex = 0;
