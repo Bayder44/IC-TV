@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IC_TV (NETWORK STREAM VERSION)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto:wght=300;400;700&display=swap" rel="stylesheet">
+    <title>IC_TV (ALL IN ONE)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
@@ -30,49 +30,50 @@
             overflow-y: auto;
         }
 
-        .app-main-container {
-            width: 100%;
-            position: relative;
-            background-color: var(--bg-color);
+        /* ---------------------------------
+           AUTH SYSTEM (LOGIN & SIGNUP) CSS
+        ----------------------------------- */
+        .auth-screen {
+            position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-color);
+            z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
         }
-
-        /* HEADER */
-        header { 
-            padding: 16px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background-color: #0f0f13; 
-            position: relative;
-            z-index: 5;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        .auth-box {
+            width: 100%; max-width: 360px; background: #14141b; border: 1px solid #27272a; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon-text), transparent);
-        }
-        header .header-title { 
-            font-family: 'Righteous', cursive; 
-            font-size: 19px; 
+        .auth-box h2 { text-align: center; margin-bottom: 20px; font-family: 'Righteous', cursive; color: var(--neon-text); font-size: 22px; }
+        .auth-group { margin-bottom: 15px; }
+        .auth-group label { display: block; font-size: 11px; color: #a1a1aa; margin-bottom: 6px; font-weight: bold; text-transform: uppercase; }
+        .auth-group input { width: 100%; background: #1e1e24; border: 1px solid #27272a; padding: 12px; color: white; border-radius: 8px; font-size: 14px; outline: none; }
+        .auth-group input:focus { border-color: var(--neon-text); }
+        .auth-btn { width: 100%; background: var(--primary-color); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .auth-btn:active { transform: scale(0.98); }
+        
+        .auth-toggle-text { text-align: center; font-size: 13px; color: #a1a1aa; margin-top: 15px; }
+        .btn-link-style { 
+            display: inline-block; 
+            background: #27272a; 
             color: var(--neon-text); 
-            text-shadow: 0 0 12px rgba(0, 255, 204, 0.5); 
-            letter-spacing: 0.8px; 
-            cursor: pointer;
+            padding: 6px 16px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            border: 1px solid var(--neon-text); 
+            margin-top: 8px; 
+            cursor: pointer; 
+            transition: 0.2s;
         }
+        .btn-link-style:active { background: var(--neon-text); color: #09090b; }
+
+        /* HEADER & APP CSS */
+        .app-main-container { width: 100%; display: none; position: relative; background-color: var(--bg-color); }
+        header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; background-color: #0f0f13; position: relative; z-index: 5; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--neon-text), transparent); }
+        header .header-title { font-family: 'Righteous', cursive; font-size: 19px; color: var(--neon-text); text-shadow: 0 0 12px rgba(0, 255, 204, 0.5); letter-spacing: 0.8px; cursor: pointer; }
         header i { cursor: pointer; padding: 6px; font-size: 20px; color: #a1a1aa; transition: 0.2s; }
         header i:hover { color: #fff; }
         
         /* SEARCH BAR */
-        .search-container {
-            display: none; background: #0f0f13; padding: 12px 20px; border-bottom: 1px solid #27272a;
-            align-items: center; gap: 12px; z-index: 4;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+        .search-container { display: none; background: #0f0f13; padding: 12px 20px; border-bottom: 1px solid #27272a; align-items: center; gap: 12px; z-index: 4; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .search-container.active { display: flex; }
         .search-box { flex: 1; position: relative; }
         .search-box input { width: 100%; background: #1e1e24; border: 1px solid #27272a; padding: 10px 40px 10px 18px; color: white; border-radius: 25px; font-size: 14px; outline: none; }
@@ -80,19 +81,54 @@
         .close-search-btn { background: none; border: none; color: #a1a1aa; font-size: 13px; cursor: pointer; font-weight: bold; padding: 5px; }
 
         /* CONTENT AREA */
-        .scrollable-content { padding: 16px; }
+        .scrollable-content { padding: 16px; padding-bottom: 90px; }
+
+        /* MOVIE SUB-NAV BAR */
+        .sub-nav-bar {
+            display: flex; background: #14141b; border-bottom: 1px solid #27272a;
+            position: sticky; top: 0; z-index: 4; margin: -16px -16px 16px -16px;
+        }
+        .sub-nav-item {
+            flex: 1; text-align: center; padding: 14px 0; font-size: 13px; font-weight: bold; color: #a1a1aa;
+            cursor: pointer; border-bottom: 2px solid transparent; transition: 0.2s;
+        }
+        .sub-nav-item.active { color: var(--neon-text); border-bottom-color: var(--neon-text); }
+
+        /* BOTTOM NAVIGATION BAR */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: #0f0f13; border-top: 1px solid #27272a;
+            display: flex; justify-content: space-around; align-items: center;
+            height: 65px; z-index: 900;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+        }
+        .nav-item {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #71717a; cursor: pointer; transition: 0.3s;
+        }
+        .nav-item i { font-size: 20px; transition: 0.3s; margin-bottom: 4px; }
+        .nav-item span { font-size: 10px; font-weight: bold; }
+        .nav-item.active { color: var(--neon-text); }
+        .nav-item.active i { transform: scale(1.15); }
+        
+        .nav-home-wrapper {
+            flex: 0.5; position: relative; display: flex; justify-content: center; align-items: center;
+        }
+        .nav-home-btn {
+            width: 55px; height: 55px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-text), #00a859);
+            display: flex; align-items: center; justify-content: center;
+            color: #09090b; font-size: 24px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4); 
+            border: 4px solid var(--bg-color);
+            position: absolute; top: -30px;
+            transition: 0.2s; z-index: 10;
+        }
+        .nav-home-btn:active { transform: scale(0.9); }
 
         /* BANNER SLIDER */
-        .slider-container {
-            width: 100%; 
-            height: 190px; 
-            background: #14141b; 
-            border-radius: 16px;
-            overflow: hidden; 
-            position: relative; 
-            margin-bottom: 22px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-        }
+        .slider-container { width: 100%; height: 190px; background: #14141b; border-radius: 16px; overflow: hidden; position: relative; margin-bottom: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
         .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .slide-item { min-width: 100%; height: 100%; position: relative; }
         .slide-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -106,18 +142,58 @@
         .see-more-btn { font-size: 12px; color: var(--neon-text); cursor: pointer; font-weight: bold; background: rgba(0, 255, 204, 0.1); padding: 4px 10px; border-radius: 20px; transition: 0.2s; }
         .see-more-btn:active { background: rgba(0, 255, 204, 0.25); }
 
-        .horizontal-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; scroll-behavior: smooth; }
+        .horizontal-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; scroll-behavior: smooth; min-height: 40px; }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
         
-        /* GRID FOR SEE MORE VIEW */
+        /* GRID FOR SEE MORE VIEW & FULL FOOTBALL */
         .vertical-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 14px; padding-bottom: 20px; }
         .vertical-grid .movie-card { width: 100%; }
+        
+        .fb-vertical-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; padding-bottom: 20px; }
+        .fb-vertical-grid .fb-card { width: 100%; }
 
         /* CARDS */
-        .movie-card { width: 115px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .movie-card { position: relative; width: 115px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .movie-card:active { transform: scale(0.96); }
         .movie-card img { width: 100%; height: 155px; object-fit: cover; display: block; background: #222; }
         .movie-title { font-size: 12px; padding: 8px 6px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; color: #e4e4e7; }
+
+        /* --- MOVIE POSTER BADGES (YEAR & RATING) --- */
+        .badge-year {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: #e50914; 
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 2;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .badge-rating {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .badge-rating i {
+            color: #facc15; 
+            font-size: 9px;
+        }
 
         .fb-card { width: 180px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .fb-poster-frame { width: 100%; aspect-ratio: 16/9; background: #222; overflow: hidden; position: relative; }
@@ -135,10 +211,20 @@
         .sidebar-overlay.active { display: block; }
         .sidebar { position: fixed; top: 0; left: -290px; width: 290px; height: 100%; background: #0f0f13; z-index: 201; transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; box-shadow: 8px 0 30px rgba(0,0,0,0.6); }
         .sidebar.active { left: 0; }
-        .sidebar-header { background: #14141b; padding: 35px 20px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid #27272a; position: relative; }
-        .sidebar-logo { width: 75px; height: 75px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), #b91c1c); display: flex; align-items: center; justify-content: center; font-family: 'Righteous', cursive; font-size: 26px; color: white; border: 3px solid #27272a; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-        .sidebar-app-name { font-size: 16px; font-weight: bold; color: #fff; letter-spacing: 0.5px; }
+        .sidebar-header { background: #14141b; padding: 20px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid #27272a; position: relative; }
+        
+        .sidebar-logo-wrapper { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #27272a; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); overflow: hidden; background-color: #14141b; display: flex; align-items: center; justify-content: center; }
+        .sidebar-logo-img { width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%; clip-path: circle(50%); }
+        
+        .sidebar-app-name { font-size: 15px; font-weight: bold; color: #fff; letter-spacing: 0.5px; margin-bottom: 12px; }
         .close-sidebar { position: absolute; top: 15px; right: 18px; color: #71717a; font-size: 20px; cursor: pointer; }
+        
+        .sidebar-user-profile { display: flex; align-items: center; gap: 12px; background: #1e1e24; padding: 12px; border-radius: 12px; width: 100%; border: 1px solid #27272a; }
+        .sidebar-user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color); clip-path: circle(50%); }
+        .sidebar-user-info { flex: 1; overflow: hidden; }
+        .sidebar-user-name-text { font-size: 13px; font-weight: bold; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
+        .sidebar-user-status { font-size: 11px; color: #22c55e; margin-top: 3px; font-weight: bold; }
+
         .sidebar-menu-list { padding: 20px 12px; flex: 1; overflow-y: auto; }
         .menu-item { display: flex; align-items: center; gap: 15px; padding: 13px 16px; color: #d4d4d8; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 10px; margin-bottom: 6px; transition: 0.2s; cursor: pointer; }
         .menu-item:active { background: #27272a; color: #fff; }
@@ -148,7 +234,7 @@
         .menu-sep { height: 1px; background: #27272a; margin: 18px 6px; }
         .menu-section-title { font-size: 11px; font-weight: bold; color: #52525b; text-transform: uppercase; padding-left: 16px; margin-bottom: 8px; letter-spacing: 0.5px; }
 
-        /* SOCOLIVE AUTOMATIC DYNAMIC MODAL BOX */
+        /* MODAL BOXES */
         .soco-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 5000; backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 20px; }
         .soco-modal-overlay.active { display: flex; }
         .soco-modal-box { width: 100%; max-width: 400px; background: #0f0f13; border: 1px solid #27272a; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 85vh; }
@@ -164,81 +250,64 @@
         .soco-team-side { display: flex; align-items: center; gap: 8px; flex: 1; }
         .soco-team-side.home-side { justify-content: flex-start; }
         .soco-team-side.away-side { justify-content: flex-end; text-align: right; }
-        .soco-team-logo { width: 22px; height: 22px; object-fit: contain; }
-        .soco-team-name { font-size: 12px; font-weight: bold; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; }
-        .soco-vs-box { font-size: 11px; font-weight: 900; color: #eab308; background: rgba(234,179,8,0.1); padding: 2px 6px; border-radius: 4px; }
+        .soco-team-logo { width: 22px; height: 22px; object-fit: contain; border-radius: 4px; }
+        .soco-team-name { font-size: 12px; font-weight: bold; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
         .soco-item-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #27272a; padding-top: 8px; margin-top: 4px; }
-        .soco-item-time { font-size: 10px; color: #4ade80; font-weight: bold; display: flex; align-items: center; gap: 4px; }
+        .soco-item-time { font-size: 10px; color: #a1a1aa; font-weight: bold; display: flex; align-items: center; gap: 4px; }
         .soco-play-btn { font-size: 11px; color: #fff; background: #00a859; padding: 4px 10px; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 4px; }
 
         /* VIDEO PLAYER SYSTEM */
-        .player-page { 
-            display: none; 
-            width: 100%; 
-            height: 100%; 
-            background: #000; 
-            flex-direction: column; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            z-index: 1000;
-        }
+        .player-page { display: none; width: 100%; height: 100%; background: #000; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 1000; }
         .player-page.active { display: flex; }
-
-        .video-box { 
-            width: 100%;
-            background: #000; 
-            aspect-ratio: 16/9; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            overflow: hidden; 
-            position: relative;
-            border-radius: 0px;       
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-
-        /* Video.js Overrides */
-        .video-box .video-js {
-            width: 100% !important;
-            height: 100% !important;
-            border-radius: 0px !important;
-            overflow: hidden !important;
-        }
-        .video-box video {
-            border-radius: 0px !important;
-        }
-
-        .vjs-big-play-button {
-            top: 50% !important; left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            border-radius: 50% !important; width: 60px !important; height: 60px !important;
-            line-height: 60px !important; background-color: rgba(229, 9, 20, 0.8) !important;
-            border-color: transparent !important;
-        }
-        .video-js .vjs-control-bar { 
-            background-color: rgba(15, 15, 19, 0.85) !important; 
-        }
-
-        /* VIDEO PLAYER WATERMARK LOGO */
-        .video-box .player-watermark-logo {
+        .video-box { width: 100%; background: #000; aspect-ratio: 16/9; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; border-radius: 0px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .video-box .video-js { width: 100% !important; height: 100% !important; border-radius: 0px !important; overflow: hidden !important; }
+        .video-box video { border-radius: 0px !important; }
+        .vjs-big-play-button { top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; border-radius: 50% !important; width: 60px !important; height: 60px !important; line-height: 60px !important; background-color: rgba(229, 9, 20, 0.8) !important; border-color: transparent !important; }
+        .video-js .vjs-control-bar { background-color: rgba(15, 15, 19, 0.85) !important; }
+        .video-box .player-watermark-logo { position: absolute; top: 8px !important; right: 25px !important; width: 95px !important; height: auto; opacity: 1 !important; z-index: 10; pointer-events: none; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8); }
+        
+        /* VIDEO OVERLAY CONTROLS (AUTO HIDE/SHOW) */
+        .video-overlay-controls {
             position: absolute;
-            top: 8px !important;                 
-            right: 25px !important;               /* ပြင်ဆင်ထားသည့်နေရာ (ညာဘက်သို့ 25px ရွှေ့ထားသည်) */
-            width: 95px !important;               
-            height: auto;
-            opacity: 1 !important;                
-            z-index: 10;
-            pointer-events: none; 
-            border-radius: 8px;       
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8); 
+            bottom: 45px; 
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+            pointer-events: auto;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
+        .video-overlay-controls.hidden-controls {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+        .overlay-skip-btn {
+            background: rgba(0, 0, 0, 0.65);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            transition: 0.2s;
+        }
+        .overlay-skip-btn:active { background: rgba(229, 9, 20, 0.8); }
+        .player-page.forced-landscape .video-overlay-controls { display: none !important; }
 
-        .player-tools { display: flex; justify-content: space-between; align-items: center; background: #0f0f13; padding: 12px 16px; border-bottom: 1px solid #27272a; }
-        .tool-btn { background: #1e1e24; border: 1px solid #27272a; color: #fff; padding: 9px 15px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+        /* PLAYER TOOLS UPDATED */
+        .player-tools { display: flex; justify-content: space-between; align-items: center; background: #0f0f13; padding: 12px 16px; border-bottom: 1px solid #27272a; gap: 10px; }
+        .tool-btn { flex-shrink: 0; background: #1e1e24; border: 1px solid #27272a; color: #fff; padding: 9px 15px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
         .tool-btn:active { background: #27272a; }
         .ratio-badge { background: var(--primary-color); padding: 2px 6px; border-radius: 4px; font-size: 10px; }
-        
         .player-details-area { padding: 18px; background: #09090b; flex: 1; overflow-y: auto; }
         .option-zone { margin: 15px 0; background: #0f0f13; padding: 14px; border-radius: 12px; border: 1px solid #27272a; }
         .option-title { font-size: 13px; font-weight: bold; color: #71717a; margin-bottom: 12px; letter-spacing: 0.3px; }
@@ -248,85 +317,82 @@
         .opt-btn.fb-active { background: var(--football-color); border-color: var(--football-color); }
 
         /* FORCE LANDSCAPE CSS */
-        .player-page.forced-landscape {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vh !important;
-            height: 100vw !important;
-            transform: rotate(90deg) !important;
-            transform-origin: top left !important;
-            left: 100vw !important;
-            z-index: 999999 !important;
-            display: flex !important;
-            flex-direction: column !important;
-            overflow: hidden !important;
-        }
-
-        .player-page.forced-landscape #playerHeader,
-        .player-page.forced-landscape .player-tools,
-        .player-page.forced-landscape .player-details-area {
-            display: none !important; 
-        }
-
-        .player-page.forced-landscape .video-box {
-            width: 100% !important;
-            height: 100% !important;
-            margin: 0 !important;
-            border-radius: 0px !important;
-            flex: 1 !important;
-            aspect-ratio: auto !important;
-        }
-        .player-page.forced-landscape .video-box .video-js,
-        .player-page.forced-landscape .video-box video {
-            border-radius: 0px !important;
-        }
-
-        /* CONTROLS POSITION FOR LANDSCAPE */
-        .ls-top-controls { 
-            display: none; 
-            position: absolute; 
-            top: 50px;                  
-            left: 16px; 
-            z-index: 1000000; 
-        }
+        .player-page.forced-landscape { position: fixed !important; top: 0 !important; left: 0 !important; width: 100vh !important; height: 100vw !important; transform: rotate(90deg) !important; transform-origin: top left !important; left: 100vw !important; z-index: 999999 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; }
+        .player-page.forced-landscape #playerHeader, .player-page.forced-landscape .player-tools, .player-page.forced-landscape .player-details-area { display: none !important; }
+        .player-page.forced-landscape .video-box { width: 100% !important; height: 100% !important; margin: 0 !important; border-radius: 0px !important; flex: 1 !important; aspect-ratio: auto !important; }
+        .player-page.forced-landscape .video-box .video-js, .player-page.forced-landscape .video-box video { border-radius: 0px !important; }
         
-        .ls-top-controls .ls-back-btn {
-            background: rgba(229, 9, 20, 0.95); color: #fff; border: 1px solid rgba(255,255,255,0.25);
-            padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer;
-            backdrop-filter: blur(10px); display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-
-        .ls-bottom-controls { 
-            display: none; 
-            position: absolute; 
-            bottom: 20px;              
-            right: 20px;               
-            left: auto;
-            top: auto;
-            z-index: 1000000; 
-            flex-direction: row;
-            gap: 10px;
-        }
+        /* Landscape Auto Hide Controls */
+        .ls-top-controls { display: none; position: absolute; top: 50px; left: 16px; z-index: 1000000; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .ls-top-controls .ls-back-btn { background: rgba(229, 9, 20, 0.95); color: #fff; border: 1px solid rgba(255,255,255,0.25); padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .ls-bottom-controls { display: none; position: absolute; bottom: 20px; right: 20px; left: auto; top: auto; z-index: 1000000; flex-direction: row; gap: 10px; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .ls-zoom-btn { flex-shrink: 0; background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
         
-        .player-page.forced-landscape .ls-top-controls,
+        .player-page.forced-landscape .ls-top-controls, 
         .player-page.forced-landscape .ls-bottom-controls { 
             display: flex !important; 
+            opacity: 1;
+            visibility: visible;
         }
-
-        .ls-zoom-btn {
-            background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer;
-            backdrop-filter: blur(10px); display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        
+        .player-page.forced-landscape .ls-top-controls.hidden-controls, 
+        .player-page.forced-landscape .ls-bottom-controls.hidden-controls { 
+            opacity: 0 !important; 
+            visibility: hidden !important; 
+            pointer-events: none !important;
         }
     </style>
 </head>
 <body>
 
-    <div class="app-main-container">
+    <script>
+        document.write('<style>');
+        if (localStorage.getItem("ic_tv_user")) {
+            document.write('.app-main-container { display: block; } .auth-screen { display: none; }');
+        } else {
+            document.write('.app-main-container { display: none; } .auth-screen { display: flex; }');
+        }
+        document.write('</style>');
+    </script>
+
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-box" id="loginBox">
+            <h2>IC TV LOGIN</h2>
+            <div class="auth-group"><label>USER NAME</label><input type="text" id="loginUser" placeholder="နာမည်ရွီးထည့်ပါ"></div>
+            <div class="auth-group"><label>PASSWORD</label><input type="password" id="loginPass" placeholder="စကားဝှက်"></div>
+            <button class="auth-btn" id="btnLogin">LOGIN ဝင်မည်</button>
+            <div class="auth-toggle-text">
+                အကောင့်မဟိန့်သိပါက <br> 
+                <span class="btn-link-style" onclick="toggleAuthView(false)">ဒေမှာဖွင့်ပါ</span>
+            </div>
+        </div>
+
+        <div class="auth-box" id="signupBox" style="display: none;">
+            <h2>CREATE ACCOUNT</h2>
+            <div class="auth-group" style="text-align: center; margin-bottom: 25px;">
+                <input type="file" id="regPhotoFile" accept="image/*" style="display: none;">
+                <label for="regPhotoFile" style="cursor: pointer; display: inline-block; transition: 0.2s;">
+                    <div style="font-size: 13px; color: #a1a1aa; font-weight: bold; margin-bottom: 12px; letter-spacing: 0.5px;">ပုံထည့်ရန်</div>
+                    <div style="position: relative; width: 90px; height: 90px; margin: 0 auto; border-radius: 50%; border: 2px dashed #00ffcc; background: #1e1e24; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 15px rgba(0,255,204,0.15);">
+                        <i class="fa-solid fa-images" style="font-size: 32px; color: #00ffcc;"></i>
+                        <img id="regPhotoPreview" src="" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; display: none;">
+                    </div>
+                </label>
+            </div>
+            <div class="auth-group"><label>USER NAME</label><input type="text" id="regUser" placeholder="Username (စာသား/ဂဏန်း)"></div>
+            <div class="auth-group"><label>PASSWORD</label><input type="password" id="regPass" placeholder="စကားဝှက်အသစ်"></div>
+            <button class="auth-btn" id="btnRegister" style="background: var(--football-color);">ACCOUNT ဖွင့်မည်</button>
+            <div class="auth-toggle-text">
+                အကောင့်ဟိန့်ပြီးသားဆိုပါက <br> 
+                <span class="btn-link-style" onclick="toggleAuthView(true)">ဒေမှာဝင်ပါ</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-main-container" id="appMainBlock">
         <header>
             <i class="fa-solid fa-bars" id="menuIconBtn"></i>
-            <div class="header-title" onclick="goHomeView()">IC_TV (NETWORK STREAM)</div>
+            <div class="header-title" onclick="switchMainTab('home')">IC_TV (ALL IN ONE)</div>
             <i class="fa-solid fa-magnifying-glass" id="searchIconBtn"></i>
         </header>
 
@@ -342,50 +408,75 @@
         <div class="sidebar" id="sidebarBox">
             <div class="sidebar-header">
                 <i class="fa-solid fa-xmark close-sidebar" id="closeSidebarBtn"></i>
-                <div class="sidebar-logo">IC</div>
-                <div class="sidebar-app-name">IC TV Digital</div>
+                
+                <div class="sidebar-logo-wrapper">
+                    <img src="https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/e35ba590-f179-4c8e-adb5-28d406383558.png" class="sidebar-logo-img" alt="IC TV Logo">
+                </div>
+                <div class="sidebar-app-name">IC TV (ALL IN ONE)</div>
+
+                <div class="sidebar-user-profile">
+                    <img id="sidebarUserAvatar" src="https://via.placeholder.com/45" class="sidebar-user-avatar">
+                    <div class="sidebar-user-info">
+                        <div id="sidebarUserName" class="sidebar-user-name-text">Loading...</div>
+                        <div class="sidebar-user-status">Active Member</div>
+                    </div>
+                </div>
             </div>
+
             <div class="sidebar-menu-list">
-                <div class="menu-section-title">Live & Entertainment</div>
-                <div class="menu-item" onclick="goHomeView(); toggleSidebar(false);">
-                    <i class="fa-solid fa-house"></i> Home Page
-                </div>
-                <div class="menu-item" onclick="switchToMoreView('movies'); toggleSidebar(false);">
-                    <i class="fa-solid fa-film"></i> Movies All (အားလုံး)
-                </div>
-                <div class="menu-item" onclick="switchToMoreView('series'); toggleSidebar(false);">
-                    <i class="fa-solid fa-tv"></i> Series All (အားလုံး)
-                </div>
-                <div class="menu-item football-live-btn" id="socoApiMenuBtn">
-                    <i class="fa-solid fa-satellite-dish"></i> Football Live (API)
-                </div>
-                <a href="https://your-18plus-web-link.com" target="_blank" class="menu-item adult-btn">
-                    <i class="fa-solid fa-heart-crack"></i> 18+ Premium Web
-                </a>
+                <div class="menu-item" onclick="switchMainTab('home'); toggleSidebar(false);"><i class="fa-solid fa-house"></i> Home Page</div>
+                <div class="menu-item" onclick="switchToMoreView('movies'); toggleSidebar(false);"><i class="fa-solid fa-film"></i> Movies All (အားလုံး)</div>
+                <div class="menu-item" style="color: #38bdf8;" onclick="switchToMoreView('animation'); toggleSidebar(false);"><i class="fa-solid fa-wand-magic-sparkles"></i> Animation All (အားလုံး)</div>
+                <div class="menu-item" onclick="switchToMoreView('series'); toggleSidebar(false);"><i class="fa-solid fa-tv"></i> Series All (အားလုံး)</div>
+                
+                <a href="https://www.fotmob.com/" target="_blank" class="menu-item" style="color: #fbbf24; font-weight: bold;"><i class="fa-regular fa-futbol"></i> ဂိုးရလဒ် (Live Scores)</a>
+                <div class="menu-item football-live-btn" id="socoApiMenuBtn"><i class="fa-solid fa-film"></i> Football Highlight</div>
+                
+                <!-- 18+ Premium Menu Item -->
+                <div class="menu-item adult-btn" onclick="openAdultSection()"><i class="fa-solid fa-heart-crack"></i> 18+ Premium</div>
+                
+                <div class="menu-sep"></div>
+                <div class="menu-section-title">Account Option</div>
+                <div class="menu-item" onclick="handleLogout()" style="color: #f43f5e; font-weight: bold;"><i class="fa-solid fa-right-from-bracket"></i> Logout ထွက်မည်</div>
                 <div class="menu-sep"></div>
                 <div class="menu-section-title">Contact Us (ဆက်သွယ်ရန်)</div>
-                <a href="https://facebook.com/yourpage" target="_blank" class="menu-item">
-                    <i class="fa-brands fa-facebook" style="color: #1877f2;"></i> Facebook Page
-                </a>
-                <a href="https://t.me/yourchannel" target="_blank" class="menu-item">
-                    <i class="fa-brands fa-telegram" style="color: #24A1DE;"></i> Telegram Channel
-                </a>
+                
+                <a href="intent://www.facebook.com/share/18qptDAcrE/#Intent;package=com.facebook.katana;scheme=https;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.facebook.katana;end" class="menu-item"><i class="fa-brands fa-facebook" style="color: #1877f2;"></i> Facebook Page</a>
+                <a href="intent://t.me/ictv_team#Intent;package=org.telegram.messenger;scheme=https;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.telegram.messenger;end" class="menu-item"><i class="fa-brands fa-telegram" style="color: #24A1DE;"></i> Telegram Channel</a>
+                <a href="intent://t.me/ictv_team#Intent;package=com.viber.voip;scheme=https;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.viber.voip;end" class="menu-item"><i class="fa-brands fa-viber" style="color: #7360f2;"></i> Viber Channel</a>
             </div>
         </div>
 
         <div class="soco-modal-overlay" id="socoModalOverlay">
             <div class="soco-modal-box" id="socoModalBox">
                 <div class="soco-modal-header">
-                    <div class="soco-modal-title"><i class="fa-solid fa-circle-dot fa-fade" style="color: #22c55e;"></i> Socolive Live API</div>
+                    <div class="soco-modal-title"><i class="fa-solid fa-circle-dot fa-fade" style="color: #22c55e;"></i> Football Highlights</div>
                     <i class="fa-solid fa-xmark soco-modal-close" id="closeSocoModalBtn"></i>
                 </div>
                 <div class="soco-modal-body" id="socoModalBody">
-                    <p style="text-align:center; font-size:12px; color:#a1a1aa; padding:20px;">ပွဲစဉ်များကို ဒေတာဆွဲယူနေပါသည်...</p>
+                    <p style="text-align:center; font-size:12px; color:#a1a1aa; padding:20px;">ဗီဒီယိုများကို ဆွဲယူနိန်ပါရေ...</p>
                 </div>
             </div>
         </div>
 
+        <div class="soco-modal-overlay" id="downloadModalOverlay">
+            <div class="soco-modal-box">
+                <div class="soco-modal-header">
+                    <div class="soco-modal-title" style="color: #3b82f6;"><i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်လုပ်မည့် အပိုင်းကို ရွေးပါ</div>
+                    <i class="fa-solid fa-xmark soco-modal-close" onclick="closeDownloadModal()"></i>
+                </div>
+                <div class="soco-modal-body" id="downloadModalBody">
+                    </div>
+            </div>
+        </div>
+
         <div class="scrollable-content" id="mainScrollContent">
+            
+            <div id="movieSubNav" class="sub-nav-bar" style="display:none;">
+                <div class="sub-nav-item active" id="sub-nav-movies" onclick="switchMovieSubTab('movies')">Movies</div>
+                <div class="sub-nav-item" id="sub-nav-animation" onclick="switchMovieSubTab('animation')">Animation</div>
+            </div>
+
             <div class="slider-container" id="bannerSection">
                 <div class="slider-wrapper" id="sliderWrapper"></div>
             </div>
@@ -403,6 +494,14 @@
                 <div class="horizontal-scroll" id="moviesContainer"></div>
             </div>
 
+            <div class="content-section" id="secAnimation">
+                <div class="section-header" style="color: #38bdf8;">
+                    <span><i class="fa-solid fa-wand-magic-sparkles"></i> Animation (အန်နီမေးရှင်း)</span>
+                    <div class="see-more-btn" id="btnSeeMoreAnimation" onclick="switchToMoreView('animation')">See More..</div>
+                </div>
+                <div class="horizontal-scroll" id="animationContainer"></div>
+            </div>
+
             <div class="content-section" id="secSeries">
                 <div class="section-header">
                     <span>Series (ဇာတ်လမ်းတွဲများ)</span>
@@ -410,22 +509,47 @@
                 </div>
                 <div class="horizontal-scroll" id="seriesContainer"></div>
             </div>
+            
+            <!-- Hidden Adult Section (Only shows when unlocked via Menu) -->
+            <div class="content-section" id="secAdult" style="display: none;">
+                <div class="section-header" style="color: #f87171;">
+                    <span><i class="fa-solid fa-heart"></i> 18+ Premium</span>
+                </div>
+                <div class="horizontal-scroll" id="adultContainer"></div>
+            </div>
+            
+        </div>
+
+        <div class="bottom-nav" id="bottomNavMenu">
+            <div class="nav-item" id="nav-football" onclick="switchMainTab('football')">
+                <i class="fa-solid fa-futbol"></i><span>Live</span>
+            </div>
+            <div class="nav-item" id="nav-movie" onclick="switchMainTab('movie')">
+                <i class="fa-solid fa-film"></i><span>Movie</span>
+            </div>
+            
+            <div class="nav-item nav-home-wrapper" onclick="switchMainTab('home')">
+                <div class="nav-home-btn" id="nav-home-btn"><i class="fa-solid fa-house"></i></div>
+            </div>
+            
+            <div class="nav-item" id="nav-serie" onclick="switchMainTab('serie')">
+                <i class="fa-solid fa-tv"></i><span>Serie</span>
+            </div>
+            <div class="nav-item" id="nav-highlight" onclick="switchMainTab('highlight')">
+                <i class="fa-solid fa-play-circle"></i><span>Highlight</span>
+            </div>
         </div>
 
         <div class="player-page" id="playerPage">
-            <!-- LANDSCAPE CONTROLS -->
-            <div class="ls-top-controls">
-                <button class="ls-back-btn" id="lsBackBtn">
-                    <i class="fa-solid fa-arrow-left"></i> ပြန်တည့်မည်
-                </button>
+            <div class="ls-top-controls" id="lsTopControls">
+                <button class="ls-back-btn" id="lsBackBtn"><i class="fa-solid fa-arrow-left"></i> ပြန်ထွက်မည်</button>
             </div>
-
-            <div class="ls-bottom-controls">
-                <button class="ls-zoom-btn" id="lsZoomBtn">
-                    <i class="fa-solid fa-crop-simple"></i> Size: <span id="lsRatioStatus">16:9 (Fit)</span>
-                </button>
+            <div class="ls-bottom-controls" id="lsBottomControls">
+                <button class="ls-zoom-btn" id="lsRewindBtn"><i class="fa-solid fa-rotate-left"></i> 10s</button>
+                <button class="ls-zoom-btn" id="lsForwardBtn">10s <i class="fa-solid fa-rotate-right"></i></button>
+                <button class="ls-zoom-btn" id="lsZoomBtn"><i class="fa-solid fa-crop-simple"></i> Size: <span id="lsRatioStatus">16:9 (Fit)</span></button>
             </div>
-
+            
             <header style="background:#0f0f13;" id="playerHeader">
                 <button id="playerBackBtn" style="background:none; border:none; color:white; font-size: 14px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:5px;"><i class="fa-solid fa-arrow-left"></i> Back</button>
                 <div class="header-title" style="font-size:14px;" id="pHeaderTitle">Now Watching</div>
@@ -435,20 +559,27 @@
             <div class="video-box" id="videoBoxWrapper">
                 <video id="mainVideo" class="video-js vjs-default-skin" controls playsinline preload="auto"></video>
                 <img src="https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/72d47ddf-2352-43de-82a1-28a869a25df8.png" class="player-watermark-logo" alt="IC TV Logo">
+                
+                <div class="video-overlay-controls" id="portraitSkipControls">
+                    <button class="overlay-skip-btn" id="overlayRewindBtn"><i class="fa-solid fa-rotate-left"></i> 10s</button>
+                    <button class="overlay-skip-btn" id="overlayForwardBtn">10s <i class="fa-solid fa-rotate-right"></i></button>
+                </div>
             </div>
             
             <div class="player-tools">
-                <button class="tool-btn" id="aspectRatioBtn">
-                    <i class="fa-solid fa-crop-simple"></i> Size: <span class="ratio-badge" id="ratioStatus">16:9 (Fit)</span>
-                </button>
-                <button class="tool-btn" style="background: var(--primary-color); border-color: var(--primary-color);" id="forceLandscapeBtn">
-                    <i class="fa-solid fa-screen-rotation"></i> ဘေးစောင်းကြည့်မည်
-                </button>
+                <button class="tool-btn" id="aspectRatioBtn"><i class="fa-solid fa-crop-simple"></i> Size: <span class="ratio-badge" id="ratioStatus">16:9 (Fit)</span></button>
+                <button class="tool-btn" style="background: var(--primary-color); border-color: var(--primary-color); margin-left: auto;" id="forceLandscapeBtn"><i class="fa-solid fa-screen-rotation"></i> ဘေးစောင်းကြည့်မည်</button>
             </div>
             
             <div class="player-details-area">
                 <h3 id="pMainTitle" style="color:#fff; font-size:16px; margin-bottom:6px;">Title</h3>
                 <p id="pMainSub" style="color:#22c55e; font-size:13px; font-weight:bold; margin-bottom:12px; display:none;"></p>
+                
+                <button id="downloadVideoBtn" class="tool-btn" style="background: #3b82f6; border-color: #3b82f6; display: none; margin-bottom: 15px; width: 100%; justify-content: center; font-size: 14px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">
+                    <i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်ဆွဲရန် (Download)
+                </button>
+                <p id="dlHintText" style="color: #71717a; font-size: 10px; text-align: center; margin-top: -8px; margin-bottom: 15px; display: none;">(@IC_TV_Team)</p>
+                
                 <div class="option-zone" id="pOptionZone" style="display: none;">
                     <div class="option-title" id="pOptionTitle">OPTIONS:</div>
                     <div class="option-grid" id="pOptionGrid"></div>
@@ -459,7 +590,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, set, get, child, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCfzDnLOvb6uLdhoLHYk0ECYfgqJVZb9EI",
@@ -471,14 +602,123 @@
             measurementId: "G-YV34FWGXWW",
             databaseURL: "https://ictvnewversion-default-rtdb.asia-southeast1.firebasedatabase.app"
         };
-
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        window.showAlert = (msg) => alert("သတိပြုရန်\n\n" + msg);
+
+        let currentSessionUser = localStorage.getItem("ic_tv_user");
+
+        window.toggleAuthView = (show) => {
+            document.getElementById('loginBox').style.display = show ? 'block' : 'none';
+            document.getElementById('signupBox').style.display = show ? 'none' : 'block';
+        };
+
+        document.getElementById('regPhotoFile').addEventListener('change', (e) => {
+            const f = e.target.files[0];
+            if(f) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const p = document.getElementById('regPhotoPreview');
+                    p.src = e.target.result; p.style.display = 'block';
+                };
+                reader.readAsDataURL(f);
+            }
+        });
+
+        document.getElementById('btnRegister').addEventListener('click', () => {
+            let u = document.getElementById('regUser').value.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+            let p = document.getElementById('regPass').value.trim();
+            let f = document.getElementById('regPhotoFile').files[0];
+            
+            if(!u || !p) { window.showAlert("Username နက် Password ကို အပြည့်အစုံထည့်ပါ"); return; }
+            if(!f) { window.showAlert("ပုံမထည့်ရသိပါ။ ကျေးဇူးပြုလို့ ပုံအရင်ရွီးချယ်ပီးပါ။"); return; }
+
+            get(child(ref(db), `users/${u}`)).then((snapshot) => {
+                if(snapshot.exists()) {
+                    window.showAlert("ဒေ နာမည်ဟိန့်ပြီးသားဖြစ်လို့ တခြားနာမည်ပြောင်းပီးပါ။");
+                    return;
+                }
+                if (f.size > 5 * 1024 * 1024) { 
+                    window.showAlert("ပုံ Size ကကောင်းကြီးနိန်ပါရေ (5MB အောက်ရာ ဖြစ်ရပါဖို့)။ တခြားပုံပြောင်းရွီးပီးပါ။"); 
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    set(ref(db, `users/${u}`), { username: u, password: p, photo: e.target.result, status: "active" })
+                    .then(() => { 
+                        window.showAlert("အကောင့်ဖွင့်ခြင်စာအောင်မြင်ပါယာ။ Login ဝင်နိုင်ပါယာ။"); 
+                        toggleAuthView(true); 
+                    });
+                };
+                reader.readAsDataURL(f);
+            });
+        });
+
+        document.getElementById('btnLogin').addEventListener('click', () => {
+            let u = document.getElementById('loginUser').value.trim().toLowerCase();
+            let p = document.getElementById('loginPass').value.trim();
+            
+            if(!u || !p) { window.showAlert("Username နက် Password ကို ထည့်သွင်းပီးပါ။"); return; }
+
+            get(child(ref(db), `users/${u}`)).then((s) => {
+                if(s.exists() && s.val().password === p) {
+                    if(s.val().status === 'blocked') {
+                        window.showAlert("ဒေအကောင့်ကိုအက်မင်ပိတ် (Block) ထားခြင်းခံရပါသည်။");
+                    } else { 
+                        localStorage.setItem("ic_tv_user", u); 
+                        document.getElementById('authScreen').style.display = 'none';
+                        document.getElementById('appMainBlock').style.display = 'block';
+                        document.getElementById('sidebarUserName').innerText = s.val().username;
+                        if(s.val().photo) document.getElementById('sidebarUserAvatar').src = s.val().photo;
+                        
+                        setupPresence(u);
+                    }
+                } else { window.showAlert("စကားဝှက် (သို့) နာမည် မှားယွင်းနိန်ပါရေ။"); }
+            });
+        });
+
+        window.handleLogout = () => { 
+            if(currentSessionUser) {
+                 remove(ref(db, `online_users/${currentSessionUser}`));
+            }
+            localStorage.removeItem("ic_tv_user"); 
+            document.getElementById('authScreen').style.display = 'flex';
+            document.getElementById('appMainBlock').style.display = 'none';
+        };
+
+        function setupPresence(username) {
+            const myConnectionsRef = ref(db, `online_users/${username}`);
+            const connectedRef = ref(db, '.info/connected');
+            onValue(connectedRef, (snap) => {
+                if (snap.val() === true) {
+                    set(myConnectionsRef, true);
+                    onDisconnect(myConnectionsRef).remove();
+                }
+            });
+        }
+
+        if(currentSessionUser) {
+            onValue(ref(db, `users/${currentSessionUser}`), (s) => {
+                if(!s.val() || s.val().status === 'blocked') {
+                    if(localStorage.getItem("ic_tv_user")) {
+                        window.showAlert("သင့်အကောင့်မှာ Block (သို့) ဖျက်ချခြင်း ခံရပါသည်။");
+                        handleLogout();
+                    }
+                } else {
+                    document.getElementById('sidebarUserName').innerText = s.val().username;
+                    if(s.val().photo) document.getElementById('sidebarUserAvatar').src = s.val().photo;
+                    setupPresence(currentSessionUser);
+                }
+            });
+        }
+
         window.moviesListLocal = []; 
         window.seriesListLocal = []; 
+        window.animationListLocal = [];
+        window.adultListLocal = [];
         window.footballMatchesLocal = []; 
-        window.socoMatchesLocal = [];
+        window.highlightMatchesLocal = [];
         let bannerCount = 0;
         let currentSlide = 0;
 
@@ -509,79 +749,81 @@
         }, 2000);
 
         onValue(ref(db, 'movies'), (s) => {
-            const d = s.val(); 
-            window.moviesListLocal = [];
+            const d = s.val(); window.moviesListLocal = [];
             if(d) Object.keys(d).forEach(k => window.moviesListLocal.push({ id: k, ...d[k] }));
-            window.moviesListLocal.reverse(); 
-            updateView();
+            window.moviesListLocal.reverse(); updateView();
+        });
+
+        onValue(ref(db, 'animation'), (s) => {
+            const d = s.val(); window.animationListLocal = [];
+            if(d) Object.keys(d).forEach(k => window.animationListLocal.push({ id: k, ...d[k] }));
+            window.animationListLocal.reverse(); updateView();
+        });
+
+        onValue(ref(db, 'adult'), (s) => {
+            const d = s.val(); window.adultListLocal = [];
+            if(d) Object.keys(d).forEach(k => window.adultListLocal.push({ id: k, ...d[k] }));
+            window.adultListLocal.reverse(); updateView();
         });
 
         onValue(ref(db, 'series'), (s) => {
-            const d = s.val(); 
-            window.seriesListLocal = [];
+            const d = s.val(); window.seriesListLocal = [];
             if(d) Object.keys(d).forEach(k => {
                 const x = d[k]; 
                 const eps = x.episodes ? Object.keys(x.episodes).map(e => x.episodes[e]) : [];
-                window.seriesListLocal.push({ id: k, title: x.title, image: x.image, episodes: eps });
+                window.seriesListLocal.push({ id: k, title: x.title, image: x.image, year: x.year, rating: x.rating, episodes: eps });
             });
-            window.seriesListLocal.reverse(); 
-            updateView();
+            window.seriesListLocal.reverse(); updateView();
         });
 
+        // UPDATED: Include date property
         onValue(ref(db, 'football'), (s) => {
-            const d = s.val(); 
-            window.footballMatchesLocal = [];
+            const d = s.val(); window.footballMatchesLocal = [];
             if(d) Object.keys(d).forEach(k => {
                 const x = d[k]; 
                 const svs = x.servers ? Object.keys(x.servers).map(e => x.servers[e]) : [];
-                window.footballMatchesLocal.push({ id: k, status: x.status, teams: x.teams, time: x.time, image: x.image, servers: svs });
+                window.footballMatchesLocal.push({ id: k, status: x.status, teams: x.teams, date: x.date, time: x.time, image: x.image, servers: svs });
             });
-            window.footballMatchesLocal.reverse(); 
-            updateView();
+            window.footballMatchesLocal.reverse(); updateView();
         });
 
-        onValue(ref(db, 'soco_matches'), (s) => {
-            const d = s.val(); 
-            window.socoMatchesLocal = [];
+        onValue(ref(db, 'highlights'), (s) => {
+            const d = s.val(); window.highlightMatchesLocal = [];
             if(d) {
-                Object.keys(d).forEach(k => {
-                    window.socoMatchesLocal.push({ id: k, ...d[k] });
-                });
+                Object.keys(d).forEach(k => window.highlightMatchesLocal.push({ id: k, ...d[k] }));
             }
-            if(document.getElementById('socoModalOverlay').classList.contains('active')) {
-                window.renderSocoApiView();
-            }
+            window.highlightMatchesLocal.reverse();
+            if(document.getElementById('socoModalOverlay').classList.contains('active')) window.renderHighlightView();
         });
 
         function updateView() { 
-            if (window.currentViewMode === 'movies') {
-                window.renderFullGridMode('movies', window.moviesListLocal);
-            } else if (window.currentViewMode === 'series') {
-                window.renderFullGridMode('series', window.seriesListLocal);
-            } else {
-                window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal); 
-            }
+            if (window.currentViewMode === 'movies') window.renderFullGridMode('movies', window.moviesListLocal);
+            else if (window.currentViewMode === 'animation') window.renderFullGridMode('animation', window.animationListLocal);
+            else if (window.currentViewMode === 'adult') window.renderFullGridMode('adult', window.adultListLocal);
+            else if (window.currentViewMode === 'series') window.renderFullGridMode('series', window.seriesListLocal);
+            else if (window.currentViewMode === 'football') window.renderFullFootballMode();
+            else window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal, window.adultListLocal); 
         }
 
         window.handleSearch = function(query) {
             let q = query.toLowerCase().trim();
             if(q === "") { 
-                window.currentViewMode = 'home';
-                document.getElementById('bannerSection').style.display = 'block'; 
-                updateView(); 
+                window.switchMainTab('home'); 
                 return; 
             }
             window.currentViewMode = 'search';
             document.getElementById('bannerSection').style.display = 'none';
+            document.getElementById('movieSubNav').style.display = 'none';
+            
             let fM = window.moviesListLocal.filter(m => m.title && m.title.toLowerCase().includes(q));
             let fS = window.seriesListLocal.filter(s => s.title && s.title.toLowerCase().includes(q));
+            let fA = window.animationListLocal.filter(a => a.title && a.title.toLowerCase().includes(q));
             let fF = window.footballMatchesLocal.filter(f => f.teams && f.teams.toLowerCase().includes(q));
-            window.renderAppContent(fM, fS, fF, true); 
+            
+            // 18+ ကို Search မှာ ဖျောက်ထားရန်
+            window.renderAppContent(fM, fS, fF, true, fA, []); 
         }
-
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            window.handleSearch(e.target.value);
-        });
+        document.getElementById('searchInput').addEventListener('input', (e) => window.handleSearch(e.target.value));
     </script>
 
     <script>
@@ -594,24 +836,76 @@
         window.currentViewMode = 'home'; 
         window.vjsPlayer = null; 
         window.currentRefererUrl = null; 
+        
+        window.currentDownloadUrl = ''; 
+        window.currentVideoType = '';
+        window.currentVideoOptions = [];
+        window.currentMovieTitle = '';
+
+        /* ---------- BOTTOM NAV LOGIC ---------- */
+        window.switchMainTab = function(tab) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(tab !== 'home') {
+                const navEl = document.getElementById('nav-' + tab);
+                if(navEl) navEl.classList.add('active');
+            }
+
+            document.getElementById('bannerSection').style.display = 'none';
+            document.getElementById('secFootball').style.display = 'none';
+            document.getElementById('secMovies').style.display = 'none';
+            document.getElementById('secAnimation').style.display = 'none';
+            document.getElementById('secAdult').style.display = 'none';
+            document.getElementById('secSeries').style.display = 'none';
+            document.getElementById('movieSubNav').style.display = 'none';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if(tab === 'home') {
+                window.goHomeView();
+            } else if(tab === 'football') {
+                document.getElementById('secFootball').style.display = 'block';
+                window.currentViewMode = 'football';
+                window.renderFullFootballMode();
+            } else if(tab === 'movie') {
+                document.getElementById('movieSubNav').style.display = 'flex';
+                window.switchMovieSubTab('movies');
+            } else if(tab === 'serie') {
+                window.switchToMoreView('series');
+            } else if(tab === 'highlight') {
+                openHighlightModal();
+            }
+        };
+
+        window.switchMovieSubTab = function(subTab) {
+            document.querySelectorAll('.sub-nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('sub-nav-' + subTab).classList.add('active');
+            
+            document.getElementById('secMovies').style.display = 'none';
+            document.getElementById('secAnimation').style.display = 'none';
+            document.getElementById('secAdult').style.display = 'none';
+            
+            window.switchToMoreView(subTab, true);
+        };
+        
+        /* --- Password Protect 18+ Area --- */
+        window.openAdultSection = function() {
+            let pwd = prompt("စကားဝှက် (Password) ထည့်ပါ:");
+            if (pwd === "0000") {
+                window.switchToMoreView('adult');
+                window.toggleSidebar(false);
+            } else if (pwd !== null && pwd !== "") {
+                window.showAlert("စကားဝှက်မှားနိန်ပါရေ");
+            }
+        };
+        /* -------------------------------------- */
 
         function initPlayerIfNeeded() {
             if (!window.vjsPlayer) {
                 try {
                     window.vjsPlayer = videojs('mainVideo', {
-                        fluid: false,
-                        autoplay: false,
-                        controls: true,
-                        preload: 'auto',
-                        html5: {
-                            vhs: {
-                                overrideNative: true,
-                                maxBufferLength: 8,
-                                limitRenditionByPlayerDimensions: false
-                            }
-                        }
+                        fluid: false, autoplay: false, controls: true, preload: 'auto',
+                        html5: { vhs: { overrideNative: true, maxBufferLength: 8, limitRenditionByPlayerDimensions: false } }
                     });
-
                     window.vjsPlayer.ready(function() {
                         const player = this;
                         if (player.tech_ && player.tech_.vhs && player.tech_.vhs.xhr) {
@@ -623,14 +917,35 @@
                                 return options;
                             };
                         }
+
+                        player.on('useractive', function() {
+                            const skipDiv = document.getElementById('portraitSkipControls');
+                            const lsTop = document.getElementById('lsTopControls');
+                            const lsBot = document.getElementById('lsBottomControls');
+                            
+                            if (skipDiv) skipDiv.classList.remove('hidden-controls');
+                            if (lsTop) lsTop.classList.remove('hidden-controls');
+                            if (lsBot) lsBot.classList.remove('hidden-controls');
+                        });
+                        
+                        player.on('userinactive', function() {
+                            const skipDiv = document.getElementById('portraitSkipControls');
+                            const lsTop = document.getElementById('lsTopControls');
+                            const lsBot = document.getElementById('lsBottomControls');
+                            
+                            if (!player.paused()) {
+                                if (skipDiv) skipDiv.classList.add('hidden-controls');
+                                if (lsTop) lsTop.classList.add('hidden-controls');
+                                if (lsBot) lsBot.classList.add('hidden-controls');
+                            }
+                        });
                     });
-                } catch(e) {
-                    console.log("VideoJS Setup Error, retrying...", e);
-                }
+                } catch(e) { console.log("VideoJS Setup Error, retrying...", e); }
             }
             return window.vjsPlayer;
         }
 
+        // UPDATED MATCH TIME CALCULATION LOGIC
         function getLocalizedMatchData(m) {
             let result = { status: m.status, displayTime: m.time };
             try {
@@ -639,31 +954,42 @@
                 const timeMatch = timeStr.match(/(\d{1,2}):(\d{2})/);
                 
                 if (timeMatch) {
-                    let hour = parseInt(timeMatch[1]);
+                    let hour = parseInt(timeMatch[1]); 
                     let minute = parseInt(timeMatch[2]);
-                    
                     if (timeStr.includes('pm') && hour < 12) hour += 12;
                     if (timeStr.includes('am') && hour === 12) hour = 0;
                     
                     const now = new Date();
-                    const mmMatchTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0, 0);
+                    let matchDate = new Date(); // fallback to today
                     
-                    const mmOffsetInMinutes = 390; 
-                    const userOffsetInMinutes = -now.getTimezoneOffset(); 
-                    const diffMinutes = userOffsetInMinutes - mmOffsetInMinutes;
+                    if (m.date) {
+                        const parts = m.date.split('-'); // YYYY-MM-DD
+                        if (parts.length === 3) {
+                            matchDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), hour, minute, 0, 0);
+                        }
+                    } else {
+                        // Admin က ရက်စွဲမထည့်ပေးခဲ့ရင် ဒီနေ့လို့ပဲ မှတ်မယ်
+                        matchDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0, 0);
+                    }
                     
-                    const localizedMatchTime = new Date(mmMatchTime.getTime() + (diffMinutes * 60 * 1000));
-                    
+                    // Admin ဘက်က အချိန်က မြန်မာစံတော်ချိန်ဆိုပါက...
+                    const diffMinutes = (-now.getTimezoneOffset()) - 390;
+                    let localizedMatchTime = new Date(matchDate.getTime() + (diffMinutes * 60 * 1000));
+
                     let locHour = localizedMatchTime.getHours();
                     let locMinute = localizedMatchTime.getMinutes();
                     let ampm = locHour >= 12 ? 'PM' : 'AM';
-                    locHour = locHour % 12;
-                    locHour = locHour ? locHour : 12; 
+                    locHour = locHour % 12; locHour = locHour ? locHour : 12; 
                     locMinute = locMinute < 10 ? '0' + locMinute : locMinute;
                     
+                    // ရက်စွဲကို မပြဘဲ နာရီပဲပြရန်
                     result.displayTime = `${locHour}:${locMinute} ${ampm}`;
                     
-                    if (m.status !== 'live' && now >= localizedMatchTime) {
+                    // ၅ မိနစ်ကြိုပြီး Live အဖြစ်သတ်မှတ်ရန်
+                    let liveThreshold = new Date(localizedMatchTime.getTime() - 5 * 60 * 1000);
+                    
+                    // အကယ်၍ အချိန်ရောက်နေပြီဆိုရင် (သို့) ၅ မိနစ်အလိုဖြစ်နေရင် Live ပြောင်းမည်
+                    if (m.status !== 'live' && now >= liveThreshold) {
                         result.status = 'live';
                     }
                 }
@@ -671,27 +997,42 @@
             return result;
         }
 
-        window.renderAppContent = function(mList, sList, fList, isSearchActive = false) {
+        window.renderAppContent = function(mList, sList, fList, isSearchActive = false, aList = [], adList = []) {
+            document.getElementById('secFootball').style.display = 'block';
+            document.getElementById('secMovies').style.display = 'block';
+            document.getElementById('secSeries').style.display = 'block';
+            document.getElementById('secAnimation').style.display = 'block';
+            
+            // Home Page တွင် 18+ ကို ဖျောက်ထားရန်
+            document.getElementById('secAdult').style.display = 'none';
+            
             document.getElementById('moviesContainer').className = "horizontal-scroll";
             document.getElementById('seriesContainer').className = "horizontal-scroll";
-            document.getElementById('btnSeeMoreMovies').style.display = isSearchActive ? "none" : "block";
-            document.getElementById('btnSeeMoreSeries').style.display = isSearchActive ? "none" : "block";
+            if(document.getElementById('animationContainer')) document.getElementById('animationContainer').className = "horizontal-scroll";
+            
+            const btnMovies = document.getElementById('btnSeeMoreMovies');
+            if(btnMovies) btnMovies.style.display = isSearchActive ? "none" : "block";
+            
+            const btnSeries = document.getElementById('btnSeeMoreSeries');
+            if(btnSeries) btnSeries.style.display = isSearchActive ? "none" : "block";
+            
+            const btnAnimation = document.getElementById('btnSeeMoreAnimation');
+            if(btnAnimation) btnAnimation.style.display = isSearchActive ? "none" : "block";
 
             const fbContainer = document.getElementById('footballContainer'); 
             if(fbContainer) {
+                fbContainer.className = "horizontal-scroll";
                 fbContainer.innerHTML = "";
                 if(!fList || fList.length === 0) {
-                    document.getElementById('secFootball').style.display = 'none';
+                    fbContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">လိုက်ဖ်ပွဲစဉ်တိမဟိန့်သိပါ</p>`;
                 } else {
-                    document.getElementById('secFootball').style.display = 'block';
                     fList.forEach(m => {
                         let origIdx = window.footballMatchesLocal.findIndex(x => x.id === m.id);
                         const localData = getLocalizedMatchData(m);
-                        const tag = localData.status === 'live' ? `<div class="live-tag">Live</div>` : `<div class="upcoming-tag">မစသေးပါ</div>`;
-                        
+                        const tag = localData.status === 'live' ? `<div class="live-tag">Live</div>` : `<div class="upcoming-tag">မစသိပါ</div>`;
                         fbContainer.innerHTML += `
                             <div class="fb-card" onclick="clickFootballCard(${origIdx}, '${localData.status}')">
-                                <div class="inline-toast" id="toast_${origIdx}">ပွဲမစသေးပါခင်ဗျာ။</div>
+                                <div class="inline-toast" id="toast_${origIdx}">ပွဲမစသိပါ။</div>
                                 <div class="fb-poster-frame">${tag}<img src="${m.image || 'https://via.placeholder.com/180x101?text=IC+TV'}"></div>
                                 <div class="fb-info"><div class="fb-teams">${m.teams || 'Unknown Match'}</div><div class="fb-time">${localData.displayTime}</div></div>
                             </div>`;
@@ -703,17 +1044,68 @@
             if(mContainer) {
                 mContainer.innerHTML = "";
                 if(!mList || mList.length === 0) {
-                    document.getElementById('secMovies').style.display = 'none';
+                    mContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">ဗီဒီယိုမဟိန့်သိပါ</p>`;
                 } else {
-                    document.getElementById('secMovies').style.display = 'block';
                     const displayMovies = isSearchActive ? mList : mList.slice(0, 5);
-                    
                     displayMovies.forEach(m => {
                         let origIdx = window.moviesListLocal.findIndex(x => x.id === m.id);
+                        let yearBadge = m.year ? `<div class="badge-year">${m.year}</div>` : '';
+                        let ratingBadge = m.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${m.rating}</div>` : '';
+                        
                         mContainer.innerHTML += `
                             <div class="movie-card" onclick="playMovie(${origIdx})">
+                                ${yearBadge}
+                                ${ratingBadge}
                                 <img src="${m.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
                                 <div class="movie-title">${m.title || 'Untitled'}</div>
+                            </div>`;
+                    });
+                }
+            }
+
+            const aContainer = document.getElementById('animationContainer');
+            const targetAList = isSearchActive ? aList : window.animationListLocal;
+            if(aContainer) {
+                aContainer.innerHTML = "";
+                if(!targetAList || targetAList.length === 0) { 
+                    aContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">အန်နီမေးရှင်းမဟိန့်သိပါ</p>`;
+                } else {
+                    const displayAnim = isSearchActive ? targetAList : targetAList.slice(0, 5);
+                    displayAnim.forEach(a => {
+                        let origIdx = window.animationListLocal.findIndex(x => x.id === a.id);
+                        let yearBadge = a.year ? `<div class="badge-year">${a.year}</div>` : '';
+                        let ratingBadge = a.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${a.rating}</div>` : '';
+                        
+                        aContainer.innerHTML += `
+                            <div class="movie-card" onclick="playAnimation(${origIdx})">
+                                ${yearBadge}
+                                ${ratingBadge}
+                                <img src="${a.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
+                                <div class="movie-title">${a.title || 'Untitled'}</div>
+                            </div>`;
+                    });
+                }
+            }
+
+            const adContainer = document.getElementById('adultContainer');
+            const targetAdList = isSearchActive ? adList : window.adultListLocal;
+            if(adContainer) {
+                adContainer.innerHTML = "";
+                if(!targetAdList || targetAdList.length === 0) { 
+                    adContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">ဗီဒီယိုမဟိန့်သိပါ</p>`;
+                } else {
+                    const displayAdult = isSearchActive ? targetAdList : targetAdList.slice(0, 5);
+                    displayAdult.forEach(ad => {
+                        let origIdx = window.adultListLocal.findIndex(x => x.id === ad.id);
+                        let yearBadge = ad.year ? `<div class="badge-year">${ad.year}</div>` : '';
+                        let ratingBadge = ad.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${ad.rating}</div>` : '';
+
+                        adContainer.innerHTML += `
+                            <div class="movie-card" onclick="playAdult(${origIdx})">
+                                ${yearBadge}
+                                ${ratingBadge}
+                                <img src="${ad.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
+                                <div class="movie-title">${ad.title || 'Untitled'}</div>
                             </div>`;
                     });
                 }
@@ -723,15 +1115,18 @@
             if(sContainer) {
                 sContainer.innerHTML = "";
                 if(!sList || sList.length === 0) {
-                    document.getElementById('secSeries').style.display = 'none';
+                    sContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">ဇာတ်လမ်းတွဲမဟိန့်သိပါ</p>`;
                 } else {
-                    document.getElementById('secSeries').style.display = 'block';
                     const displaySeries = isSearchActive ? sList : sList.slice(0, 5);
-                    
                     displaySeries.forEach(s => {
                         let origIdx = window.seriesListLocal.findIndex(x => x.id === s.id);
+                        let yearBadge = s.year ? `<div class="badge-year">${s.year}</div>` : '';
+                        let ratingBadge = s.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${s.rating}</div>` : '';
+                        
                         sContainer.innerHTML += `
                             <div class="movie-card" onclick="playSeries(${origIdx})">
+                                ${yearBadge}
+                                ${ratingBadge}
                                 <img src="${s.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
                                 <div class="movie-title">${s.title || 'Untitled'}</div>
                             </div>`;
@@ -740,48 +1135,95 @@
             }
         }
 
-        window.switchToMoreView = function(targetType) {
+        window.switchToMoreView = function(targetType, fromSubNav = false) {
             window.currentViewMode = targetType;
             document.getElementById('bannerSection').style.display = 'none';
             document.getElementById('secFootball').style.display = 'none';
+            document.getElementById('secMovies').style.display = 'none';
+            document.getElementById('secSeries').style.display = 'none';
+            if(document.getElementById('secAnimation')) document.getElementById('secAnimation').style.display = 'none';
+            if(document.getElementById('secAdult')) document.getElementById('secAdult').style.display = 'none';
+            
+            if(!fromSubNav) document.getElementById('movieSubNav').style.display = 'none';
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             if(targetType === 'movies') {
                 document.getElementById('secMovies').style.display = 'block';
-                document.getElementById('secSeries').style.display = 'none';
-                document.getElementById('btnSeeMoreMovies').style.display = "none";
                 window.renderFullGridMode('movies', window.moviesListLocal);
             } else if (targetType === 'series') {
-                document.getElementById('secMovies').style.display = 'none';
                 document.getElementById('secSeries').style.display = 'block';
-                document.getElementById('btnSeeMoreSeries').style.display = "none";
                 window.renderFullGridMode('series', window.seriesListLocal);
+            } else if (targetType === 'animation') {
+                document.getElementById('secAnimation').style.display = 'block';
+                window.renderFullGridMode('animation', window.animationListLocal);
+            } else if (targetType === 'adult') {
+                document.getElementById('secAdult').style.display = 'block';
+                window.renderFullGridMode('adult', window.adultListLocal);
             }
         }
 
         window.renderFullGridMode = function(type, list) {
-            const targetContainerId = type === 'movies' ? 'moviesContainer' : 'seriesContainer';
+            let targetContainerId = 'moviesContainer';
+            if(type === 'movies') targetContainerId = 'moviesContainer';
+            else if(type === 'series') targetContainerId = 'seriesContainer';
+            else if(type === 'animation') targetContainerId = 'animationContainer';
+            else if(type === 'adult') targetContainerId = 'adultContainer';
+
             const container = document.getElementById(targetContainerId);
             if(!container) return;
             container.className = "vertical-grid"; 
             container.innerHTML = "";
 
+            const btnSeeMore = document.getElementById('btnSeeMore' + (type.charAt(0).toUpperCase() + type.slice(1)));
+            if(btnSeeMore) btnSeeMore.style.display = 'none';
+
             if(!list || list.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#71717a; font-size:13px;">ဒေတာ မရှိသေးပါခင်ဗျာ။</p>`;
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#71717a; font-size:13px;">ဒေတာ မဟိန့်သိပါ။</p>`;
                 return;
             }
 
             list.forEach(item => {
-                let origIdx = type === 'movies' ? 
-                    window.moviesListLocal.findIndex(x => x.id === item.id) : 
-                    window.seriesListLocal.findIndex(x => x.id === item.id);
+                let origIdx = 0; let clickAction = '';
+                if(type === 'movies') { origIdx = window.moviesListLocal.findIndex(x => x.id === item.id); clickAction = `playMovie(${origIdx})`; }
+                else if(type === 'series') { origIdx = window.seriesListLocal.findIndex(x => x.id === item.id); clickAction = `playSeries(${origIdx})`; }
+                else if(type === 'animation') { origIdx = window.animationListLocal.findIndex(x => x.id === item.id); clickAction = `playAnimation(${origIdx})`; }
+                else if(type === 'adult') { origIdx = window.adultListLocal.findIndex(x => x.id === item.id); clickAction = `playAdult(${origIdx})`; }
                 
-                let clickAction = type === 'movies' ? `playMovie(${origIdx})` : `playSeries(${origIdx})`;
+                let yearBadge = item.year ? `<div class="badge-year">${item.year}</div>` : '';
+                let ratingBadge = item.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${item.rating}</div>` : '';
 
                 container.innerHTML += `
                     <div class="movie-card" onclick="${clickAction}">
+                        ${yearBadge}
+                        ${ratingBadge}
                         <img src="${item.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
                         <div class="movie-title">${item.title || 'Untitled'}</div>
+                    </div>`;
+            });
+        }
+
+        window.renderFullFootballMode = function() {
+            const fbContainer = document.getElementById('footballContainer');
+            if(!fbContainer) return;
+            fbContainer.className = "fb-vertical-grid"; 
+            fbContainer.innerHTML = "";
+            const fList = window.footballMatchesLocal;
+
+            if(!fList || fList.length === 0) {
+                fbContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#71717a; font-size:13px;">ပွဲစဉ်တိ မဟိန့်သိပါ။</p>`;
+                return;
+            }
+
+            fList.forEach(m => {
+                let origIdx = window.footballMatchesLocal.findIndex(x => x.id === m.id);
+                const localData = getLocalizedMatchData(m);
+                const tag = localData.status === 'live' ? `<div class="live-tag">Live</div>` : `<div class="upcoming-tag">မစသိပါ</div>`;
+                fbContainer.innerHTML += `
+                    <div class="fb-card" onclick="clickFootballCard(${origIdx}, '${localData.status}')">
+                        <div class="inline-toast" id="toast_${origIdx}">ပွဲမစသိပါ။</div>
+                        <div class="fb-poster-frame">${tag}<img src="${m.image || 'https://via.placeholder.com/180x101?text=IC+TV'}"></div>
+                        <div class="fb-info"><div class="fb-teams">${m.teams || 'Unknown Match'}</div><div class="fb-time">${localData.displayTime}</div></div>
                     </div>`;
             });
         }
@@ -789,10 +1231,10 @@
         window.goHomeView = function() {
             window.currentViewMode = 'home';
             document.getElementById('bannerSection').style.display = 'block';
-            document.getElementById('secFootball').style.display = 'block';
-            document.getElementById('secMovies').style.display = 'block';
-            document.getElementById('secSeries').style.display = 'block';
-            window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal);
+            document.getElementById('movieSubNav').style.display = 'none';
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal, window.adultListLocal);
         }
 
         document.getElementById('menuIconBtn').addEventListener('click', () => toggleSidebar(true));
@@ -812,79 +1254,87 @@
         function toggleSearch(open) {
             const container = document.getElementById('searchContainer'); 
             const input = document.getElementById('searchInput');
-            if(open) { container.classList.add('active'); input.focus(); } 
-            else { container.classList.remove('active'); input.value = ""; window.goHomeView(); }
+            if(open) { 
+                container.classList.add('active'); 
+                input.focus(); 
+                document.getElementById('bottomNavMenu').style.display = 'none'; 
+            } else { 
+                container.classList.remove('active'); 
+                input.value = ""; 
+                document.getElementById('bottomNavMenu').style.display = 'flex';
+                window.switchMainTab('home'); 
+            }
         }
 
-        document.getElementById('socoApiMenuBtn').addEventListener('click', openSocoApiModal);
-        document.getElementById('closeSocoModalBtn').addEventListener('click', closeSocoApiModal);
-        document.getElementById('socoModalOverlay').addEventListener('click', closeSocoApiModal);
+        document.getElementById('socoApiMenuBtn').addEventListener('click', openHighlightModal);
+        document.getElementById('closeSocoModalBtn').addEventListener('click', closeHighlightModal);
+        document.getElementById('socoModalOverlay').addEventListener('click', closeHighlightModal);
 
-        function openSocoApiModal() {
+        function openHighlightModal() {
             toggleSidebar(false);
             document.getElementById('socoModalOverlay').classList.add('active');
-            window.renderSocoApiView();
+            window.renderHighlightView();
         }
 
-        function closeSocoApiModal() {
+        function closeHighlightModal() {
             document.getElementById('socoModalOverlay').classList.remove('active');
         }
 
-        window.renderSocoApiView = function() {
+        window.renderHighlightView = function() {
             const body = document.getElementById('socoModalBody');
             if(!body) return;
             body.innerHTML = "";
             
-            if (!window.socoMatchesLocal || window.socoMatchesLocal.length === 0) {
-                body.innerHTML = `<p style="text-align:center; font-size:12px; color:#a1a1aa; padding:20px;">လောလောဆယ် ပြသရန် လိုက်ဖ်ပွဲစဉ်များ မရှိသေးပါဗျာ။</p>`;
+            if (!window.highlightMatchesLocal || window.highlightMatchesLocal.length === 0) {
+                body.innerHTML = `<p style="text-align:center; font-size:12px; color:#a1a1aa; padding:20px;">ပြသဖို့ Highlight ဗီဒီယိုတိ မဟိသိပါ။</p>`;
                 return;
             }
 
-            window.socoMatchesLocal.forEach((match, idx) => {
+            window.highlightMatchesLocal.forEach((match, idx) => {
                 body.innerHTML += `
-                    <div class="soco-list-item" onclick="playSocoMatch(${idx})">
-                        <div class="soco-item-league">${match.league || 'FOOTBALL'}</div>
+                    <div class="soco-list-item" onclick="playHighlightMatch(${idx})">
+                        <div class="soco-item-league">${match.league || 'FOOTBALL HIGHLIGHT'}</div>
                         <div class="soco-item-teams-row">
                             <div class="soco-team-side home-side">
-                                <img class="soco-team-logo" src="${match.home_logo || ''}" onerror="this.src='https://media.api-sports.io/football/teams/unknown.png'">
-                                <span class="soco-team-name">${match.home || 'Home'}</span>
-                            </div>
-                            <div class="soco-vs-box">VS</div>
-                            <div class="soco-team-side away-side">
-                                <span class="soco-team-name">${match.away || 'Away'}</span>
-                                <img class="soco-team-logo" src="${match.away_logo || ''}" onerror="this.src='https://media.api-sports.io/football/teams/unknown.png'">
+                                <img class="soco-team-logo" src="${match.image || 'https://via.placeholder.com/22x22?text=FB'}" onerror="this.src='https://via.placeholder.com/22x22?text=FB'">
+                                <span class="soco-team-name">${match.title || 'Unknown Match'}</span>
                             </div>
                         </div>
                         <div class="soco-item-footer">
-                            <div class="soco-item-time"><i class="fa-regular fa-clock"></i> ${match.time || ''}</div>
+                            <div class="soco-item-time"><i class="fa-regular fa-clock"></i> ${match.date || ''}</div>
                             <div class="soco-play-btn"><i class="fa-solid fa-play"></i> ကြည့်မည်</div>
                         </div>
                     </div>`;
             });
         }
 
-        function playSocoMatch(idx) {
-            const match = window.socoMatchesLocal[idx];
-            closeSocoApiModal();
-            let servers = [];
-            if(match.server1) servers.push({ name: "Server 1 (HD)", stream: match.server1 });
-            if(match.server2) servers.push({ name: "Server 2 (Backup)", stream: match.server2 });
-            if(match.server3) servers.push({ name: "Server 3 (SD)", stream: match.server3 });
-            if(match.server4) servers.push({ name: "Server 4 (Mobile)", stream: match.server4 });
-
-            if(servers.length === 0) {
-                servers.push({ name: "Server 1", stream: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" });
-            }
-            openVideoPlayer(`${match.home} vs ${match.away}`, match.league + " (" + match.time + ")", '', 'football', servers);
+        function playHighlightMatch(idx) {
+            const match = window.highlightMatchesLocal[idx];
+            closeHighlightModal();
+            openVideoPlayer(`${match.title}`, match.league || 'Football Highlight', match.stream, 'highlight', []);
         }
 
+        // ==========================================
+        // PLAYER CONTROLS (SKIP 10s & LANDSCAPE)
+        // ==========================================
         document.getElementById('playerBackBtn').addEventListener('click', closePlayer);
         document.getElementById('lsBackBtn').addEventListener('click', () => toggleForcedLandscape(false));
         document.getElementById('aspectRatioBtn').addEventListener('click', toggleAspectRatio);
         document.getElementById('lsZoomBtn').addEventListener('click', toggleAspectRatio);
         document.getElementById('forceLandscapeBtn').addEventListener('click', () => toggleForcedLandscape(true));
 
-        /*  ဖုန်းအားလုံးမှာ နာရီ၊ လိုင်းတိုင်တွေဖျောက်ပြီး Screen အပြည့်ဖြစ်စေမည့် စနစ်သစ် */
+        window.skipVideo = function(seconds) {
+            if(window.vjsPlayer) {
+                let currentTime = window.vjsPlayer.currentTime();
+                window.vjsPlayer.currentTime(currentTime + seconds);
+            }
+        };
+        
+        document.getElementById('overlayRewindBtn').addEventListener('click', () => skipVideo(-10));
+        document.getElementById('overlayForwardBtn').addEventListener('click', () => skipVideo(10));
+        document.getElementById('lsRewindBtn').addEventListener('click', () => skipVideo(-10));
+        document.getElementById('lsForwardBtn').addEventListener('click', () => skipVideo(10));
+
         function toggleForcedLandscape(shouldLandscape) {
             const player = document.getElementById('playerPage');
             const videoEl = document.querySelector('#mainVideo_html5_api') || document.getElementById('mainVideo');
@@ -896,104 +1346,91 @@
                 if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
                 history.pushState({ stateName: 'landscape_active' }, '');
 
-                // HTML5 Fullscreen စနစ်ထဲသို့ ဝင်ရောက်ခြင်း (Status bar ကိုဖျောက်ရန်)
-                if (docEl.requestFullscreen) {
-                    docEl.requestFullscreen();
-                } else if (docEl.webkitRequestFullscreen) { /* Safari / iOS */
-                    docEl.webkitRequestFullscreen();
-                } else if (docEl.msRequestFullscreen) { /* IE11 */
-                    docEl.msRequestFullscreen();
-                }
+                if (docEl.requestFullscreen) docEl.requestFullscreen();
+                else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+                else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
             } else {
                 if(isLandscapeMode) {
                     isLandscapeMode = false;
                     player.classList.remove('forced-landscape');
                     if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
 
-                    // Fullscreen စနစ်ထဲမှ ပြန်ထွက်ခြင်း
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen().catch(() => {});
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
+                    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                    else if (document.msExitFullscreen) document.msExitFullscreen();
                 }
             }
         }
 
-        // Fullscreen အား စနစ်အတိုင်း လက်ဖြင့် ထွက်လိုက်လျှင် Landscape mode ကိုပါ အလိုအလျောက်ပိတ်ပေးရန်
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement && isLandscapeMode) {
-                toggleForcedLandscape(false);
-            }
-        });
-        document.addEventListener('webkitfullscreenchange', () => {
-            if (!document.webkitFullscreenElement && isLandscapeMode) {
-                toggleForcedLandscape(false);
-            }
-        });
+        document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && isLandscapeMode) toggleForcedLandscape(false); });
+        document.addEventListener('webkitfullscreenchange', () => { if (!document.webkitFullscreenElement && isLandscapeMode) toggleForcedLandscape(false); });
 
         window.addEventListener('popstate', function(event) {
-            if(isLandscapeMode) {
-                toggleForcedLandscape(false);
-                history.pushState({ stateName: 'player_portrait' }, '');
-            } else if (isPlayerOpen) {
-                closePlayer();
-            }
+            if(isLandscapeMode) { toggleForcedLandscape(false); history.pushState({ stateName: 'player_portrait' }, ''); } 
+            else if (isPlayerOpen) { closePlayer(); }
         });
 
         function toggleAspectRatio() {
             const videoEl = document.querySelector('#mainVideo_html5_api') || document.getElementById('mainVideo');
-            
             currentRatioIdx = (currentRatioIdx + 1) % ratios.length;
             if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx]; 
-            
             document.getElementById('ratioStatus').innerText = labels[currentRatioIdx];
             document.getElementById('lsRatioStatus').innerText = labels[currentRatioIdx];
         }
 
-        function playMovie(idx) { 
-            const m = window.moviesListLocal[idx]; 
-            openVideoPlayer(m.title, '', m.stream, 'movie', []); 
-        }
-        
-        function playSeries(idx) { 
-            const s = window.seriesListLocal[idx]; 
-            openVideoPlayer(s.title, '', '', 'series', s.episodes); 
-        }
+        function playMovie(idx) { const m = window.moviesListLocal[idx]; openVideoPlayer(m.title, '', m.stream, 'movie', []); }
+        function playAnimation(idx) { const a = window.animationListLocal[idx]; openVideoPlayer(a.title, '', a.stream, 'movie', []); }
+        function playAdult(idx) { const ad = window.adultListLocal[idx]; openVideoPlayer(ad.title, '', ad.stream, 'movie', []); }
+        function playSeries(idx) { const s = window.seriesListLocal[idx]; openVideoPlayer(s.title, '', '', 'series', s.episodes); }
         
         function clickFootballCard(idx, dynamicStatus) {
             const f = window.footballMatchesLocal[idx];
             if(dynamicStatus === 'upcoming') {
                 const toast = document.getElementById(`toast_${idx}`); 
-                toast.style.display = 'flex';
-                setTimeout(() => toast.style.display = 'none', 2500);
-            } else { 
-                openVideoPlayer(f.teams, f.time, '', 'football', f.servers); 
-            }
+                toast.style.display = 'flex'; setTimeout(() => toast.style.display = 'none', 2500);
+            } else { openVideoPlayer(f.teams, f.time, '', 'football', f.servers); }
         }
 
         function openVideoPlayer(title, sub, url, type, options) {
             isPlayerOpen = true;
             document.getElementById('playerPage').classList.add('active');
+            document.getElementById('bottomNavMenu').style.display = 'none';
+            
+            window.currentVideoType = type;
+            window.currentVideoOptions = options;
+            window.currentMovieTitle = title;
             
             const p = initPlayerIfNeeded();
-            if(p) {
-                try { p.pause(); p.src(''); } catch(e) {}
-            }
+            if(p) { try { p.pause(); p.src(''); } catch(e) {} }
 
             document.getElementById('pMainTitle').innerText = title;
             const subTxt = document.getElementById('pMainSub');
-            if(sub) { subTxt.innerText = sub; subTxt.style.display='block'; } else { subTxt.style.display='none'; }
+            const downloadBtn = document.getElementById('downloadVideoBtn'); 
+            const dlHintText = document.getElementById('dlHintText');
+            
+            if(sub) { 
+                if(type === 'football') {
+                    // Re-calculate the local time strictly for display sub-text in player
+                    let matchMock = { status: 'upcoming', time: sub, date: options.dateStr };
+                    let localData = getLocalizedMatchData(matchMock);
+                    subTxt.innerText = localData.displayTime; 
+                } else { subTxt.innerText = sub; }
+                subTxt.style.display = 'block'; 
+            } else { subTxt.style.display = 'none'; }
 
-            const grid = document.getElementById('pOptionGrid'); 
-            grid.innerHTML = "";
+            const grid = document.getElementById('pOptionGrid'); grid.innerHTML = "";
             const zone = document.getElementById('pOptionZone');
 
-            if(type === 'movie') { 
-                zone.style.display = 'none'; 
-                bootStream(url); 
+            if (type === 'football' || type === 'highlight') {
+                downloadBtn.style.display = 'none';
+                dlHintText.style.display = 'none';
+            } else {
+                downloadBtn.style.display = 'flex'; 
+                dlHintText.style.display = 'block';
+            }
+
+            if(type === 'movie' || type === 'highlight') { 
+                zone.style.display = 'none'; bootStream(url); 
             } else {
                 zone.style.display = 'block';
                 document.getElementById('pOptionTitle').innerText = type === 'series' ? "EPISODES:" : "SELECT SERVER:";
@@ -1010,31 +1447,29 @@
             const p = initPlayerIfNeeded();
             if(!url || !p) return;
 
-            let videoUrl = url;
-            window.currentRefererUrl = null; 
-
+            let videoUrl = url; window.currentRefererUrl = null; 
             if (/\|Referer=/i.test(url)) {
                 const parts = url.split(/\|Referer=/i);
-                videoUrl = parts[0].trim();       
-                window.currentRefererUrl = parts[1].trim();     
+                videoUrl = parts[0].trim(); window.currentRefererUrl = parts[1].trim();     
             }
 
+            window.currentDownloadUrl = videoUrl;
+
             let type = 'video/mp4';
-            if (videoUrl.includes('.m3u8')) {
-                type = 'application/x-mpegURL';
-            }
+            if (videoUrl.includes('.m3u8')) type = 'application/x-mpegURL';
 
             try {
                 p.src({ src: videoUrl, type: type });
                 p.ready(() => {
                     p.play().catch(e => console.log("Auto-play blocked:", e));
-                    
                     const videoEl = document.querySelector('#mainVideo_html5_api');
                     if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
+                    
+                    document.getElementById('portraitSkipControls')?.classList.remove('hidden-controls');
+                    document.getElementById('lsTopControls')?.classList.remove('hidden-controls');
+                    document.getElementById('lsBottomControls')?.classList.remove('hidden-controls');
                 });
-            } catch (err) {
-                console.log("Streaming error: ", err);
-            }
+            } catch (err) { console.log("Streaming error: ", err); }
         }
 
         function switchStream(url, idx, type) {
@@ -1047,20 +1482,59 @@
         function closePlayer() { 
             isPlayerOpen = false;
             toggleForcedLandscape(false);
-            if(window.vjsPlayer) {
-                try {
-                    window.vjsPlayer.pause();
-                    window.vjsPlayer.src('');
-                } catch(e){}
-            }
-            document.getElementById('playerPage').classList.remove('active'); 
+            if(window.vjsPlayer) { try { window.vjsPlayer.pause(); window.vjsPlayer.src(''); } catch(e){} }
+            document.getElementById('playerPage').classList.remove('active');
+            document.getElementById('bottomNavMenu').style.display = 'flex';
         }
 
+        document.getElementById('downloadVideoBtn').addEventListener('click', function() {
+            if (window.currentVideoType === 'series' && window.currentVideoOptions && window.currentVideoOptions.length > 0) {
+                const body = document.getElementById('downloadModalBody');
+                body.innerHTML = '';
+                window.currentVideoOptions.forEach((opt) => {
+                    body.innerHTML += `
+                        <div class="soco-list-item" onclick="triggerDownload('${opt.stream}', '${window.currentMovieTitle + ' - ' + opt.name}')" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #fff; font-size: 13px; font-weight: bold;">${opt.name}</span>
+                            <i class="fa-solid fa-download" style="color: #3b82f6;"></i>
+                        </div>
+                    `;
+                });
+                document.getElementById('downloadModalOverlay').classList.add('active');
+            } else if (window.currentDownloadUrl) {
+                triggerDownload(window.currentDownloadUrl, window.currentMovieTitle);
+            } else {
+                window.showAlert("ဒေါင်းလုဒ်လုပ်ဖို့ လင့်ခ် မတွိ့ပါ!");
+            }
+        });
+
+        window.closeDownloadModal = function() {
+            document.getElementById('downloadModalOverlay').classList.remove('active');
+        };
+
+        window.triggerDownload = function(url, title) {
+            let cleanUrl = url;
+            if (/\|Referer=/i.test(cleanUrl)) {
+                cleanUrl = cleanUrl.split(/\|Referer=/i)[0].trim();
+            }
+
+            const a = document.createElement('a');
+            a.href = cleanUrl;
+            a.download = title ? title + ".mp4" : "download.mp4";
+            a.target = "_blank";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            closeDownloadModal();
+        };
+
         window.playMovie = playMovie; 
+        window.playAnimation = playAnimation;
+        window.playAdult = playAdult;
         window.playSeries = playSeries;
         window.clickFootballCard = clickFootballCard; 
         window.switchStream = switchStream; 
-        window.playSocoMatch = playSocoMatch;
+        window.playHighlightMatch = playHighlightMatch;
     </script>
 </body>
 </html>
