@@ -864,25 +864,46 @@
             window.switchToMoreView(subTab, true);
         };
         
-
+        // --- အသစ်ပြောင်းလဲထားသော iOS အတွက် Player Code အပိုင်း ---
         function initPlayerIfNeeded() {
             if (!window.vjsPlayer) {
                 try {
+                    // iPhone/iOS ဖြစ်မဖြစ် စစ်ဆေးခြင်း
+                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
                     window.vjsPlayer = videojs('mainVideo', {
-                        fluid: false, autoplay: false, controls: true, preload: 'auto',
-                        html5: { vhs: { overrideNative: true, maxBufferLength: 8, limitRenditionByPlayerDimensions: false } }
+                        fluid: false, 
+                        autoplay: false, 
+                        controls: true, 
+                        preload: 'auto',
+                        html5: { 
+                            vhs: { 
+                                // iOS ဆိုလျှင် Native Player ကို သုံးရန် (true မဖြစ်စေရ)
+                                overrideNative: !isIOS, 
+                                maxBufferLength: 8, 
+                                limitRenditionByPlayerDimensions: false 
+                            },
+                            nativeVideoTracks: isIOS,
+                            nativeAudioTracks: isIOS,
+                            nativeTextTracks: isIOS
+                        }
                     });
+
                     window.vjsPlayer.ready(function() {
                         const player = this;
-                        if (player.tech_ && player.tech_.vhs && player.tech_.vhs.xhr) {
-                            player.tech_.vhs.xhr.beforeRequest = function(options) {
-                                if (window.currentRefererUrl) {
-                                    options.headers = options.headers || {};
-                                    options.headers['Referer'] = window.currentRefererUrl;
-                                }
-                                return options;
-                            };
-                        }
+                        
+                        // iOS Native Player မှာ XHR Headers (Referer) ထည့်လို့မရသောကြောင့် Error မတက်အောင် ခွဲရေးထားပါသည်
+                        try {
+                            if (!isIOS && player.tech_ && player.tech_.vhs && player.tech_.vhs.xhr) {
+                                player.tech_.vhs.xhr.beforeRequest = function(options) {
+                                    if (window.currentRefererUrl) {
+                                        options.headers = options.headers || {};
+                                        options.headers['Referer'] = window.currentRefererUrl;
+                                    }
+                                    return options;
+                                };
+                            }
+                        } catch(e) { console.log("XHR Header Override skipped for iOS"); }
 
                         player.on('useractive', function() {
                             const skipDiv = document.getElementById('portraitSkipControls');
@@ -910,6 +931,7 @@
             }
             return window.vjsPlayer;
         }
+        // ----------------------------------------------------
 
         // UPDATED MATCH TIME CALCULATION LOGIC
         function getLocalizedMatchData(m) {
@@ -1419,6 +1441,56 @@
             document.getElementById('bottomNavMenu').style.display = 'flex';
         }
 
+        // --- အသစ်ပြောင်းလဲထားသော Direct Download Code အပိုင်း ---
+        window.triggerDownload = async function(url, title) {
+            let cleanUrl = url;
+            if (/\|Referer=/i.test(cleanUrl)) {
+                cleanUrl = cleanUrl.split(/\|Referer=/i)[0].trim();
+            }
+
+            const fileName = title ? title + ".mp4" : "download.mp4";
+            
+            // ဒေါင်းလုဒ်ဆွဲနေကြောင်း ပြသရန်
+            const downloadBtn = document.getElementById('downloadVideoBtn');
+            const originalText = downloadBtn ? downloadBtn.innerHTML : '';
+            if (downloadBtn) downloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ဒေါင်းလုဒ် ဆွဲယူနေပါသည်...';
+
+            try {
+                // Blob ဖြင့် ဖိုင်တစ်ခုလုံးကို ဆွဲယူပြီးမှ Force Download လုပ်ခြင်း
+                const response = await fetch(cleanUrl);
+                if (!response.ok) throw new Error("Network Error");
+                
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+                
+            } catch (error) {
+                console.log("Direct download failed, using fallback:", error);
+                // အကယ်၍ Server က CORS (လုံခြုံရေး) ပိတ်ထားလို့ Blob နဲ့ ယူမရရင် ရိုးရိုး Tab သစ်ဖွင့်ပြီး ဒေါင်းမည့် နည်းလမ်း (Fallback)
+                const a = document.createElement('a');
+                a.href = cleanUrl;
+                a.download = fileName;
+                a.target = "_blank";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+
+            // မူလစာသားပြန်ပြောင်းရန်
+            if (downloadBtn) downloadBtn.innerHTML = originalText;
+            closeDownloadModal();
+        };
+        // --------------------------------------------------------
+
         document.getElementById('downloadVideoBtn').addEventListener('click', function() {
             if (window.currentVideoType === 'series' && window.currentVideoOptions && window.currentVideoOptions.length > 0) {
                 const body = document.getElementById('downloadModalBody');
@@ -1441,23 +1513,6 @@
 
         window.closeDownloadModal = function() {
             document.getElementById('downloadModalOverlay').classList.remove('active');
-        };
-
-        window.triggerDownload = function(url, title) {
-            let cleanUrl = url;
-            if (/\|Referer=/i.test(cleanUrl)) {
-                cleanUrl = cleanUrl.split(/\|Referer=/i)[0].trim();
-            }
-
-            const a = document.createElement('a');
-            a.href = cleanUrl;
-            a.download = title ? title + ".mp4" : "download.mp4";
-            a.target = "_blank";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
-            closeDownloadModal();
         };
 
         window.playMovie = playMovie; 
