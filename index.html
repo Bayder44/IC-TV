@@ -230,7 +230,6 @@
         .menu-item:active { background: #27272a; color: #fff; }
         .menu-item i { font-size: 16px; width: 20px; text-align: center; }
         .menu-item.football-live-btn { color: #4ade80; background: rgba(74, 222, 128, 0.05); font-weight: bold; }
-        .menu-item.adult-btn { color: #f87171; background: rgba(248, 113, 113, 0.05); font-weight: bold; }
         .menu-sep { height: 1px; background: #27272a; margin: 18px 6px; }
         .menu-section-title { font-size: 11px; font-weight: bold; color: #52525b; text-transform: uppercase; padding-left: 16px; margin-bottom: 8px; letter-spacing: 0.5px; }
 
@@ -432,9 +431,6 @@
                 <a href="https://www.fotmob.com/" target="_blank" class="menu-item" style="color: #fbbf24; font-weight: bold;"><i class="fa-regular fa-futbol"></i> ဂိုးရလဒ် (Live Scores)</a>
                 <div class="menu-item football-live-btn" id="socoApiMenuBtn"><i class="fa-solid fa-film"></i> Football Highlight</div>
                 
-                <!-- 18+ Premium Menu Item -->
-                <div class="menu-item adult-btn" onclick="openAdultSection()"><i class="fa-solid fa-heart-crack"></i> 18+ Premium</div>
-                
                 <div class="menu-sep"></div>
                 <div class="menu-section-title">Account Option</div>
                 <div class="menu-item" onclick="handleLogout()" style="color: #f43f5e; font-weight: bold;"><i class="fa-solid fa-right-from-bracket"></i> Logout ထွက်မည်</div>
@@ -508,14 +504,6 @@
                     <div class="see-more-btn" id="btnSeeMoreSeries" onclick="switchToMoreView('series')">See More..</div>
                 </div>
                 <div class="horizontal-scroll" id="seriesContainer"></div>
-            </div>
-            
-            <!-- Hidden Adult Section (Only shows when unlocked via Menu) -->
-            <div class="content-section" id="secAdult" style="display: none;">
-                <div class="section-header" style="color: #f87171;">
-                    <span><i class="fa-solid fa-heart"></i> 18+ Premium</span>
-                </div>
-                <div class="horizontal-scroll" id="adultContainer"></div>
             </div>
             
         </div>
@@ -716,7 +704,6 @@
         window.moviesListLocal = []; 
         window.seriesListLocal = []; 
         window.animationListLocal = [];
-        window.adultListLocal = [];
         window.footballMatchesLocal = []; 
         window.highlightMatchesLocal = [];
         let bannerCount = 0;
@@ -760,12 +747,6 @@
             window.animationListLocal.reverse(); updateView();
         });
 
-        onValue(ref(db, 'adult'), (s) => {
-            const d = s.val(); window.adultListLocal = [];
-            if(d) Object.keys(d).forEach(k => window.adultListLocal.push({ id: k, ...d[k] }));
-            window.adultListLocal.reverse(); updateView();
-        });
-
         onValue(ref(db, 'series'), (s) => {
             const d = s.val(); window.seriesListLocal = [];
             if(d) Object.keys(d).forEach(k => {
@@ -799,10 +780,9 @@
         function updateView() { 
             if (window.currentViewMode === 'movies') window.renderFullGridMode('movies', window.moviesListLocal);
             else if (window.currentViewMode === 'animation') window.renderFullGridMode('animation', window.animationListLocal);
-            else if (window.currentViewMode === 'adult') window.renderFullGridMode('adult', window.adultListLocal);
             else if (window.currentViewMode === 'series') window.renderFullGridMode('series', window.seriesListLocal);
             else if (window.currentViewMode === 'football') window.renderFullFootballMode();
-            else window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal, window.adultListLocal); 
+            else window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal); 
         }
 
         window.handleSearch = function(query) {
@@ -820,8 +800,7 @@
             let fA = window.animationListLocal.filter(a => a.title && a.title.toLowerCase().includes(q));
             let fF = window.footballMatchesLocal.filter(f => f.teams && f.teams.toLowerCase().includes(q));
             
-            // 18+ ကို Search မှာ ဖျောက်ထားရန်
-            window.renderAppContent(fM, fS, fF, true, fA, []); 
+            window.renderAppContent(fM, fS, fF, true, fA); 
         }
         document.getElementById('searchInput').addEventListener('input', (e) => window.handleSearch(e.target.value));
     </script>
@@ -854,7 +833,6 @@
             document.getElementById('secFootball').style.display = 'none';
             document.getElementById('secMovies').style.display = 'none';
             document.getElementById('secAnimation').style.display = 'none';
-            document.getElementById('secAdult').style.display = 'none';
             document.getElementById('secSeries').style.display = 'none';
             document.getElementById('movieSubNav').style.display = 'none';
             
@@ -882,22 +860,10 @@
             
             document.getElementById('secMovies').style.display = 'none';
             document.getElementById('secAnimation').style.display = 'none';
-            document.getElementById('secAdult').style.display = 'none';
             
             window.switchToMoreView(subTab, true);
         };
         
-        /* --- Password Protect 18+ Area --- */
-        window.openAdultSection = function() {
-            let pwd = prompt("စကားဝှက် (Password) ထည့်ပါ:");
-            if (pwd === "0000") {
-                window.switchToMoreView('adult');
-                window.toggleSidebar(false);
-            } else if (pwd !== null && pwd !== "") {
-                window.showAlert("စကားဝှက်မှားနိန်ပါရေ");
-            }
-        };
-        /* -------------------------------------- */
 
         function initPlayerIfNeeded() {
             if (!window.vjsPlayer) {
@@ -997,14 +963,11 @@
             return result;
         }
 
-        window.renderAppContent = function(mList, sList, fList, isSearchActive = false, aList = [], adList = []) {
+        window.renderAppContent = function(mList, sList, fList, isSearchActive = false, aList = []) {
             document.getElementById('secFootball').style.display = 'block';
             document.getElementById('secMovies').style.display = 'block';
             document.getElementById('secSeries').style.display = 'block';
             document.getElementById('secAnimation').style.display = 'block';
-            
-            // Home Page တွင် 18+ ကို ဖျောက်ထားရန်
-            document.getElementById('secAdult').style.display = 'none';
             
             document.getElementById('moviesContainer').className = "horizontal-scroll";
             document.getElementById('seriesContainer').className = "horizontal-scroll";
@@ -1087,30 +1050,6 @@
                 }
             }
 
-            const adContainer = document.getElementById('adultContainer');
-            const targetAdList = isSearchActive ? adList : window.adultListLocal;
-            if(adContainer) {
-                adContainer.innerHTML = "";
-                if(!targetAdList || targetAdList.length === 0) { 
-                    adContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">ဗီဒီယိုမဟိန့်သိပါ</p>`;
-                } else {
-                    const displayAdult = isSearchActive ? targetAdList : targetAdList.slice(0, 5);
-                    displayAdult.forEach(ad => {
-                        let origIdx = window.adultListLocal.findIndex(x => x.id === ad.id);
-                        let yearBadge = ad.year ? `<div class="badge-year">${ad.year}</div>` : '';
-                        let ratingBadge = ad.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${ad.rating}</div>` : '';
-
-                        adContainer.innerHTML += `
-                            <div class="movie-card" onclick="playAdult(${origIdx})">
-                                ${yearBadge}
-                                ${ratingBadge}
-                                <img src="${ad.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
-                                <div class="movie-title">${ad.title || 'Untitled'}</div>
-                            </div>`;
-                    });
-                }
-            }
-
             const sContainer = document.getElementById('seriesContainer'); 
             if(sContainer) {
                 sContainer.innerHTML = "";
@@ -1142,7 +1081,6 @@
             document.getElementById('secMovies').style.display = 'none';
             document.getElementById('secSeries').style.display = 'none';
             if(document.getElementById('secAnimation')) document.getElementById('secAnimation').style.display = 'none';
-            if(document.getElementById('secAdult')) document.getElementById('secAdult').style.display = 'none';
             
             if(!fromSubNav) document.getElementById('movieSubNav').style.display = 'none';
 
@@ -1157,9 +1095,6 @@
             } else if (targetType === 'animation') {
                 document.getElementById('secAnimation').style.display = 'block';
                 window.renderFullGridMode('animation', window.animationListLocal);
-            } else if (targetType === 'adult') {
-                document.getElementById('secAdult').style.display = 'block';
-                window.renderFullGridMode('adult', window.adultListLocal);
             }
         }
 
@@ -1168,7 +1103,6 @@
             if(type === 'movies') targetContainerId = 'moviesContainer';
             else if(type === 'series') targetContainerId = 'seriesContainer';
             else if(type === 'animation') targetContainerId = 'animationContainer';
-            else if(type === 'adult') targetContainerId = 'adultContainer';
 
             const container = document.getElementById(targetContainerId);
             if(!container) return;
@@ -1188,7 +1122,6 @@
                 if(type === 'movies') { origIdx = window.moviesListLocal.findIndex(x => x.id === item.id); clickAction = `playMovie(${origIdx})`; }
                 else if(type === 'series') { origIdx = window.seriesListLocal.findIndex(x => x.id === item.id); clickAction = `playSeries(${origIdx})`; }
                 else if(type === 'animation') { origIdx = window.animationListLocal.findIndex(x => x.id === item.id); clickAction = `playAnimation(${origIdx})`; }
-                else if(type === 'adult') { origIdx = window.adultListLocal.findIndex(x => x.id === item.id); clickAction = `playAdult(${origIdx})`; }
                 
                 let yearBadge = item.year ? `<div class="badge-year">${item.year}</div>` : '';
                 let ratingBadge = item.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${item.rating}</div>` : '';
@@ -1234,7 +1167,7 @@
             document.getElementById('movieSubNav').style.display = 'none';
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             
-            window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal, window.adultListLocal);
+            window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal);
         }
 
         document.getElementById('menuIconBtn').addEventListener('click', () => toggleSidebar(true));
@@ -1380,7 +1313,6 @@
 
         function playMovie(idx) { const m = window.moviesListLocal[idx]; openVideoPlayer(m.title, '', m.stream, 'movie', []); }
         function playAnimation(idx) { const a = window.animationListLocal[idx]; openVideoPlayer(a.title, '', a.stream, 'movie', []); }
-        function playAdult(idx) { const ad = window.adultListLocal[idx]; openVideoPlayer(ad.title, '', ad.stream, 'movie', []); }
         function playSeries(idx) { const s = window.seriesListLocal[idx]; openVideoPlayer(s.title, '', '', 'series', s.episodes); }
         
         function clickFootballCard(idx, dynamicStatus) {
@@ -1530,7 +1462,6 @@
 
         window.playMovie = playMovie; 
         window.playAnimation = playAnimation;
-        window.playAdult = playAdult;
         window.playSeries = playSeries;
         window.clickFootballCard = clickFootballCard; 
         window.switchStream = switchStream; 
