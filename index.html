@@ -159,9 +159,41 @@
         .movie-title { font-size: 12px; padding: 8px 6px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; color: #e4e4e7; }
 
         /* --- MOVIE POSTER BADGES (YEAR & RATING) --- */
-        .badge-year { position: absolute; top: 6px; left: 6px; background: #e50914; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .badge-rating { position: absolute; top: 6px; right: 6px; background: rgba(0, 0, 0, 0.75); color: #fff; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 2; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .badge-rating i { color: #facc15; font-size: 9px; }
+        .badge-year {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: #e50914; 
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 2;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .badge-rating {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .badge-rating i {
+            color: #facc15; 
+            font-size: 9px;
+        }
 
         .fb-card { width: 180px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .fb-poster-frame { width: 100%; aspect-ratio: 16/9; background: #222; overflow: hidden; position: relative; }
@@ -235,11 +267,37 @@
         
         /* VIDEO OVERLAY CONTROLS (AUTO HIDE/SHOW) */
         .video-overlay-controls {
-            position: absolute; bottom: 45px; right: 15px; display: flex; gap: 10px; z-index: 20; pointer-events: auto; opacity: 1; visibility: visible; transition: opacity 0.3s ease, visibility 0.3s ease;
+            position: absolute;
+            bottom: 45px; 
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+            pointer-events: auto;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        .video-overlay-controls.hidden-controls { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+        .video-overlay-controls.hidden-controls {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
         .overlay-skip-btn {
-            background: rgba(0, 0, 0, 0.65); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); transition: 0.2s;
+            background: rgba(0, 0, 0, 0.65);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            transition: 0.2s;
         }
         .overlay-skip-btn:active { background: rgba(229, 9, 20, 0.8); }
         .player-page.forced-landscape .video-overlay-controls { display: none !important; }
@@ -270,28 +328,18 @@
         .ls-zoom-btn { flex-shrink: 0; background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
         
         .player-page.forced-landscape .ls-top-controls, 
-        .player-page.forced-landscape .ls-bottom-controls { display: flex !important; opacity: 1; visibility: visible; }
+        .player-page.forced-landscape .ls-bottom-controls { 
+            display: flex !important; 
+            opacity: 1;
+            visibility: visible;
+        }
         
         .player-page.forced-landscape .ls-top-controls.hidden-controls, 
-        .player-page.forced-landscape .ls-bottom-controls.hidden-controls { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
-
-        /* ---------------------------------
-           DATA LOADING SCREEN CSS (အသစ်ထည့်ထားသည်)
-        ----------------------------------- */
-        .data-loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 9, 11, 0.95); z-index: 99999;
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(5px);
+        .player-page.forced-landscape .ls-bottom-controls.hidden-controls { 
+            opacity: 0 !important; 
+            visibility: hidden !important; 
+            pointer-events: none !important;
         }
-        .custom-spinner {
-            width: 50px; height: 50px; border: 4px solid rgba(0, 255, 204, 0.2);
-            border-top: 4px solid var(--neon-text); border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 20px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { color: var(--neon-text); font-size: 14px; font-weight: bold; letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(0, 255, 204, 0.3); }
-
     </style>
 </head>
 <body>
@@ -341,12 +389,6 @@
     </div>
 
     <div class="app-main-container" id="appMainBlock">
-        
-        <div id="dataLoadingOverlay" class="data-loading-overlay">
-            <div class="custom-spinner"></div>
-            <div class="loading-text">ဒေတာချိတ်ဆက်ပီးနိန်ပါသည် တနားချေစောင့်ပါ</div>
-        </div>
-
         <header>
             <i class="fa-solid fa-bars" id="menuIconBtn"></i>
             <div class="header-title" onclick="switchMainTab('home')">IC_TV (ALL IN ONE)</div>
@@ -419,7 +461,8 @@
                     <div class="soco-modal-title" style="color: #3b82f6;"><i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်လုပ်မည့် အပိုင်းကို ရွေးပါ</div>
                     <i class="fa-solid fa-xmark soco-modal-close" onclick="closeDownloadModal()"></i>
                 </div>
-                <div class="soco-modal-body" id="downloadModalBody"></div>
+                <div class="soco-modal-body" id="downloadModalBody">
+                    </div>
             </div>
         </div>
 
@@ -535,7 +578,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, set, get, child, onDisconnect, remove, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, set, get, child, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCfzDnLOvb6uLdhoLHYk0ECYfgqJVZb9EI",
@@ -549,22 +592,6 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-
-        // DATA LOADING TRACKER SYSTEM
-        const dataLoadStatus = { banners: false, movies: false, animation: false, series: false, football: false, highlights: false };
-        function checkAllDataLoaded(key) {
-            dataLoadStatus[key] = true;
-            if (Object.values(dataLoadStatus).every(status => status === true)) {
-                const loader = document.getElementById('dataLoadingOverlay');
-                if(loader) loader.style.display = 'none';
-            }
-        }
-
-        // Show loading spinner initially if user is already logged in
-        if (localStorage.getItem("ic_tv_user")) {
-            const loader = document.getElementById('dataLoadingOverlay');
-            if (loader) loader.style.display = 'flex';
-        }
 
         window.showAlert = (msg) => alert("သတိပြုရန်\n\n" + msg);
 
@@ -627,9 +654,6 @@
                     if(s.val().status === 'blocked') {
                         window.showAlert("ဒေအကောင့်ကိုအက်မင်ပိတ် (Block) ထားခြင်းခံရပါသည်။");
                     } else { 
-                        // Show Data Loading Spinner on successful login
-                        document.getElementById('dataLoadingOverlay').style.display = 'flex';
-                        
                         localStorage.setItem("ic_tv_user", u); 
                         document.getElementById('authScreen').style.display = 'none';
                         document.getElementById('appMainBlock').style.display = 'block';
@@ -685,8 +709,7 @@
         let bannerCount = 0;
         let currentSlide = 0;
 
-        // FETCH OPTIMIZED: limitToLast
-        onValue(query(ref(db, 'banners'), limitToLast(10)), (s) => {
+        onValue(ref(db, 'banners'), (s) => {
             const wrapper = document.getElementById('sliderWrapper'); 
             if(!wrapper) return;
             wrapper.innerHTML = "";
@@ -702,7 +725,6 @@
                         </div>`;
                 });
             } else { bannerCount = 0; }
-            checkAllDataLoaded('banners');
         });
 
         setInterval(() => {
@@ -713,21 +735,19 @@
             }
         }, 2000);
 
-        onValue(query(ref(db, 'movies'), limitToLast(50)), (s) => {
+        onValue(ref(db, 'movies'), (s) => {
             const d = s.val(); window.moviesListLocal = [];
             if(d) Object.keys(d).forEach(k => window.moviesListLocal.push({ id: k, ...d[k] }));
             window.moviesListLocal.reverse(); updateView();
-            checkAllDataLoaded('movies');
         });
 
-        onValue(query(ref(db, 'animation'), limitToLast(50)), (s) => {
+        onValue(ref(db, 'animation'), (s) => {
             const d = s.val(); window.animationListLocal = [];
             if(d) Object.keys(d).forEach(k => window.animationListLocal.push({ id: k, ...d[k] }));
             window.animationListLocal.reverse(); updateView();
-            checkAllDataLoaded('animation');
         });
 
-        onValue(query(ref(db, 'series'), limitToLast(50)), (s) => {
+        onValue(ref(db, 'series'), (s) => {
             const d = s.val(); window.seriesListLocal = [];
             if(d) Object.keys(d).forEach(k => {
                 const x = d[k]; 
@@ -735,10 +755,10 @@
                 window.seriesListLocal.push({ id: k, title: x.title, image: x.image, year: x.year, rating: x.rating, episodes: eps });
             });
             window.seriesListLocal.reverse(); updateView();
-            checkAllDataLoaded('series');
         });
 
-        onValue(query(ref(db, 'football'), limitToLast(30)), (s) => {
+        // UPDATED: Include date property
+        onValue(ref(db, 'football'), (s) => {
             const d = s.val(); window.footballMatchesLocal = [];
             if(d) Object.keys(d).forEach(k => {
                 const x = d[k]; 
@@ -746,17 +766,15 @@
                 window.footballMatchesLocal.push({ id: k, status: x.status, teams: x.teams, date: x.date, time: x.time, image: x.image, servers: svs });
             });
             window.footballMatchesLocal.reverse(); updateView();
-            checkAllDataLoaded('football');
         });
 
-        onValue(query(ref(db, 'highlights'), limitToLast(30)), (s) => {
+        onValue(ref(db, 'highlights'), (s) => {
             const d = s.val(); window.highlightMatchesLocal = [];
             if(d) {
                 Object.keys(d).forEach(k => window.highlightMatchesLocal.push({ id: k, ...d[k] }));
             }
             window.highlightMatchesLocal.reverse();
             if(document.getElementById('socoModalOverlay').classList.contains('active')) window.renderHighlightView();
-            checkAllDataLoaded('highlights');
         });
 
         function updateView() { 
