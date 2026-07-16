@@ -363,6 +363,7 @@
 </head>
 <body>
 
+    <!-- CUSTOM ALERT MODAL -->
     <div id="customAlertOverlay" class="custom-alert-overlay">
         <div class="custom-alert-box">
             <div class="custom-alert-title"><i class="fa-solid fa-circle-exclamation"></i> သတိပြုရန်</div>
@@ -382,6 +383,7 @@
     </script>
 
     <div id="authScreen" class="auth-screen">
+        <!-- Login Box -->
         <div class="auth-box" id="loginBox" style="display: none;">
             <h2>IC TV LOGIN</h2>
             <div class="auth-group"><label>USER NAME</label><input type="text" id="loginUser" placeholder="နာမည်ရွီးထည့်ပါ"></div>
@@ -393,6 +395,7 @@
             </div>
         </div>
 
+        <!-- Signup Box -->
         <div class="auth-box" id="signupBox">
             <h2>CREATE ACCOUNT</h2>
             <div class="auth-group" style="text-align: center; margin-bottom: 25px;">
@@ -415,6 +418,7 @@
         </div>
     </div>
 
+    <!-- MAIN APP WRAPPER -->
     <div class="app-main-container" id="appMainBlock">
         <header>
             <i class="fa-solid fa-bars" id="menuIconBtn"></i>
@@ -485,7 +489,7 @@
         <div class="soco-modal-overlay" id="downloadModalOverlay">
             <div class="soco-modal-box">
                 <div class="soco-modal-header">
-                    <div class="soco-modal-title" style="color: #3b82f6;"><i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်လုပ်ဖို့ အပိုင်းကို ရွီးပါ</div>
+                    <div class="soco-modal-title" style="color: #3b82f6;"><i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်လုပ်မည့် အပိုင်းကို ရွေးပါ</div>
                     <i class="fa-solid fa-xmark soco-modal-close" onclick="closeDownloadModal()"></i>
                 </div>
                 <div class="soco-modal-body" id="downloadModalBody">
@@ -620,7 +624,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // CUSTOM ALERT FUNCTION (Replaces window.alert)
+        // CUSTOM ALERT FUNCTION
         window.showAlert = (msg) => {
             document.getElementById('customAlertMsg').innerText = msg;
             const alertOverlay = document.getElementById('customAlertOverlay');
@@ -653,28 +657,51 @@
             }
         });
 
+        // -------------------------------------------------------------
+        // UPDATED REGISTRATION: Case & Space Insensitive Check
+        // -------------------------------------------------------------
         document.getElementById('btnRegister').addEventListener('click', () => {
-            let u = document.getElementById('regUser').value.trim();
+            let rawU = document.getElementById('regUser').value.trim();
             let p = document.getElementById('regPass').value.trim();
             let f = document.getElementById('regPhotoFile').files[0];
             
-            if(!u || !p) { window.showAlert("Username နက် Password ကို အပြည့်အစုံထည့်ပါ"); return; }
+            if(!rawU || !p) { window.showAlert("Username နက် Password ကို အပြည့်အစုံထည့်ပါ"); return; }
             if(!f) { window.showAlert("ပုံမထည့်ရသိပါ။ ကျေးဇူးပြုလို့ ပုံအရင်ရွီးချယ်ပီးပါ။"); return; }
 
-            get(child(ref(db), `users/${u}`)).then((snapshot) => {
-                if(snapshot.exists()) {
+            // Create a safe, unique ID by removing all spaces and converting to lowercase
+            let safeKey = rawU.toLowerCase().replace(/\s+/g, "").replace(/[.#$[\]\/]/g, "");
+
+            get(child(ref(db), `users`)).then((s) => {
+                let exists = false;
+                if(s.exists()) {
+                    let users = s.val();
+                    for(let key in users) {
+                        // Check if typed name matches any existing name (ignoring case & space)
+                        let existingName = (users[key].username || "").toLowerCase().replace(/\s+/g, "");
+                        let existingKey = key.toLowerCase().replace(/\s+/g, "");
+                        if(existingName === safeKey || existingKey === safeKey) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if(exists) {
                     window.showAlert("ဒေ နာမည်ဟိန့်ပြီးသားဖြစ်လို့ တခြားနာမည်ပြောင်းပီးပါ။");
                     return;
                 }
+                
                 if (f.size > 5 * 1024 * 1024) { 
                     window.showAlert("ပုံ Size ကကောင်းကြီးနိန်ပါရေ (5MB အောက်ရာ ဖြစ်ရပါဖို့)။ တခြားပုံပြောင်းရွီးပီးပါ။"); 
                     return;
                 }
+                
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    set(ref(db, `users/${u}`), { username: u, password: p, photo: e.target.result, status: "active" })
+                    // Save to DB using safeKey, but KEEP the original typed name for display
+                    set(ref(db, `users/${safeKey}`), { username: rawU, password: p, photo: e.target.result, status: "active" })
                     .then(() => { 
-                        window.showAlert("အကောင့်ဖွင့်စာအောင်မြင်ပါယာ။ Login ဝင်နိုင်ပါယာ။"); 
+                        window.showAlert("အကောင့်ဖွင့်ခြင်စာအောင်မြင်ပါယာ။ Login ဝင်နိုင်ပါယာ။"); 
                         toggleAuthView(true); 
                     });
                 };
@@ -682,26 +709,57 @@
             });
         });
 
+        // -------------------------------------------------------------
+        // UPDATED LOGIN: Case & Space Insensitive Search
+        // -------------------------------------------------------------
         document.getElementById('btnLogin').addEventListener('click', () => {
-            let u = document.getElementById('loginUser').value.trim();
+            let rawU = document.getElementById('loginUser').value.trim();
             let p = document.getElementById('loginPass').value.trim();
             
-            if(!u || !p) { window.showAlert("Username နက် Password ကို ထည့်သွင်းပီးပါ။"); return; }
+            if(!rawU || !p) { window.showAlert("Username နက် Password ကို ထည့်သွင်းပီးပါ။"); return; }
 
-            get(child(ref(db), `users/${u}`)).then((s) => {
-                if(s.exists() && s.val().password === p) {
-                    if(s.val().status === 'blocked') {
-                        window.showAlert("ဒေအကောင့်ကိုအက်မင်ပိတ် (Block) ထားခြင်းခံရပါသည်။");
-                    } else { 
-                        localStorage.setItem("ic_tv_user", u); 
-                        document.getElementById('authScreen').style.display = 'none';
-                        document.getElementById('appMainBlock').style.display = 'block';
-                        document.getElementById('sidebarUserName').innerText = s.val().username;
-                        if(s.val().photo) document.getElementById('sidebarUserAvatar').src = s.val().photo;
+            // Normalize typed name for comparison
+            let searchStr = rawU.toLowerCase().replace(/\s+/g, "");
+
+            // Fetch all users to do a robust check
+            get(child(ref(db), `users`)).then((s) => {
+                if(s.exists()) {
+                    let users = s.val();
+                    let foundUser = null;
+                    let foundKey = null;
+
+                    // Loop through database to find a matching user ignoring spaces/cases
+                    for(let key in users) {
+                        let existingName = (users[key].username || "").toLowerCase().replace(/\s+/g, "");
+                        let existingKey = key.toLowerCase().replace(/\s+/g, "");
                         
-                        setupPresence(u);
+                        if(existingName === searchStr || existingKey === searchStr) {
+                            foundUser = users[key];
+                            foundKey = key;
+                            break;
+                        }
                     }
-                } else { window.showAlert("စကားဝှက် (သို့) နာမည် မှားယွင်းနိန်ပါရေ။"); }
+
+                    if(foundUser && foundUser.password === p) {
+                        if(foundUser.status === 'blocked') {
+                            window.showAlert("ဒေအကောင့်ကိုအက်မင်ပိတ် (Block) ထားခြင်းခံရပါသည်။");
+                        } else { 
+                            localStorage.setItem("ic_tv_user", foundKey); 
+                            document.getElementById('authScreen').style.display = 'none';
+                            document.getElementById('appMainBlock').style.display = 'block';
+                            
+                            // Show their original formatted name in sidebar
+                            document.getElementById('sidebarUserName').innerText = foundUser.username || foundKey;
+                            if(foundUser.photo) document.getElementById('sidebarUserAvatar').src = foundUser.photo;
+                            
+                            setupPresence(foundKey);
+                        }
+                    } else {
+                        window.showAlert("စကားဝှက် (သို့) နာမည် မှားယွင်းနိန်ပါရေ။");
+                    }
+                } else {
+                    window.showAlert("စကားဝှက် (သို့) နာမည် မှားယွင်းနိန်ပါရေ။");
+                }
             });
         });
 
@@ -733,7 +791,7 @@
                         handleLogout();
                     }
                 } else {
-                    document.getElementById('sidebarUserName').innerText = s.val().username;
+                    document.getElementById('sidebarUserName').innerText = s.val().username || currentSessionUser;
                     if(s.val().photo) document.getElementById('sidebarUserAvatar').src = s.val().photo;
                     setupPresence(currentSessionUser);
                 }
@@ -908,8 +966,8 @@
                         fluid: false, autoplay: false, controls: true, preload: 'auto',
                         html5: { 
                             vhs: { 
-                                overrideNative: false, // ပိုသွက်စေရန် Native HLS ကို အရင်ခွင့်ပြုမည်
-                                maxBufferLength: 30, // Buffer ပမာဏတိုးပေးထားသည် (မြန်မြန်ပွင့်စေရန်)
+                                overrideNative: false, 
+                                maxBufferLength: 30, 
                                 fastQualityChange: true
                             } 
                         }
@@ -1431,7 +1489,6 @@
             try {
                 p.src({ src: videoUrl, type: type });
                 p.ready(() => {
-                    // Auto-landscape ကို ဖြုတ်လိုက်ပါပြီ။
                     p.play().catch(e => console.log("Auto-play blocked:", e));
                     
                     const videoEl = document.querySelector('#mainVideo_html5_api');
@@ -1504,11 +1561,10 @@
                 }
             } catch(e) {}
 
-            // ပိုမိုသေချာတဲ့ Download လုပ်နည်း
             const a = document.createElement('a');
             a.href = cleanUrl;
             a.download = title ? title + ".mp4" : "download.mp4";
-            a.target = "_blank"; // New Tab ဖြင့် ဖွင့်ပေးခြင်းဖြင့် တချို့ Browser တွေမှာ Error မတက်အောင် ကာကွယ်ပေးသည်
+            a.target = "_blank"; 
             document.body.appendChild(a);
             a.click();
             setTimeout(() => document.body.removeChild(a), 100);
