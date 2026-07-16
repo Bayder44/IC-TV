@@ -31,6 +31,28 @@
         }
 
         /* ---------------------------------
+           CUSTOM ALERT (REPLACES BROWSER ALERT)
+        ----------------------------------- */
+        .custom-alert-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 9999999; justify-content: center; align-items: center; padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .custom-alert-box {
+            background: #14141b; border: 1px solid #27272a; border-radius: 16px; padding: 24px;
+            width: 100%; max-width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transform: scale(0.9); transition: transform 0.2s ease;
+        }
+        .custom-alert-overlay.show .custom-alert-box { transform: scale(1); }
+        .custom-alert-title { color: #f43f5e; font-size: 16px; font-weight: bold; margin-bottom: 12px; }
+        .custom-alert-msg { color: #e4e4e7; font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+        .custom-alert-btn {
+            background: var(--neon-text); color: #09090b; font-weight: bold; padding: 10px 30px; 
+            border: none; border-radius: 8px; cursor: pointer; transition: 0.2s;
+        }
+        .custom-alert-btn:active { transform: scale(0.95); }
+
+        /* ---------------------------------
            AUTH SYSTEM (LOGIN & SIGNUP) CSS
         ----------------------------------- */
         .auth-screen {
@@ -190,10 +212,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        .badge-rating i {
-            color: #facc15; 
-            font-size: 9px;
-        }
+        .badge-rating i { color: #facc15; font-size: 9px; }
 
         .fb-card { width: 180px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .fb-poster-frame { width: 100%; aspect-ratio: 16/9; background: #222; overflow: hidden; position: relative; }
@@ -344,6 +363,14 @@
 </head>
 <body>
 
+    <div id="customAlertOverlay" class="custom-alert-overlay">
+        <div class="custom-alert-box">
+            <div class="custom-alert-title"><i class="fa-solid fa-circle-exclamation"></i> သတိပြုရန်</div>
+            <div id="customAlertMsg" class="custom-alert-msg"></div>
+            <button class="custom-alert-btn" onclick="closeCustomAlert()">OK</button>
+        </div>
+    </div>
+
     <script>
         document.write('<style>');
         if (localStorage.getItem("ic_tv_user")) {
@@ -357,7 +384,7 @@
     <div id="authScreen" class="auth-screen">
         <div class="auth-box" id="loginBox" style="display: none;">
             <h2>IC TV LOGIN</h2>
-            <div class="auth-group"><label>USER NAME</label><input type="text" id="loginUser" placeholder="နာမည်ရွီးထည့်ပါ (Space ခြားရေးနိုင်သည်)"></div>
+            <div class="auth-group"><label>USER NAME</label><input type="text" id="loginUser" placeholder="နာမည်ရွီးထည့်ပါ"></div>
             <div class="auth-group"><label>PASSWORD</label><input type="password" id="loginPass" placeholder="စကားဝှက်"></div>
             <button class="auth-btn" id="btnLogin">LOGIN ဝင်မည်</button>
             <div class="auth-toggle-text">
@@ -378,7 +405,7 @@
                     </div>
                 </label>
             </div>
-            <div class="auth-group"><label>USER NAME</label><input type="text" id="regUser" placeholder="Username (Space ခြားရေးနိုင်သည်)"></div>
+            <div class="auth-group"><label>USER NAME</label><input type="text" id="regUser" placeholder="နာမည်ရွီးထည့်ပါ"></div>
             <div class="auth-group"><label>PASSWORD</label><input type="password" id="regPass" placeholder="စကားဝှက်အသစ်"></div>
             <button class="auth-btn" id="btnRegister" style="background: var(--football-color);">ACCOUNT ဖွင့်မည်</button>
             <div class="auth-toggle-text">
@@ -593,7 +620,19 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        window.showAlert = (msg) => alert("သတိပြုရန်\n\n" + msg);
+        // CUSTOM ALERT FUNCTION (Replaces window.alert)
+        window.showAlert = (msg) => {
+            document.getElementById('customAlertMsg').innerText = msg;
+            const alertOverlay = document.getElementById('customAlertOverlay');
+            alertOverlay.style.display = 'flex';
+            setTimeout(() => alertOverlay.classList.add('show'), 10);
+        };
+
+        window.closeCustomAlert = () => {
+            const alertOverlay = document.getElementById('customAlertOverlay');
+            alertOverlay.classList.remove('show');
+            setTimeout(() => alertOverlay.style.display = 'none', 200);
+        };
 
         let currentSessionUser = localStorage.getItem("ic_tv_user");
 
@@ -615,7 +654,6 @@
         });
 
         document.getElementById('btnRegister').addEventListener('click', () => {
-            // Updated to allow spaces but remove illegal firebase characters . # $ [ ] /
             let u = document.getElementById('regUser').value.trim().toLowerCase().replace(/[.#$[\]\/]/g, "");
             let p = document.getElementById('regPass').value.trim();
             let f = document.getElementById('regPhotoFile').files[0];
@@ -645,7 +683,6 @@
         });
 
         document.getElementById('btnLogin').addEventListener('click', () => {
-            // Updated to allow spaces during login check as well
             let u = document.getElementById('loginUser').value.trim().toLowerCase().replace(/[.#$[\]\/]/g, "");
             let p = document.getElementById('loginPass').value.trim();
             
@@ -822,7 +859,6 @@
         window.currentVideoOptions = [];
         window.currentMovieTitle = '';
 
-        /* ---------- BOTTOM NAV LOGIC ---------- */
         window.switchMainTab = function(tab) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             if(tab !== 'home') {
@@ -865,13 +901,18 @@
             window.switchToMoreView(subTab, true);
         };
         
-
         function initPlayerIfNeeded() {
             if (!window.vjsPlayer) {
                 try {
                     window.vjsPlayer = videojs('mainVideo', {
                         fluid: false, autoplay: false, controls: true, preload: 'auto',
-                        html5: { vhs: { overrideNative: true, maxBufferLength: 8, limitRenditionByPlayerDimensions: false } }
+                        html5: { 
+                            vhs: { 
+                                overrideNative: false, // ပိုသွက်စေရန် Native HLS ကို အရင်ခွင့်ပြုမည်
+                                maxBufferLength: 30, // Buffer ပမာဏတိုးပေးထားသည် (မြန်မြန်ပွင့်စေရန်)
+                                fastQualityChange: true
+                            } 
+                        }
                     });
                     window.vjsPlayer.ready(function() {
                         const player = this;
@@ -926,10 +967,10 @@
                     if (timeStr.includes('am') && hour === 12) hour = 0;
                     
                     const now = new Date();
-                    let matchDate = new Date(); // fallback to today
+                    let matchDate = new Date();
                     
                     if (m.date) {
-                        const parts = m.date.split('-'); // YYYY-MM-DD
+                        const parts = m.date.split('-'); 
                         if (parts.length === 3) {
                             matchDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), hour, minute, 0, 0);
                         }
@@ -1236,9 +1277,6 @@
             });
         }
 
-        // ==========================================
-        // PLAYER CONTROLS (SKIP 10s & LANDSCAPE)
-        // ==========================================
         document.getElementById('playerBackBtn').addEventListener('click', closePlayer);
         document.getElementById('lsBackBtn').addEventListener('click', () => toggleForcedLandscape(false));
         document.getElementById('aspectRatioBtn').addEventListener('click', toggleAspectRatio);
@@ -1257,7 +1295,6 @@
         document.getElementById('lsRewindBtn').addEventListener('click', () => skipVideo(-10));
         document.getElementById('lsForwardBtn').addEventListener('click', () => skipVideo(10));
 
-        // Updated Force Landscape Mode Function
         function toggleForcedLandscape(shouldLandscape) {
             const player = document.getElementById('playerPage');
             const videoEl = document.querySelector('#mainVideo_html5_api') || document.getElementById('mainVideo');
@@ -1394,10 +1431,8 @@
             try {
                 p.src({ src: videoUrl, type: type });
                 p.ready(() => {
-                    p.play().then(() => {
-                        // ဗီဒီယိုပွင့်တာနဲ့ အလိုအလျောက် Landscape လုပ်ချင်ရင် အောက်ကကုဒ်ကိုသုံးပါ
-                        toggleForcedLandscape(true); 
-                    }).catch(e => console.log("Auto-play blocked:", e));
+                    // Auto-landscape ကို ဖြုတ်လိုက်ပါပြီ။
+                    p.play().catch(e => console.log("Auto-play blocked:", e));
                     
                     const videoEl = document.querySelector('#mainVideo_html5_api');
                     if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
@@ -1425,10 +1460,11 @@
         }
 
         document.getElementById('downloadVideoBtn').addEventListener('click', function() {
-            // Notification အတွက် Permission တောင်းမည်
-            if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-                Notification.requestPermission();
-            }
+            try {
+                if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                    Notification.requestPermission();
+                }
+            } catch (e) {}
 
             if (window.currentVideoType === 'series' && window.currentVideoOptions && window.currentVideoOptions.length > 0) {
                 const body = document.getElementById('downloadModalBody');
@@ -1459,21 +1495,23 @@
                 cleanUrl = cleanUrl.split(/\|Referer=/i)[0].trim();
             }
 
-            // Noti ပြမည့် အပိုင်း
-            if (Notification.permission === "granted") {
-                new Notification("IC TV", {
-                    body: (title ? title : "Video") + " ကို ဒေါင်းလုဒ်စတင်နေပါပြီ...",
-                    icon: "https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/e35ba590-f179-4c8e-adb5-28d406383558.png" // Sidebar က IC TV Logo
-                });
-            }
+            try {
+                if (Notification.permission === "granted") {
+                    new Notification("IC TV", {
+                        body: (title ? title : "Video") + " ကို ဒေါင်းလုဒ်စတင်နေပါပြီ...",
+                        icon: "https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/e35ba590-f179-4c8e-adb5-28d406383558.png" 
+                    });
+                }
+            } catch(e) {}
 
+            // ပိုမိုသေချာတဲ့ Download လုပ်နည်း
             const a = document.createElement('a');
             a.href = cleanUrl;
             a.download = title ? title + ".mp4" : "download.mp4";
-            a.target = "_blank";
+            a.target = "_blank"; // New Tab ဖြင့် ဖွင့်ပေးခြင်းဖြင့် တချို့ Browser တွေမှာ Error မတက်အောင် ကာကွယ်ပေးသည်
             document.body.appendChild(a);
             a.click();
-            document.body.removeChild(a);
+            setTimeout(() => document.body.removeChild(a), 100);
             
             closeDownloadModal();
         };
