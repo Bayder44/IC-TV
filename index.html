@@ -363,7 +363,6 @@
 </head>
 <body>
 
-    <!-- CUSTOM ALERT MODAL -->
     <div id="customAlertOverlay" class="custom-alert-overlay">
         <div class="custom-alert-box">
             <div class="custom-alert-title"><i class="fa-solid fa-circle-exclamation"></i> သတိပြုရန်</div>
@@ -383,7 +382,6 @@
     </script>
 
     <div id="authScreen" class="auth-screen">
-        <!-- Login Box -->
         <div class="auth-box" id="loginBox" style="display: none;">
             <h2>IC TV LOGIN</h2>
             <div class="auth-group"><label>USER NAME</label><input type="text" id="loginUser" placeholder="နာမည်ရွီးထည့်ပါ"></div>
@@ -395,7 +393,6 @@
             </div>
         </div>
 
-        <!-- Signup Box -->
         <div class="auth-box" id="signupBox">
             <h2>CREATE ACCOUNT</h2>
             <div class="auth-group" style="text-align: center; margin-bottom: 25px;">
@@ -418,7 +415,6 @@
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
     <div class="app-main-container" id="appMainBlock">
         <header>
             <i class="fa-solid fa-bars" id="menuIconBtn"></i>
@@ -658,7 +654,7 @@
         });
 
         // -------------------------------------------------------------
-        // UPDATED REGISTRATION: Case & Space Insensitive Check
+        // INSTANT SPEED REGISTRATION
         // -------------------------------------------------------------
         document.getElementById('btnRegister').addEventListener('click', () => {
             let rawU = document.getElementById('regUser').value.trim();
@@ -671,22 +667,9 @@
             // Create a safe, unique ID by removing all spaces and converting to lowercase
             let safeKey = rawU.toLowerCase().replace(/\s+/g, "").replace(/[.#$[\]\/]/g, "");
 
-            get(child(ref(db), `users`)).then((s) => {
-                let exists = false;
-                if(s.exists()) {
-                    let users = s.val();
-                    for(let key in users) {
-                        // Check if typed name matches any existing name (ignoring case & space)
-                        let existingName = (users[key].username || "").toLowerCase().replace(/\s+/g, "");
-                        let existingKey = key.toLowerCase().replace(/\s+/g, "");
-                        if(existingName === safeKey || existingKey === safeKey) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                }
-                
-                if(exists) {
+            // FAST DIRECT QUERY (No Looping)
+            get(child(ref(db), `users/${safeKey}`)).then((snapshot) => {
+                if (snapshot.exists()) {
                     window.showAlert("ဒေ နာမည်ဟိန့်ပြီးသားဖြစ်လို့ တခြားနာမည်ပြောင်းပီးပါ။");
                     return;
                 }
@@ -698,7 +681,7 @@
                 
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    // Save to DB using safeKey, but KEEP the original typed name for display
+                    // Save using safeKey, but KEEP the original typed name inside for display
                     set(ref(db, `users/${safeKey}`), { username: rawU, password: p, photo: e.target.result, status: "active" })
                     .then(() => { 
                         window.showAlert("အကောင့်ဖွင့်ခြင်စာအောင်မြင်ပါယာ။ Login ဝင်နိုင်ပါယာ။"); 
@@ -710,7 +693,7 @@
         });
 
         // -------------------------------------------------------------
-        // UPDATED LOGIN: Case & Space Insensitive Search
+        // INSTANT SPEED LOGIN
         // -------------------------------------------------------------
         document.getElementById('btnLogin').addEventListener('click', () => {
             let rawU = document.getElementById('loginUser').value.trim();
@@ -718,44 +701,25 @@
             
             if(!rawU || !p) { window.showAlert("Username နက် Password ကို ထည့်သွင်းပီးပါ။"); return; }
 
-            // Normalize typed name for comparison
-            let searchStr = rawU.toLowerCase().replace(/\s+/g, "");
+            // Normalize typed name to find the exact key in database
+            let safeKey = rawU.toLowerCase().replace(/\s+/g, "").replace(/[.#$[\]\/]/g, "");
 
-            // Fetch all users to do a robust check
-            get(child(ref(db), `users`)).then((s) => {
-                if(s.exists()) {
-                    let users = s.val();
-                    let foundUser = null;
-                    let foundKey = null;
-
-                    // Loop through database to find a matching user ignoring spaces/cases
-                    for(let key in users) {
-                        let existingName = (users[key].username || "").toLowerCase().replace(/\s+/g, "");
-                        let existingKey = key.toLowerCase().replace(/\s+/g, "");
+            // FAST DIRECT QUERY (No Looping)
+            get(child(ref(db), `users/${safeKey}`)).then((s) => {
+                if (s.exists() && s.val().password === p) {
+                    let foundUser = s.val();
+                    if (foundUser.status === 'blocked') {
+                        window.showAlert("ဒေအကောင့်ကိုအက်မင်ပိတ် (Block) ထားခြင်းခံရပါသည်။");
+                    } else { 
+                        localStorage.setItem("ic_tv_user", safeKey); 
+                        document.getElementById('authScreen').style.display = 'none';
+                        document.getElementById('appMainBlock').style.display = 'block';
                         
-                        if(existingName === searchStr || existingKey === searchStr) {
-                            foundUser = users[key];
-                            foundKey = key;
-                            break;
-                        }
-                    }
-
-                    if(foundUser && foundUser.password === p) {
-                        if(foundUser.status === 'blocked') {
-                            window.showAlert("ဒေအကောင့်ကိုအက်မင်ပိတ် (Block) ထားခြင်းခံရပါသည်။");
-                        } else { 
-                            localStorage.setItem("ic_tv_user", foundKey); 
-                            document.getElementById('authScreen').style.display = 'none';
-                            document.getElementById('appMainBlock').style.display = 'block';
-                            
-                            // Show their original formatted name in sidebar
-                            document.getElementById('sidebarUserName').innerText = foundUser.username || foundKey;
-                            if(foundUser.photo) document.getElementById('sidebarUserAvatar').src = foundUser.photo;
-                            
-                            setupPresence(foundKey);
-                        }
-                    } else {
-                        window.showAlert("စကားဝှက် (သို့) နာမည် မှားယွင်းနိန်ပါရေ။");
+                        // Show their original formatted name in sidebar
+                        document.getElementById('sidebarUserName').innerText = foundUser.username || safeKey;
+                        if (foundUser.photo) document.getElementById('sidebarUserAvatar').src = foundUser.photo;
+                        
+                        setupPresence(safeKey);
                     }
                 } else {
                     window.showAlert("စကားဝှက် (သို့) နာမည် မှားယွင်းနိန်ပါရေ။");
