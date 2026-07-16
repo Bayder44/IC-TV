@@ -485,7 +485,7 @@
         <div class="soco-modal-overlay" id="downloadModalOverlay">
             <div class="soco-modal-box">
                 <div class="soco-modal-header">
-                    <div class="soco-modal-title" style="color: #3b82f6;"><i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်လုပ်မည့် အပိုင်းကို ရွေးပါ</div>
+                    <div class="soco-modal-title" style="color: #3b82f6;"><i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်လုပ်ဖို့ အပိုင်းကို ရွီးပါ</div>
                     <i class="fa-solid fa-xmark soco-modal-close" onclick="closeDownloadModal()"></i>
                 </div>
                 <div class="soco-modal-body" id="downloadModalBody">
@@ -654,7 +654,7 @@
         });
 
         document.getElementById('btnRegister').addEventListener('click', () => {
-            let u = document.getElementById('regUser').value.trim().toLowerCase().replace(/[.#$[\]\/]/g, "");
+            let u = document.getElementById('regUser').value.trim();
             let p = document.getElementById('regPass').value.trim();
             let f = document.getElementById('regPhotoFile').files[0];
             
@@ -674,7 +674,7 @@
                 reader.onload = (e) => {
                     set(ref(db, `users/${u}`), { username: u, password: p, photo: e.target.result, status: "active" })
                     .then(() => { 
-                        window.showAlert("အကောင့်ဖွင့်ခြင်စာအောင်မြင်ပါယာ။ Login ဝင်နိုင်ပါယာ။"); 
+                        window.showAlert("အကောင့်ဖွင့်စာအောင်မြင်ပါယာ။ Login ဝင်နိုင်ပါယာ။"); 
                         toggleAuthView(true); 
                     });
                 };
@@ -683,7 +683,7 @@
         });
 
         document.getElementById('btnLogin').addEventListener('click', () => {
-            let u = document.getElementById('loginUser').value.trim().toLowerCase().replace(/[.#$[\]\/]/g, "");
+            let u = document.getElementById('loginUser').value.trim();
             let p = document.getElementById('loginPass').value.trim();
             
             if(!u || !p) { window.showAlert("Username နက် Password ကို ထည့်သွင်းပီးပါ။"); return; }
