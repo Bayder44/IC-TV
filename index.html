@@ -355,9 +355,9 @@
     </script>
 
     <div id="authScreen" class="auth-screen">
-        <div class="auth-box" id="loginBox">
+        <div class="auth-box" id="loginBox" style="display: none;">
             <h2>IC TV LOGIN</h2>
-            <div class="auth-group"><label>USER NAME</label><input type="text" id="loginUser" placeholder="နာမည်ရွီးထည့်ပါ"></div>
+            <div class="auth-group"><label>USER NAME</label><input type="text" id="loginUser" placeholder="နာမည်ရွီးထည့်ပါ (Space ခြားရေးနိုင်သည်)"></div>
             <div class="auth-group"><label>PASSWORD</label><input type="password" id="loginPass" placeholder="စကားဝှက်"></div>
             <button class="auth-btn" id="btnLogin">LOGIN ဝင်မည်</button>
             <div class="auth-toggle-text">
@@ -366,7 +366,7 @@
             </div>
         </div>
 
-        <div class="auth-box" id="signupBox" style="display: none;">
+        <div class="auth-box" id="signupBox">
             <h2>CREATE ACCOUNT</h2>
             <div class="auth-group" style="text-align: center; margin-bottom: 25px;">
                 <input type="file" id="regPhotoFile" accept="image/*" style="display: none;">
@@ -378,7 +378,7 @@
                     </div>
                 </label>
             </div>
-            <div class="auth-group"><label>USER NAME</label><input type="text" id="regUser" placeholder="Username (စာသား/ဂဏန်း)"></div>
+            <div class="auth-group"><label>USER NAME</label><input type="text" id="regUser" placeholder="Username (Space ခြားရေးနိုင်သည်)"></div>
             <div class="auth-group"><label>PASSWORD</label><input type="password" id="regPass" placeholder="စကားဝှက်အသစ်"></div>
             <button class="auth-btn" id="btnRegister" style="background: var(--football-color);">ACCOUNT ဖွင့်မည်</button>
             <div class="auth-toggle-text">
@@ -615,7 +615,8 @@
         });
 
         document.getElementById('btnRegister').addEventListener('click', () => {
-            let u = document.getElementById('regUser').value.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+            // Updated to allow spaces but remove illegal firebase characters . # $ [ ] /
+            let u = document.getElementById('regUser').value.trim().toLowerCase().replace(/[.#$[\]\/]/g, "");
             let p = document.getElementById('regPass').value.trim();
             let f = document.getElementById('regPhotoFile').files[0];
             
@@ -644,7 +645,8 @@
         });
 
         document.getElementById('btnLogin').addEventListener('click', () => {
-            let u = document.getElementById('loginUser').value.trim().toLowerCase();
+            // Updated to allow spaces during login check as well
+            let u = document.getElementById('loginUser').value.trim().toLowerCase().replace(/[.#$[\]\/]/g, "");
             let p = document.getElementById('loginPass').value.trim();
             
             if(!u || !p) { window.showAlert("Username နက် Password ကို ထည့်သွင်းပီးပါ။"); return; }
@@ -757,7 +759,6 @@
             window.seriesListLocal.reverse(); updateView();
         });
 
-        // UPDATED: Include date property
         onValue(ref(db, 'football'), (s) => {
             const d = s.val(); window.footballMatchesLocal = [];
             if(d) Object.keys(d).forEach(k => {
@@ -911,7 +912,6 @@
             return window.vjsPlayer;
         }
 
-        // UPDATED MATCH TIME CALCULATION LOGIC
         function getLocalizedMatchData(m) {
             let result = { status: m.status, displayTime: m.time };
             try {
@@ -934,11 +934,9 @@
                             matchDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), hour, minute, 0, 0);
                         }
                     } else {
-                        // Admin က ရက်စွဲမထည့်ပေးခဲ့ရင် ဒီနေ့လို့ပဲ မှတ်မယ်
                         matchDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0, 0);
                     }
                     
-                    // Admin ဘက်က အချိန်က မြန်မာစံတော်ချိန်ဆိုပါက...
                     const diffMinutes = (-now.getTimezoneOffset()) - 390;
                     let localizedMatchTime = new Date(matchDate.getTime() + (diffMinutes * 60 * 1000));
 
@@ -948,13 +946,10 @@
                     locHour = locHour % 12; locHour = locHour ? locHour : 12; 
                     locMinute = locMinute < 10 ? '0' + locMinute : locMinute;
                     
-                    // ရက်စွဲကို မပြဘဲ နာရီပဲပြရန်
                     result.displayTime = `${locHour}:${locMinute} ${ampm}`;
                     
-                    // ၅ မိနစ်ကြိုပြီး Live အဖြစ်သတ်မှတ်ရန်
                     let liveThreshold = new Date(localizedMatchTime.getTime() - 5 * 60 * 1000);
                     
-                    // အကယ်၍ အချိန်ရောက်နေပြီဆိုရင် (သို့) ၅ မိနစ်အလိုဖြစ်နေရင် Live ပြောင်းမည်
                     if (m.status !== 'live' && now >= liveThreshold) {
                         result.status = 'live';
                     }
@@ -1241,12 +1236,6 @@
             });
         }
 
-        function playHighlightMatch(idx) {
-            const match = window.highlightMatchesLocal[idx];
-            closeHighlightModal();
-            openVideoPlayer(`${match.title}`, match.league || 'Football Highlight', match.stream, 'highlight', []);
-        }
-
         // ==========================================
         // PLAYER CONTROLS (SKIP 10s & LANDSCAPE)
         // ==========================================
@@ -1268,6 +1257,7 @@
         document.getElementById('lsRewindBtn').addEventListener('click', () => skipVideo(-10));
         document.getElementById('lsForwardBtn').addEventListener('click', () => skipVideo(10));
 
+        // Updated Force Landscape Mode Function
         function toggleForcedLandscape(shouldLandscape) {
             const player = document.getElementById('playerPage');
             const videoEl = document.querySelector('#mainVideo_html5_api') || document.getElementById('mainVideo');
@@ -1279,7 +1269,13 @@
                 if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
                 history.pushState({ stateName: 'landscape_active' }, '');
 
-                if (docEl.requestFullscreen) docEl.requestFullscreen();
+                if (docEl.requestFullscreen) {
+                    docEl.requestFullscreen().then(() => {
+                        if (screen.orientation && screen.orientation.lock) {
+                            screen.orientation.lock('landscape').catch(e => console.log(e));
+                        }
+                    }).catch(e => console.log(e));
+                }
                 else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
                 else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
             } else {
@@ -1288,9 +1284,15 @@
                     player.classList.remove('forced-landscape');
                     if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
 
-                    if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen().catch(() => {});
+                    }
                     else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
                     else if (document.msExitFullscreen) document.msExitFullscreen();
+                    
+                    if (screen.orientation && screen.orientation.unlock) {
+                        screen.orientation.unlock();
+                    }
                 }
             }
         }
@@ -1342,7 +1344,6 @@
             
             if(sub) { 
                 if(type === 'football') {
-                    // Re-calculate the local time strictly for display sub-text in player
                     let matchMock = { status: 'upcoming', time: sub, date: options.dateStr };
                     let localData = getLocalizedMatchData(matchMock);
                     subTxt.innerText = localData.displayTime; 
@@ -1393,7 +1394,11 @@
             try {
                 p.src({ src: videoUrl, type: type });
                 p.ready(() => {
-                    p.play().catch(e => console.log("Auto-play blocked:", e));
+                    p.play().then(() => {
+                        // ဗီဒီယိုပွင့်တာနဲ့ အလိုအလျောက် Landscape လုပ်ချင်ရင် အောက်ကကုဒ်ကိုသုံးပါ
+                        toggleForcedLandscape(true); 
+                    }).catch(e => console.log("Auto-play blocked:", e));
+                    
                     const videoEl = document.querySelector('#mainVideo_html5_api');
                     if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
                     
@@ -1420,6 +1425,11 @@
         }
 
         document.getElementById('downloadVideoBtn').addEventListener('click', function() {
+            // Notification အတွက် Permission တောင်းမည်
+            if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                Notification.requestPermission();
+            }
+
             if (window.currentVideoType === 'series' && window.currentVideoOptions && window.currentVideoOptions.length > 0) {
                 const body = document.getElementById('downloadModalBody');
                 body.innerHTML = '';
@@ -1447,6 +1457,14 @@
             let cleanUrl = url;
             if (/\|Referer=/i.test(cleanUrl)) {
                 cleanUrl = cleanUrl.split(/\|Referer=/i)[0].trim();
+            }
+
+            // Noti ပြမည့် အပိုင်း
+            if (Notification.permission === "granted") {
+                new Notification("IC TV", {
+                    body: (title ? title : "Video") + " ကို ဒေါင်းလုဒ်စတင်နေပါပြီ...",
+                    icon: "https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/e35ba590-f179-4c8e-adb5-28d406383558.png" // Sidebar က IC TV Logo
+                });
             }
 
             const a = document.createElement('a');
