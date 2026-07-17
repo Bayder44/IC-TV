@@ -654,7 +654,7 @@
         });
 
         // -------------------------------------------------------------
-        // INSTANT SPEED REGISTRATION
+        // INSTANT SPEED REGISTRATION (UPDATED)
         // -------------------------------------------------------------
         document.getElementById('btnRegister').addEventListener('click', () => {
             let rawU = document.getElementById('regUser').value.trim();
@@ -667,26 +667,44 @@
             // Create a safe, unique ID by removing all spaces and converting to lowercase
             let safeKey = rawU.toLowerCase().replace(/\s+/g, "").replace(/[.#$[\]\/]/g, "");
 
-            // FAST DIRECT QUERY (No Looping)
             get(child(ref(db), `users/${safeKey}`)).then((snapshot) => {
                 if (snapshot.exists()) {
                     window.showAlert("ဒေ နာမည်ဟိန့်ပြီးသားဖြစ်လို့ တခြားနာမည်ပြောင်းပီးပါ။");
                     return;
                 }
                 
-                if (f.size > 5 * 1024 * 1024) { 
-                    window.showAlert("ပုံ Size ကကောင်းကြီးနိန်ပါရေ (5MB အောက်ရာ ဖြစ်ရပါဖို့)။ တခြားပုံပြောင်းရွီးပီးပါ။"); 
-                    return;
-                }
-                
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    // Save using safeKey, but KEEP the original typed name inside for display
-                    set(ref(db, `users/${safeKey}`), { username: rawU, password: p, photo: e.target.result, status: "active" })
-                    .then(() => { 
-                        window.showAlert("အကောင့်ဖွင့်ခြင်စာအောင်မြင်ပါယာ။ Login ဝင်နိုင်ပါယာ။"); 
-                        toggleAuthView(true); 
-                    });
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        const MAX_WIDTH = 150;
+                        const scaleSize = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scaleSize;
+                        
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                        
+                        set(ref(db, `users/${safeKey}`), { username: rawU, password: p, photo: compressedBase64, status: "active" })
+                        .then(() => { 
+                            // --- AUTO LOGIN အပိုင်း ---
+                            localStorage.setItem("ic_tv_user", safeKey); 
+                            document.getElementById('authScreen').style.display = 'none';
+                            document.getElementById('appMainBlock').style.display = 'block';
+                            
+                            document.getElementById('sidebarUserName').innerText = rawU;
+                            document.getElementById('sidebarUserAvatar').src = compressedBase64;
+                            
+                            setupPresence(safeKey); 
+                            
+                            window.showAlert("အကောင့်ဖွင့်စာ အောင်မြင်ပါယာ။"); 
+                        });
+                    };
                 };
                 reader.readAsDataURL(f);
             });
@@ -701,10 +719,8 @@
             
             if(!rawU || !p) { window.showAlert("Username နက် Password ကို ထည့်သွင်းပီးပါ။"); return; }
 
-            // Normalize typed name to find the exact key in database
             let safeKey = rawU.toLowerCase().replace(/\s+/g, "").replace(/[.#$[\]\/]/g, "");
 
-            // FAST DIRECT QUERY (No Looping)
             get(child(ref(db), `users/${safeKey}`)).then((s) => {
                 if (s.exists() && s.val().password === p) {
                     let foundUser = s.val();
@@ -715,7 +731,6 @@
                         document.getElementById('authScreen').style.display = 'none';
                         document.getElementById('appMainBlock').style.display = 'block';
                         
-                        // Show their original formatted name in sidebar
                         document.getElementById('sidebarUserName').innerText = foundUser.username || safeKey;
                         if (foundUser.photo) document.getElementById('sidebarUserAvatar').src = foundUser.photo;
                         
@@ -770,6 +785,33 @@
         let bannerCount = 0;
         let currentSlide = 0;
 
+        // Data တွေကို ဖုန်းထဲကနေ ချက်ချင်းအရင်ခေါ်ပြရန် Function
+        function loadFromCache() {
+            if(localStorage.getItem('cache_banners')) {
+                const wrapper = document.getElementById('sliderWrapper');
+                if(wrapper) {
+                   wrapper.innerHTML = localStorage.getItem('cache_banners');
+                   bannerCount = document.querySelectorAll('.slide-item').length;
+                }
+            }
+            if(localStorage.getItem('cache_movies')) window.moviesListLocal = JSON.parse(localStorage.getItem('cache_movies'));
+            if(localStorage.getItem('cache_series')) window.seriesListLocal = JSON.parse(localStorage.getItem('cache_series'));
+            if(localStorage.getItem('cache_football')) window.footballMatchesLocal = JSON.parse(localStorage.getItem('cache_football'));
+            if(localStorage.getItem('cache_animation')) window.animationListLocal = JSON.parse(localStorage.getItem('cache_animation'));
+            updateView();
+        }
+        
+        // App စဖွင့်တာနဲ့ ဖုန်းထဲက Data အဟောင်းကို အရင်ပြထားမည်
+        loadFromCache();
+
+        setInterval(() => {
+            if(bannerCount > 1) {
+                currentSlide = (currentSlide + 1) % Math.min(bannerCount, 4);
+                const slider = document.getElementById('sliderWrapper');
+                if(slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+        }, 2000);
+
         onValue(ref(db, 'banners'), (s) => {
             const wrapper = document.getElementById('sliderWrapper'); 
             if(!wrapper) return;
@@ -785,27 +827,24 @@
                             <div class="slide-info-overlay"><div class="slide-title">${data[k].title || ''}</div></div>
                         </div>`;
                 });
+                localStorage.setItem('cache_banners', wrapper.innerHTML);
             } else { bannerCount = 0; }
         });
-
-        setInterval(() => {
-            if(bannerCount > 1) {
-                currentSlide = (currentSlide + 1) % Math.min(bannerCount, 4);
-                const slider = document.getElementById('sliderWrapper');
-                if(slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            }
-        }, 2000);
 
         onValue(ref(db, 'movies'), (s) => {
             const d = s.val(); window.moviesListLocal = [];
             if(d) Object.keys(d).forEach(k => window.moviesListLocal.push({ id: k, ...d[k] }));
-            window.moviesListLocal.reverse(); updateView();
+            window.moviesListLocal.reverse(); 
+            localStorage.setItem('cache_movies', JSON.stringify(window.moviesListLocal));
+            updateView();
         });
 
         onValue(ref(db, 'animation'), (s) => {
             const d = s.val(); window.animationListLocal = [];
             if(d) Object.keys(d).forEach(k => window.animationListLocal.push({ id: k, ...d[k] }));
-            window.animationListLocal.reverse(); updateView();
+            window.animationListLocal.reverse(); 
+            localStorage.setItem('cache_animation', JSON.stringify(window.animationListLocal));
+            updateView();
         });
 
         onValue(ref(db, 'series'), (s) => {
@@ -815,7 +854,9 @@
                 const eps = x.episodes ? Object.keys(x.episodes).map(e => x.episodes[e]) : [];
                 window.seriesListLocal.push({ id: k, title: x.title, image: x.image, year: x.year, rating: x.rating, episodes: eps });
             });
-            window.seriesListLocal.reverse(); updateView();
+            window.seriesListLocal.reverse(); 
+            localStorage.setItem('cache_series', JSON.stringify(window.seriesListLocal));
+            updateView();
         });
 
         onValue(ref(db, 'football'), (s) => {
@@ -825,7 +866,9 @@
                 const svs = x.servers ? Object.keys(x.servers).map(e => x.servers[e]) : [];
                 window.footballMatchesLocal.push({ id: k, status: x.status, teams: x.teams, date: x.date, time: x.time, image: x.image, servers: svs });
             });
-            window.footballMatchesLocal.reverse(); updateView();
+            window.footballMatchesLocal.reverse(); 
+            localStorage.setItem('cache_football', JSON.stringify(window.footballMatchesLocal));
+            updateView();
         });
 
         onValue(ref(db, 'highlights'), (s) => {
