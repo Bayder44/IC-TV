@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <!-- Video.js အစား Clappr Player ကို အစားထိုးထည့်သွင်းထားပါသည် -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 
     <style>
         :root {
@@ -27,11 +27,12 @@
             color: var(--text-color);
             width: 100%;
             height: 100%;
+            overflow-x: hidden; 
             overflow-y: auto;
         }
 
         /* ---------------------------------
-           CUSTOM ALERT (REPLACES BROWSER ALERT)
+           CUSTOM ALERT 
         ----------------------------------- */
         .custom-alert-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -53,7 +54,7 @@
         .custom-alert-btn:active { transform: scale(0.95); }
 
         /* ---------------------------------
-           AUTH SYSTEM (LOGIN & SIGNUP) CSS
+           AUTH SYSTEM
         ----------------------------------- */
         .auth-screen {
             position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-color);
@@ -69,32 +70,22 @@
         .auth-group input:focus { border-color: var(--neon-text); }
         .auth-btn { width: 100%; background: var(--primary-color); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
         .auth-btn:active { transform: scale(0.98); }
-        
         .auth-toggle-text { text-align: center; font-size: 13px; color: #a1a1aa; margin-top: 15px; }
         .btn-link-style { 
-            display: inline-block; 
-            background: #27272a; 
-            color: var(--neon-text); 
-            padding: 6px 16px; 
-            border-radius: 20px; 
-            font-size: 13px; 
-            font-weight: bold; 
-            border: 1px solid var(--neon-text); 
-            margin-top: 8px; 
-            cursor: pointer; 
-            transition: 0.2s;
+            display: inline-block; background: #27272a; color: var(--neon-text); padding: 6px 16px; 
+            border-radius: 20px; font-size: 13px; font-weight: bold; border: 1px solid var(--neon-text); 
+            margin-top: 8px; cursor: pointer; transition: 0.2s;
         }
         .btn-link-style:active { background: var(--neon-text); color: #09090b; }
 
         /* HEADER & APP CSS */
-        .app-main-container { width: 100%; display: none; position: relative; background-color: var(--bg-color); }
+        .app-main-container { width: 100%; display: none; position: relative; background-color: var(--bg-color); overflow-x: hidden; }
         header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; background-color: #0f0f13; position: relative; z-index: 5; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--neon-text), transparent); }
         header .header-title { font-family: 'Righteous', cursive; font-size: 19px; color: var(--neon-text); text-shadow: 0 0 12px rgba(0, 255, 204, 0.5); letter-spacing: 0.8px; cursor: pointer; }
         header i { cursor: pointer; padding: 6px; font-size: 20px; color: #a1a1aa; transition: 0.2s; }
         header i:hover { color: #fff; }
         
-        /* SEARCH BAR */
         .search-container { display: none; background: #0f0f13; padding: 12px 20px; border-bottom: 1px solid #27272a; align-items: center; gap: 12px; z-index: 4; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .search-container.active { display: flex; }
         .search-box { flex: 1; position: relative; }
@@ -102,18 +93,10 @@
         .search-box i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #71717a; }
         .close-search-btn { background: none; border: none; color: #a1a1aa; font-size: 13px; cursor: pointer; font-weight: bold; padding: 5px; }
 
-        /* CONTENT AREA */
         .scrollable-content { padding: 16px; padding-bottom: 90px; }
 
-        /* MOVIE SUB-NAV BAR */
-        .sub-nav-bar {
-            display: flex; background: #14141b; border-bottom: 1px solid #27272a;
-            position: sticky; top: 0; z-index: 4; margin: -16px -16px 16px -16px;
-        }
-        .sub-nav-item {
-            flex: 1; text-align: center; padding: 14px 0; font-size: 13px; font-weight: bold; color: #a1a1aa;
-            cursor: pointer; border-bottom: 2px solid transparent; transition: 0.2s;
-        }
+        .sub-nav-bar { display: flex; background: #14141b; border-bottom: 1px solid #27272a; position: sticky; top: 0; z-index: 4; margin: -16px -16px 16px -16px; }
+        .sub-nav-item { flex: 1; text-align: center; padding: 14px 0; font-size: 13px; font-weight: bold; color: #a1a1aa; cursor: pointer; border-bottom: 2px solid transparent; transition: 0.2s; }
         .sub-nav-item.active { color: var(--neon-text); border-bottom-color: var(--neon-text); }
 
         /* BOTTOM NAVIGATION BAR */
@@ -125,31 +108,15 @@
             padding-bottom: env(safe-area-inset-bottom);
             box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
         }
-        .nav-item {
-            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #71717a; cursor: pointer; transition: 0.3s;
-        }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #71717a; cursor: pointer; transition: 0.3s; }
         .nav-item i { font-size: 20px; transition: 0.3s; margin-bottom: 4px; }
         .nav-item span { font-size: 10px; font-weight: bold; }
         .nav-item.active { color: var(--neon-text); }
         .nav-item.active i { transform: scale(1.15); }
-        
-        .nav-home-wrapper {
-            flex: 0.5; position: relative; display: flex; justify-content: center; align-items: center;
-        }
-        .nav-home-btn {
-            width: 55px; height: 55px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--neon-text), #00a859);
-            display: flex; align-items: center; justify-content: center;
-            color: #09090b; font-size: 24px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4); 
-            border: 4px solid var(--bg-color);
-            position: absolute; top: -30px;
-            transition: 0.2s; z-index: 10;
-        }
+        .nav-home-wrapper { flex: 0.5; position: relative; display: flex; justify-content: center; align-items: center; }
+        .nav-home-btn { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-text), #00a859); display: flex; align-items: center; justify-content: center; color: #09090b; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4); border: 4px solid var(--bg-color); position: absolute; top: -30px; transition: 0.2s; z-index: 10; }
         .nav-home-btn:active { transform: scale(0.9); }
 
-        /* BANNER SLIDER */
         .slider-container { width: 100%; height: 190px; background: #14141b; border-radius: 16px; overflow: hidden; position: relative; margin-bottom: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
         .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .slide-item { min-width: 100%; height: 100%; position: relative; }
@@ -157,89 +124,133 @@
         .slide-info-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.95)); padding: 25px 15px 12px 15px; }
         .slide-title { font-size: 14px; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* SECTIONS */
         .content-section { margin-bottom: 22px; }
         .section-header { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #fff; letter-spacing: 0.3px; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
         .section-header span { display: flex; align-items: center; gap: 6px; }
         .see-more-btn { font-size: 12px; color: var(--neon-text); cursor: pointer; font-weight: bold; background: rgba(0, 255, 204, 0.1); padding: 4px 10px; border-radius: 20px; transition: 0.2s; }
-        .see-more-btn:active { background: rgba(0, 255, 204, 0.25); }
 
         .horizontal-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; scroll-behavior: smooth; min-height: 40px; }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
         
-        /* GRID FOR SEE MORE VIEW & FULL FOOTBALL */
         .vertical-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 14px; padding-bottom: 20px; }
         .vertical-grid .movie-card { width: 100%; }
         
+        /* ---------------------------------
+           VIP FOOTBALL (HOME PAGE)
+        ----------------------------------- */
         .fb-vertical-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; padding-bottom: 20px; }
         .fb-vertical-grid .fb-card { width: 100%; }
-
-        /* CARDS */
-        .movie-card { position: relative; width: 115px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .movie-card:active { transform: scale(0.96); }
-        .movie-card img { width: 100%; height: 155px; object-fit: cover; display: block; background: #222; }
-        .movie-title { font-size: 12px; padding: 8px 6px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; color: #e4e4e7; }
-
-        /* --- MOVIE POSTER BADGES (YEAR & RATING) --- */
-        .badge-year {
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            background: #e50914; 
-            color: #fff;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 4px;
-            z-index: 2;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .badge-rating {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: rgba(0, 0, 0, 0.75);
-            color: #fff;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 4px;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .badge-rating i { color: #facc15; font-size: 9px; }
-
-        .fb-card { width: 180px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .fb-card { width: 180px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; display: flex; flex-direction: column; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.2s; }
         .fb-poster-frame { width: 100%; aspect-ratio: 16/9; background: #222; overflow: hidden; position: relative; }
         .fb-poster-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .live-tag { position: absolute; top: 6px; left: 6px; background: var(--primary-color); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .live-tag { position: absolute; top: 6px; left: 6px; background: var(--primary-color); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
         .upcoming-tag { position: absolute; top: 6px; left: 6px; background: #eab308; color: #000; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .fb-info { padding: 10px; text-align: center; background: #111116; }
         .fb-teams { font-size: 12px; font-weight: bold; color: #ffffff; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
         .fb-time { font-size: 10px; color: #22c55e; font-weight: bold; background: rgba(34,197,94,0.1); padding: 3px 6px; border-radius: 6px; display: inline-block; }
 
-        .inline-toast { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20, 20, 27, 0.95); color: #f43f5e; font-size: 12px; font-weight: bold; align-items: center; justify-content: center; text-align: center; padding: 10px; z-index: 10; border-radius: 12px; }
+        /* ---------------------------------
+           API FOOTBALL (LIVE TAB)
+        ----------------------------------- */
+        .api-fb-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
+            padding-bottom: 20px; 
+        }
+        .api-fb-card {
+            background: #14141b; 
+            border-radius: 16px;
+            padding: 14px 10px 12px 10px;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid #27272a;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+        
+        .api-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 4px 10px;
+            font-size: 9px;
+            font-weight: 900;
+            border-top-left-radius: 14px;
+            border-bottom-right-radius: 10px;
+            color: #fff;
+            letter-spacing: 0.5px;
+            z-index: 2;
+            text-transform: uppercase;
+        }
+        .api-live { background: #e50914; }
+        .api-upcoming { background: #eab308; color: #000; }
 
-        /* SIDEBAR MENU SYSTEM */
+        .api-header-info { text-align: center; margin-top: 4px; margin-bottom: 12px; }
+        .api-league { color: #60a5fa; font-size: 10px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .api-time { color: #94a3b8; font-size: 9px; margin-top: 3px; font-weight: 500; }
+        
+        .api-teams-row { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; }
+        .api-team-col { display: flex; flex-direction: column; align-items: center; width: 42%; }
+        .api-team-logo {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: #fff; 
+            padding: 4px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+        .api-vs { font-size: 12px; font-weight: 900; color: #fff; width: 16%; text-align: center; }
+        .api-team-name { font-size: 10px; font-weight: bold; color: #f4f4f5; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+
+        /* CARDS */
+        .movie-card { position: relative; width: 115px; flex-shrink: 0; background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid #27272a; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .movie-card img { width: 100%; height: 155px; object-fit: cover; display: block; background: #222; }
+        .movie-title { font-size: 12px; padding: 8px 6px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; color: #e4e4e7; }
+        .badge-year { position: absolute; top: 6px; left: 6px; background: #e50914; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .badge-rating { position: absolute; top: 6px; right: 6px; background: rgba(0, 0, 0, 0.75); color: #fff; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 2; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .badge-rating i { color: #facc15; font-size: 9px; }
+
+        /* ---------------------------------
+           CLICK EFFECTS (NEON FLASH ON CARDS)
+        ----------------------------------- */
+        .fb-card:active, .movie-card:active, .api-fb-card:active {
+            transform: scale(0.96);
+            border-color: var(--neon-text);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+        .fb-card::after, .movie-card::after, .api-fb-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: transparent;
+            transition: background-color 0.15s ease;
+            pointer-events: none;
+            z-index: 50;
+        }
+        .fb-card:active::after, .movie-card:active::after, .api-fb-card:active::after {
+            background-color: rgba(0, 255, 204, 0.25); /* Neon color overlay */
+        }
+
+        .inline-toast { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20, 20, 27, 0.95); color: #f43f5e; font-size: 12px; font-weight: bold; align-items: center; justify-content: center; text-align: center; padding: 10px; z-index: 15; border-radius: 12px; }
+
+        /* SIDEBAR */
         .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 200; backdrop-filter: blur(4px); }
         .sidebar-overlay.active { display: block; }
         .sidebar { position: fixed; top: 0; left: -290px; width: 290px; height: 100%; background: #0f0f13; z-index: 201; transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; box-shadow: 8px 0 30px rgba(0,0,0,0.6); }
         .sidebar.active { left: 0; }
         .sidebar-header { background: #14141b; padding: 20px; display: flex; flex-direction: column; align-items: center; border-bottom: 1px solid #27272a; position: relative; }
-        
-        .sidebar-logo-wrapper { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #27272a; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); overflow: hidden; background-color: #14141b; display: flex; align-items: center; justify-content: center; }
-        .sidebar-logo-img { width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%; clip-path: circle(50%); }
-        
-        .sidebar-app-name { font-size: 15px; font-weight: bold; color: #fff; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .sidebar-logo-wrapper { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #27272a; margin-bottom: 8px; overflow: hidden; background-color: #14141b; display: flex; align-items: center; justify-content: center; }
+        .sidebar-logo-img { width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 50%; }
+        .sidebar-app-name { font-size: 15px; font-weight: bold; color: #fff; margin-bottom: 12px; }
         .close-sidebar { position: absolute; top: 15px; right: 18px; color: #71717a; font-size: 20px; cursor: pointer; }
         
         .sidebar-user-profile { display: flex; align-items: center; gap: 12px; background: #1e1e24; padding: 12px; border-radius: 12px; width: 100%; border: 1px solid #27272a; }
-        .sidebar-user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color); clip-path: circle(50%); }
+        .sidebar-user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color); }
         .sidebar-user-info { flex: 1; overflow: hidden; }
         .sidebar-user-name-text { font-size: 13px; font-weight: bold; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
         .sidebar-user-status { font-size: 11px; color: #22c55e; margin-top: 3px; font-weight: bold; }
@@ -248,117 +259,54 @@
         .menu-item { display: flex; align-items: center; gap: 15px; padding: 13px 16px; color: #d4d4d8; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 10px; margin-bottom: 6px; transition: 0.2s; cursor: pointer; }
         .menu-item:active { background: #27272a; color: #fff; }
         .menu-item i { font-size: 16px; width: 20px; text-align: center; }
-        .menu-item.football-live-btn { color: #4ade80; background: rgba(74, 222, 128, 0.05); font-weight: bold; }
         .menu-sep { height: 1px; background: #27272a; margin: 18px 6px; }
-        .menu-section-title { font-size: 11px; font-weight: bold; color: #52525b; text-transform: uppercase; padding-left: 16px; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .menu-section-title { font-size: 11px; font-weight: bold; color: #52525b; text-transform: uppercase; padding-left: 16px; margin-bottom: 8px; }
 
         /* MODAL BOXES */
         .soco-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 5000; backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 20px; }
         .soco-modal-overlay.active { display: flex; }
-        .soco-modal-box { width: 100%; max-width: 400px; background: #0f0f13; border: 1px solid #27272a; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 85vh; }
+        .soco-modal-box { width: 100%; max-width: 400px; background: #0f0f13; border: 1px solid #27272a; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; max-height: 85vh; }
         .soco-modal-header { padding: 16px; background: #14141b; border-bottom: 1px solid #27272a; display: flex; justify-content: space-between; align-items: center; }
         .soco-modal-title { font-size: 14px; font-weight: bold; color: #4ade80; display: flex; align-items: center; gap: 8px; }
         .soco-modal-close { color: #a1a1aa; font-size: 18px; cursor: pointer; padding: 4px; }
         .soco-modal-body { padding: 12px; overflow-y: auto; flex: 1; }
         
-        .soco-list-item { background: #14141b; border: 1px solid #27272a; border-radius: 12px; padding: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.2s; }
-        .soco-list-item:active { border-color: #4ade80; background: #1a1a24; }
-        .soco-item-league { font-size: 10px; color: #a1a1aa; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; display: inline-block; }
-        .soco-item-teams-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-        .soco-team-side { display: flex; align-items: center; gap: 8px; flex: 1; }
-        .soco-team-side.home-side { justify-content: flex-start; }
-        .soco-team-side.away-side { justify-content: flex-end; text-align: right; }
-        .soco-team-logo { width: 22px; height: 22px; object-fit: contain; border-radius: 4px; }
-        .soco-team-name { font-size: 12px; font-weight: bold; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
-        .soco-item-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #27272a; padding-top: 8px; margin-top: 4px; }
-        .soco-item-time { font-size: 10px; color: #a1a1aa; font-weight: bold; display: flex; align-items: center; gap: 4px; }
-        .soco-play-btn { font-size: 11px; color: #fff; background: #00a859; padding: 4px 10px; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 4px; }
-
-        /* VIDEO PLAYER SYSTEM */
+        /* VIDEO PLAYER */
         .player-page { display: none; width: 100%; height: 100%; background: #000; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 1000; }
         .player-page.active { display: flex; }
-        .video-box { width: 100%; background: #000; aspect-ratio: 16/9; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; border-radius: 0px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .video-box .video-js { width: 100% !important; height: 100% !important; border-radius: 0px !important; overflow: hidden !important; }
-        .video-box video { border-radius: 0px !important; }
-        .vjs-big-play-button { top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; border-radius: 50% !important; width: 60px !important; height: 60px !important; line-height: 60px !important; background-color: rgba(229, 9, 20, 0.8) !important; border-color: transparent !important; }
-        .video-js .vjs-control-bar { background-color: rgba(15, 15, 19, 0.85) !important; }
-        .video-box .player-watermark-logo { position: absolute; top: 8px !important; right: 25px !important; width: 95px !important; height: auto; opacity: 1 !important; z-index: 10; pointer-events: none; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8); }
+        .video-box { width: 100%; background: #000; aspect-ratio: 16/9; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; }
+        .video-box #clapprPlayer { width: 100%; height: 100%; }
+        .video-box .player-watermark-logo { position: absolute; top: 8px !important; right: 25px !important; width: 95px !important; opacity: 1 !important; z-index: 10; pointer-events: none; border-radius: 8px; }
         
-        /* VIDEO OVERLAY CONTROLS (AUTO HIDE/SHOW) */
-        .video-overlay-controls {
-            position: absolute;
-            bottom: 45px; 
-            right: 15px;
-            display: flex;
-            gap: 10px;
-            z-index: 20;
-            pointer-events: auto;
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .video-overlay-controls.hidden-controls {
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-        }
-        .overlay-skip-btn {
-            background: rgba(0, 0, 0, 0.65);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            transition: 0.2s;
-        }
-        .overlay-skip-btn:active { background: rgba(229, 9, 20, 0.8); }
-        .player-page.forced-landscape .video-overlay-controls { display: none !important; }
-
-        /* PLAYER TOOLS UPDATED */
+        .video-overlay-controls { position: absolute; bottom: 45px; right: 15px; display: flex; gap: 10px; z-index: 20; transition: opacity 0.3s ease; }
+        .video-overlay-controls.hidden-controls { opacity: 0 !important; pointer-events: none !important; }
+        .overlay-skip-btn { background: rgba(0, 0, 0, 0.65); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 5px; }
+        
         .player-tools { display: flex; justify-content: space-between; align-items: center; background: #0f0f13; padding: 12px 16px; border-bottom: 1px solid #27272a; gap: 10px; }
-        .tool-btn { flex-shrink: 0; background: #1e1e24; border: 1px solid #27272a; color: #fff; padding: 9px 15px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
-        .tool-btn:active { background: #27272a; }
+        .tool-btn { background: #1e1e24; border: 1px solid #27272a; color: #fff; padding: 9px 15px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .ratio-badge { background: var(--primary-color); padding: 2px 6px; border-radius: 4px; font-size: 10px; }
         .player-details-area { padding: 18px; background: #09090b; flex: 1; overflow-y: auto; }
         .option-zone { margin: 15px 0; background: #0f0f13; padding: 14px; border-radius: 12px; border: 1px solid #27272a; }
-        .option-title { font-size: 13px; font-weight: bold; color: #71717a; margin-bottom: 12px; letter-spacing: 0.3px; }
+        .option-title { font-size: 13px; font-weight: bold; color: #71717a; margin-bottom: 12px; }
         .option-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-        .opt-btn { padding: 9px 16px; background: #1e1e24; color: white; border: 1px solid #27272a; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .opt-btn { padding: 9px 16px; background: #1e1e24; color: white; border: 1px solid #27272a; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
         .opt-btn.active { background: var(--primary-color); border-color: var(--primary-color); }
         .opt-btn.fb-active { background: var(--football-color); border-color: var(--football-color); }
 
         /* FORCE LANDSCAPE CSS */
         .player-page.forced-landscape { position: fixed !important; top: 0 !important; left: 0 !important; width: 100vh !important; height: 100vw !important; transform: rotate(90deg) !important; transform-origin: top left !important; left: 100vw !important; z-index: 999999 !important; display: flex !important; flex-direction: column !important; overflow: hidden !important; }
         .player-page.forced-landscape #playerHeader, .player-page.forced-landscape .player-tools, .player-page.forced-landscape .player-details-area { display: none !important; }
-        .player-page.forced-landscape .video-box { width: 100% !important; height: 100% !important; margin: 0 !important; border-radius: 0px !important; flex: 1 !important; aspect-ratio: auto !important; }
-        .player-page.forced-landscape .video-box .video-js, .player-page.forced-landscape .video-box video { border-radius: 0px !important; }
+        .player-page.forced-landscape .video-box { width: 100% !important; height: 100% !important; margin: 0 !important; aspect-ratio: auto !important; }
         
-        /* Landscape Auto Hide Controls */
-        .ls-top-controls { display: none; position: absolute; top: 50px; left: 16px; z-index: 1000000; transition: opacity 0.3s ease, visibility 0.3s ease; }
-        .ls-top-controls .ls-back-btn { background: rgba(229, 9, 20, 0.95); color: #fff; border: 1px solid rgba(255,255,255,0.25); padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-        .ls-bottom-controls { display: none; position: absolute; bottom: 20px; right: 20px; left: auto; top: auto; z-index: 1000000; flex-direction: row; gap: 10px; transition: opacity 0.3s ease, visibility 0.3s ease; }
-        .ls-zoom-btn { flex-shrink: 0; background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .ls-top-controls { display: none; position: absolute; top: 50px; left: 16px; z-index: 1000000; transition: opacity 0.3s; }
+        .ls-top-controls .ls-back-btn { background: rgba(229, 9, 20, 0.95); color: #fff; border: 1px solid rgba(255,255,255,0.25); padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); }
+        .ls-bottom-controls { display: none; position: absolute; bottom: 20px; right: 20px; left: auto; top: auto; z-index: 1000000; flex-direction: row; gap: 10px; transition: opacity 0.3s; }
+        .ls-zoom-btn { background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; }
         
         .player-page.forced-landscape .ls-top-controls, 
-        .player-page.forced-landscape .ls-bottom-controls { 
-            display: flex !important; 
-            opacity: 1;
-            visibility: visible;
-        }
-        
+        .player-page.forced-landscape .ls-bottom-controls { display: flex !important; opacity: 1; visibility: visible; }
         .player-page.forced-landscape .ls-top-controls.hidden-controls, 
-        .player-page.forced-landscape .ls-bottom-controls.hidden-controls { 
-            opacity: 0 !important; 
-            visibility: hidden !important; 
-            pointer-events: none !important;
-        }
+        .player-page.forced-landscape .ls-bottom-controls.hidden-controls { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
     </style>
 </head>
 <body>
@@ -381,25 +329,23 @@
         document.write('</style>');
     </script>
 
+    <!-- AUTH SYSTEM -->
     <div id="authScreen" class="auth-screen">
         <div class="auth-box" id="loginBox" style="display: none;">
             <h2>IC TV LOGIN</h2>
             <div class="auth-group"><label>USER NAME</label><input type="text" id="loginUser" placeholder="နာမည်ရွီးထည့်ပါ"></div>
             <div class="auth-group"><label>PASSWORD</label><input type="password" id="loginPass" placeholder="စကားဝှက်"></div>
             <button class="auth-btn" id="btnLogin">LOGIN ဝင်မည်</button>
-            <div class="auth-toggle-text">
-                အကောင့်မဟိန့်သိပါက <br> 
-                <span class="btn-link-style" onclick="toggleAuthView(false)">ဒေမှာဖွင့်ပါ</span>
-            </div>
+            <div class="auth-toggle-text">အကောင့်မဟိန့်သိပါက <br><span class="btn-link-style" onclick="toggleAuthView(false)">ဒေမှာဖွင့်ပါ</span></div>
         </div>
 
         <div class="auth-box" id="signupBox">
             <h2>CREATE ACCOUNT</h2>
             <div class="auth-group" style="text-align: center; margin-bottom: 25px;">
                 <input type="file" id="regPhotoFile" accept="image/*" style="display: none;">
-                <label for="regPhotoFile" style="cursor: pointer; display: inline-block; transition: 0.2s;">
-                    <div style="font-size: 13px; color: #a1a1aa; font-weight: bold; margin-bottom: 12px; letter-spacing: 0.5px;">ပုံထည့်ရန်</div>
-                    <div style="position: relative; width: 90px; height: 90px; margin: 0 auto; border-radius: 50%; border: 2px dashed #00ffcc; background: #1e1e24; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 15px rgba(0,255,204,0.15);">
+                <label for="regPhotoFile" style="cursor: pointer; display: inline-block;">
+                    <div style="font-size: 13px; color: #a1a1aa; font-weight: bold; margin-bottom: 12px;">ပုံထည့်ရန်</div>
+                    <div style="position: relative; width: 90px; height: 90px; margin: 0 auto; border-radius: 50%; border: 2px dashed #00ffcc; background: #1e1e24; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                         <i class="fa-solid fa-images" style="font-size: 32px; color: #00ffcc;"></i>
                         <img id="regPhotoPreview" src="" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; display: none;">
                     </div>
@@ -408,13 +354,11 @@
             <div class="auth-group"><label>USER NAME</label><input type="text" id="regUser" placeholder="နာမည်ရွီးထည့်ပါ"></div>
             <div class="auth-group"><label>PASSWORD</label><input type="password" id="regPass" placeholder="စကားဝှက်အသစ်"></div>
             <button class="auth-btn" id="btnRegister" style="background: var(--football-color);">ACCOUNT ဖွင့်မည်</button>
-            <div class="auth-toggle-text">
-                အကောင့်ဟိန့်ပြီးသားဆိုပါက <br> 
-                <span class="btn-link-style" onclick="toggleAuthView(true)">ဒေမှာဝင်ပါ</span>
-            </div>
+            <div class="auth-toggle-text">အကောင့်ဟိန့်ပြီးသားဆိုပါက <br><span class="btn-link-style" onclick="toggleAuthView(true)">ဒေမှာဝင်ပါ</span></div>
         </div>
     </div>
 
+    <!-- MAIN APP -->
     <div class="app-main-container" id="appMainBlock">
         <header>
             <i class="fa-solid fa-bars" id="menuIconBtn"></i>
@@ -430,16 +374,13 @@
             <button class="close-search-btn" id="cancelSearchBtn">Cancel</button>
         </div>
 
+        <!-- SIDEBAR -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
         <div class="sidebar" id="sidebarBox">
             <div class="sidebar-header">
                 <i class="fa-solid fa-xmark close-sidebar" id="closeSidebarBtn"></i>
-                
-                <div class="sidebar-logo-wrapper">
-                    <img src="https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/e35ba590-f179-4c8e-adb5-28d406383558.png" class="sidebar-logo-img" alt="IC TV Logo">
-                </div>
+                <div class="sidebar-logo-wrapper"><img src="https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/e35ba590-f179-4c8e-adb5-28d406383558.png" class="sidebar-logo-img"></div>
                 <div class="sidebar-app-name">IC TV (ALL IN ONE)</div>
-
                 <div class="sidebar-user-profile">
                     <img id="sidebarUserAvatar" src="https://via.placeholder.com/45" class="sidebar-user-avatar">
                     <div class="sidebar-user-info">
@@ -448,28 +389,20 @@
                     </div>
                 </div>
             </div>
-
             <div class="sidebar-menu-list">
                 <div class="menu-item" onclick="switchMainTab('home'); toggleSidebar(false);"><i class="fa-solid fa-house"></i> Home Page</div>
                 <div class="menu-item" onclick="switchToMoreView('movies'); toggleSidebar(false);"><i class="fa-solid fa-film"></i> Movies All (အားလုံး)</div>
                 <div class="menu-item" style="color: #38bdf8;" onclick="switchToMoreView('animation'); toggleSidebar(false);"><i class="fa-solid fa-wand-magic-sparkles"></i> Animation All (အားလုံး)</div>
                 <div class="menu-item" onclick="switchToMoreView('series'); toggleSidebar(false);"><i class="fa-solid fa-tv"></i> Series All (အားလုံး)</div>
-                
                 <a href="https://www.fotmob.com/" target="_blank" class="menu-item" style="color: #fbbf24; font-weight: bold;"><i class="fa-regular fa-futbol"></i> ဂိုးရလဒ် (Live Scores)</a>
-                <div class="menu-item football-live-btn" id="socoApiMenuBtn"><i class="fa-solid fa-film"></i> Football Highlight</div>
-                
+                <div class="menu-item football-live-btn" onclick="openHighlightModal()"><i class="fa-solid fa-film"></i> Football Highlight</div>
                 <div class="menu-sep"></div>
                 <div class="menu-section-title">Account Option</div>
                 <div class="menu-item" onclick="handleLogout()" style="color: #f43f5e; font-weight: bold;"><i class="fa-solid fa-right-from-bracket"></i> Logout ထွက်မည်</div>
-                <div class="menu-sep"></div>
-                <div class="menu-section-title">Contact Us (ဆက်သွယ်ရန်)</div>
-                
-                <a href="intent://www.facebook.com/share/18qptDAcrE/#Intent;package=com.facebook.katana;scheme=https;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.facebook.katana;end" class="menu-item"><i class="fa-brands fa-facebook" style="color: #1877f2;"></i> Facebook Page</a>
-                <a href="intent://t.me/ictv_team#Intent;package=org.telegram.messenger;scheme=https;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.telegram.messenger;end" class="menu-item"><i class="fa-brands fa-telegram" style="color: #24A1DE;"></i> Telegram Channel</a>
-                <a href="intent://t.me/ictv_team#Intent;package=com.viber.voip;scheme=https;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.viber.voip;end" class="menu-item"><i class="fa-brands fa-viber" style="color: #7360f2;"></i> Viber Channel</a>
             </div>
         </div>
 
+        <!-- MODALS -->
         <div class="soco-modal-overlay" id="socoModalOverlay">
             <div class="soco-modal-box" id="socoModalBox">
                 <div class="soco-modal-header">
@@ -488,11 +421,11 @@
                     <div class="soco-modal-title" style="color: #3b82f6;"><i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်လုပ်မည့် အပိုင်းကို ရွေးပါ</div>
                     <i class="fa-solid fa-xmark soco-modal-close" onclick="closeDownloadModal()"></i>
                 </div>
-                <div class="soco-modal-body" id="downloadModalBody">
-                    </div>
+                <div class="soco-modal-body" id="downloadModalBody"></div>
             </div>
         </div>
 
+        <!-- MAIN SCROLLABLE CONTENT -->
         <div class="scrollable-content" id="mainScrollContent">
             
             <div id="movieSubNav" class="sub-nav-bar" style="display:none;">
@@ -504,9 +437,16 @@
                 <div class="slider-wrapper" id="sliderWrapper"></div>
             </div>
             
+            <!-- ⚽ VIP FOOTBALL (HOME PAGE ONLY - Original Horizontal Scroll) -->
             <div class="content-section" id="secFootball">
                 <div class="section-header" style="color:#eab308;"><span><i class="fa-solid fa-crown"></i> VIP Football Live</span></div>
                 <div class="horizontal-scroll" id="footballContainer"></div>
+            </div>
+
+            <!-- ⚽ API FOOTBALL (LIVE TAB ONLY - New Photo Grid UI) -->
+            <div class="content-section" id="secApiFootball" style="display: none;">
+                <!-- Grid Container for API matches -->
+                <div class="api-fb-grid" id="apiFootballContainer"></div>
             </div>
 
             <div class="content-section" id="secMovies">
@@ -535,8 +475,9 @@
             
         </div>
 
+        <!-- BOTTOM NAV -->
         <div class="bottom-nav" id="bottomNavMenu">
-            <div class="nav-item" id="nav-football" onclick="switchMainTab('football')">
+            <div class="nav-item" id="nav-football" onclick="switchMainTab('live')">
                 <i class="fa-solid fa-futbol"></i><span>Live</span>
             </div>
             <div class="nav-item" id="nav-movie" onclick="switchMainTab('movie')">
@@ -555,6 +496,7 @@
             </div>
         </div>
 
+        <!-- PLAYER PAGE -->
         <div class="player-page" id="playerPage">
             <div class="ls-top-controls" id="lsTopControls">
                 <button class="ls-back-btn" id="lsBackBtn"><i class="fa-solid fa-arrow-left"></i> ပြန်ထွက်မည်</button>
@@ -572,9 +514,8 @@
             </header>
             
             <div class="video-box" id="videoBoxWrapper">
-                <video id="mainVideo" class="video-js vjs-default-skin" controls playsinline preload="auto"></video>
-                <img src="https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/72d47ddf-2352-43de-82a1-28a869a25df8.png" class="player-watermark-logo" alt="IC TV Logo">
-                
+                <div id="clapprPlayer"></div>
+                <img src="https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/72d47ddf-2352-43de-82a1-28a869a25df8.png" class="player-watermark-logo">
                 <div class="video-overlay-controls" id="portraitSkipControls">
                     <button class="overlay-skip-btn" id="overlayRewindBtn"><i class="fa-solid fa-rotate-left"></i> 10s</button>
                     <button class="overlay-skip-btn" id="overlayForwardBtn">10s <i class="fa-solid fa-rotate-right"></i></button>
@@ -590,10 +531,9 @@
                 <h3 id="pMainTitle" style="color:#fff; font-size:16px; margin-bottom:6px;">Title</h3>
                 <p id="pMainSub" style="color:#22c55e; font-size:13px; font-weight:bold; margin-bottom:12px; display:none;"></p>
                 
-                <button id="downloadVideoBtn" class="tool-btn" style="background: #3b82f6; border-color: #3b82f6; display: none; margin-bottom: 15px; width: 100%; justify-content: center; font-size: 14px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">
+                <button id="downloadVideoBtn" class="tool-btn" style="background: #3b82f6; border-color: #3b82f6; display: none; margin-bottom: 15px; width: 100%; justify-content: center; font-size: 14px;">
                     <i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်ဆွဲရန် (Download)
                 </button>
-                <p id="dlHintText" style="color: #71717a; font-size: 10px; text-align: center; margin-top: -8px; margin-bottom: 15px; display: none;">(@IC_TV_Team)</p>
                 
                 <div class="option-zone" id="pOptionZone" style="display: none;">
                     <div class="option-title" id="pOptionTitle">OPTIONS:</div>
@@ -603,6 +543,7 @@
         </div>
     </div>
 
+    <!-- FIREBASE MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue, set, get, child, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -614,20 +555,17 @@
             storageBucket: "ictvnewversion.firebasestorage.app",
             messagingSenderId: "135972283847",
             appId: "1:135972283847:web:456e1d5e12c7b03eb2e5e2",
-            measurementId: "G-YV34FWGXWW",
             databaseURL: "https://ictvnewversion-default-rtdb.asia-southeast1.firebasedatabase.app"
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // CUSTOM ALERT FUNCTION
         window.showAlert = (msg) => {
             document.getElementById('customAlertMsg').innerText = msg;
             const alertOverlay = document.getElementById('customAlertOverlay');
             alertOverlay.style.display = 'flex';
             setTimeout(() => alertOverlay.classList.add('show'), 10);
         };
-
         window.closeCustomAlert = () => {
             const alertOverlay = document.getElementById('customAlertOverlay');
             alertOverlay.classList.remove('show');
@@ -635,7 +573,6 @@
         };
 
         let currentSessionUser = localStorage.getItem("ic_tv_user");
-
         window.toggleAuthView = (show) => {
             document.getElementById('loginBox').style.display = show ? 'block' : 'none';
             document.getElementById('signupBox').style.display = show ? 'none' : 'block';
@@ -653,56 +590,31 @@
             }
         });
 
-        // -------------------------------------------------------------
-        // INSTANT SPEED REGISTRATION (UPDATED)
-        // -------------------------------------------------------------
         document.getElementById('btnRegister').addEventListener('click', () => {
             let rawU = document.getElementById('regUser').value.trim();
             let p = document.getElementById('regPass').value.trim();
             let f = document.getElementById('regPhotoFile').files[0];
-            
             if(!rawU || !p) { window.showAlert("Username နက် Password ကို အပြည့်အစုံထည့်ပါ"); return; }
             if(!f) { window.showAlert("ပုံမထည့်ရသိပါ။ ကျေးဇူးပြုလို့ ပုံအရင်ရွီးချယ်ပီးပါ။"); return; }
-
-            // Create a safe, unique ID by removing all spaces and converting to lowercase
             let safeKey = rawU.toLowerCase().replace(/\s+/g, "").replace(/[.#$[\]\/]/g, "");
 
             get(child(ref(db), `users/${safeKey}`)).then((snapshot) => {
-                if (snapshot.exists()) {
-                    window.showAlert("ဒေ နာမည်ဟိန့်ပြီးသားဖြစ်လို့ တခြားနာမည်ပြောင်းပီးပါ။");
-                    return;
-                }
-                
+                if (snapshot.exists()) { window.showAlert("ဒေ နာမည်ဟိန့်ပြီးသားဖြစ်လို့ တခြားနာမည်ပြောင်းပီးပါ။"); return; }
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    const img = new Image();
-                    img.src = e.target.result;
+                    const img = new Image(); img.src = e.target.result;
                     img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        
-                        const MAX_WIDTH = 150;
-                        const scaleSize = MAX_WIDTH / img.width;
-                        canvas.width = MAX_WIDTH;
-                        canvas.height = img.height * scaleSize;
-                        
+                        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                        const scaleSize = 150 / img.width; canvas.width = 150; canvas.height = img.height * scaleSize;
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        
-                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-                        
-                        set(ref(db, `users/${safeKey}`), { username: rawU, password: p, photo: compressedBase64, status: "active" })
+                        set(ref(db, `users/${safeKey}`), { username: rawU, password: p, photo: canvas.toDataURL('image/jpeg', 0.6), status: "active" })
                         .then(() => { 
-                            // --- AUTO LOGIN အပိုင်း ---
                             localStorage.setItem("ic_tv_user", safeKey); 
                             document.getElementById('authScreen').style.display = 'none';
                             document.getElementById('appMainBlock').style.display = 'block';
-                            
                             document.getElementById('sidebarUserName').innerText = rawU;
-                            document.getElementById('sidebarUserAvatar').src = compressedBase64;
-                            
-                            setupPresence(safeKey); 
-                            
-                            window.showAlert("အကောင့်ဖွင့်စာ အောင်မြင်ပါယာ။"); 
+                            document.getElementById('sidebarUserAvatar').src = canvas.toDataURL('image/jpeg', 0.6);
+                            setupPresence(safeKey); window.showAlert("အကောင့်ဖွင့်စာ အောင်မြင်ပါယာ။"); 
                         });
                     };
                 };
@@ -710,42 +622,29 @@
             });
         });
 
-        // -------------------------------------------------------------
-        // INSTANT SPEED LOGIN
-        // -------------------------------------------------------------
         document.getElementById('btnLogin').addEventListener('click', () => {
             let rawU = document.getElementById('loginUser').value.trim();
             let p = document.getElementById('loginPass').value.trim();
-            
             if(!rawU || !p) { window.showAlert("Username နက် Password ကို ထည့်သွင်းပီးပါ။"); return; }
-
             let safeKey = rawU.toLowerCase().replace(/\s+/g, "").replace(/[.#$[\]\/]/g, "");
 
             get(child(ref(db), `users/${safeKey}`)).then((s) => {
                 if (s.exists() && s.val().password === p) {
-                    let foundUser = s.val();
-                    if (foundUser.status === 'blocked') {
-                        window.showAlert("ဒေအကောင့်ကိုအက်မင်ပိတ် (Block) ထားခြင်းခံရပါသည်။");
-                    } else { 
+                    if (s.val().status === 'blocked') window.showAlert("ဒေအကောင့်ကိုအက်မင်ပိတ် (Block) ထားခြင်းခံရပါသည်။");
+                    else { 
                         localStorage.setItem("ic_tv_user", safeKey); 
                         document.getElementById('authScreen').style.display = 'none';
                         document.getElementById('appMainBlock').style.display = 'block';
-                        
-                        document.getElementById('sidebarUserName').innerText = foundUser.username || safeKey;
-                        if (foundUser.photo) document.getElementById('sidebarUserAvatar').src = foundUser.photo;
-                        
+                        document.getElementById('sidebarUserName').innerText = s.val().username || safeKey;
+                        if (s.val().photo) document.getElementById('sidebarUserAvatar').src = s.val().photo;
                         setupPresence(safeKey);
                     }
-                } else {
-                    window.showAlert("စကားဝှက် (သို့) နာမည် မှားယွင်းနိန်ပါရေ။");
-                }
+                } else window.showAlert("စကားဝှက် (သို့) နာမည် မှားယွင်းနိန်ပါရေ။");
             });
         });
 
         window.handleLogout = () => { 
-            if(currentSessionUser) {
-                 remove(ref(db, `online_users/${currentSessionUser}`));
-            }
+            if(currentSessionUser) remove(ref(db, `online_users/${currentSessionUser}`));
             localStorage.removeItem("ic_tv_user"); 
             document.getElementById('authScreen').style.display = 'flex';
             document.getElementById('appMainBlock').style.display = 'none';
@@ -753,22 +652,15 @@
 
         function setupPresence(username) {
             const myConnectionsRef = ref(db, `online_users/${username}`);
-            const connectedRef = ref(db, '.info/connected');
-            onValue(connectedRef, (snap) => {
-                if (snap.val() === true) {
-                    set(myConnectionsRef, true);
-                    onDisconnect(myConnectionsRef).remove();
-                }
+            onValue(ref(db, '.info/connected'), (snap) => {
+                if (snap.val() === true) { set(myConnectionsRef, true); onDisconnect(myConnectionsRef).remove(); }
             });
         }
 
         if(currentSessionUser) {
             onValue(ref(db, `users/${currentSessionUser}`), (s) => {
                 if(!s.val() || s.val().status === 'blocked') {
-                    if(localStorage.getItem("ic_tv_user")) {
-                        window.showAlert("သင့်အကောင့်မှာ Block (သို့) ဖျက်ချခြင်း ခံရပါသည်။");
-                        handleLogout();
-                    }
+                    if(localStorage.getItem("ic_tv_user")) { window.showAlert("သင့်အကောင့်မှာ Block (သို့) ဖျက်ချခြင်း ခံရပါသည်။"); handleLogout(); }
                 } else {
                     document.getElementById('sidebarUserName').innerText = s.val().username || currentSessionUser;
                     if(s.val().photo) document.getElementById('sidebarUserAvatar').src = s.val().photo;
@@ -777,22 +669,13 @@
             });
         }
 
-        window.moviesListLocal = []; 
-        window.seriesListLocal = []; 
-        window.animationListLocal = [];
-        window.footballMatchesLocal = []; 
-        window.highlightMatchesLocal = [];
-        let bannerCount = 0;
-        let currentSlide = 0;
+        window.moviesListLocal = []; window.seriesListLocal = []; window.animationListLocal = []; window.footballMatchesLocal = []; 
+        let bannerCount = 0; let currentSlide = 0;
 
-        // Data တွေကို ဖုန်းထဲကနေ ချက်ချင်းအရင်ခေါ်ပြရန် Function
         function loadFromCache() {
             if(localStorage.getItem('cache_banners')) {
                 const wrapper = document.getElementById('sliderWrapper');
-                if(wrapper) {
-                   wrapper.innerHTML = localStorage.getItem('cache_banners');
-                   bannerCount = document.querySelectorAll('.slide-item').length;
-                }
+                if(wrapper) { wrapper.innerHTML = localStorage.getItem('cache_banners'); bannerCount = document.querySelectorAll('.slide-item').length; }
             }
             if(localStorage.getItem('cache_movies')) window.moviesListLocal = JSON.parse(localStorage.getItem('cache_movies'));
             if(localStorage.getItem('cache_series')) window.seriesListLocal = JSON.parse(localStorage.getItem('cache_series'));
@@ -800,8 +683,6 @@
             if(localStorage.getItem('cache_animation')) window.animationListLocal = JSON.parse(localStorage.getItem('cache_animation'));
             updateView();
         }
-        
-        // App စဖွင့်တာနဲ့ ဖုန်းထဲက Data အဟောင်းကို အရင်ပြထားမည်
         loadFromCache();
 
         setInterval(() => {
@@ -813,69 +694,65 @@
         }, 2000);
 
         onValue(ref(db, 'banners'), (s) => {
-            const wrapper = document.getElementById('sliderWrapper'); 
-            if(!wrapper) return;
-            wrapper.innerHTML = "";
-            const data = s.val();
+            const wrapper = document.getElementById('sliderWrapper'); if(!wrapper) return;
+            wrapper.innerHTML = ""; const data = s.val();
             if(data) {
-                const keys = Object.keys(data); 
-                bannerCount = keys.length;
-                keys.reverse().slice(0, 4).forEach(k => {
-                    wrapper.innerHTML += `
-                        <div class="slide-item">
-                            <img src="${data[k].image}">
-                            <div class="slide-info-overlay"><div class="slide-title">${data[k].title || ''}</div></div>
-                        </div>`;
-                });
+                const keys = Object.keys(data); bannerCount = keys.length;
+                keys.reverse().slice(0, 4).forEach(k => { wrapper.innerHTML += `<div class="slide-item"><img src="${data[k].image}"><div class="slide-info-overlay"><div class="slide-title">${data[k].title || ''}</div></div></div>`; });
                 localStorage.setItem('cache_banners', wrapper.innerHTML);
-            } else { bannerCount = 0; }
+            } else bannerCount = 0;
         });
 
         onValue(ref(db, 'movies'), (s) => {
             const d = s.val(); window.moviesListLocal = [];
             if(d) Object.keys(d).forEach(k => window.moviesListLocal.push({ id: k, ...d[k] }));
-            window.moviesListLocal.reverse(); 
-            localStorage.setItem('cache_movies', JSON.stringify(window.moviesListLocal));
-            updateView();
+            window.moviesListLocal.reverse(); localStorage.setItem('cache_movies', JSON.stringify(window.moviesListLocal)); updateView();
         });
 
         onValue(ref(db, 'animation'), (s) => {
             const d = s.val(); window.animationListLocal = [];
             if(d) Object.keys(d).forEach(k => window.animationListLocal.push({ id: k, ...d[k] }));
-            window.animationListLocal.reverse(); 
-            localStorage.setItem('cache_animation', JSON.stringify(window.animationListLocal));
-            updateView();
+            window.animationListLocal.reverse(); localStorage.setItem('cache_animation', JSON.stringify(window.animationListLocal)); updateView();
         });
 
         onValue(ref(db, 'series'), (s) => {
             const d = s.val(); window.seriesListLocal = [];
             if(d) Object.keys(d).forEach(k => {
-                const x = d[k]; 
-                const eps = x.episodes ? Object.keys(x.episodes).map(e => x.episodes[e]) : [];
+                const x = d[k]; const eps = x.episodes ? Object.keys(x.episodes).map(e => x.episodes[e]) : [];
                 window.seriesListLocal.push({ id: k, title: x.title, image: x.image, year: x.year, rating: x.rating, episodes: eps });
             });
-            window.seriesListLocal.reverse(); 
-            localStorage.setItem('cache_series', JSON.stringify(window.seriesListLocal));
-            updateView();
+            window.seriesListLocal.reverse(); localStorage.setItem('cache_series', JSON.stringify(window.seriesListLocal)); updateView();
         });
 
         onValue(ref(db, 'football'), (s) => {
             const d = s.val(); window.footballMatchesLocal = [];
             if(d) Object.keys(d).forEach(k => {
-                const x = d[k]; 
-                const svs = x.servers ? Object.keys(x.servers).map(e => x.servers[e]) : [];
-                window.footballMatchesLocal.push({ id: k, status: x.status, teams: x.teams, date: x.date, time: x.time, image: x.image, servers: svs });
+                const x = d[k]; const svs = x.servers ? Object.keys(x.servers).map(e => x.servers[e]) : [];
+                let parsedObj = { id: k, status: x.status, teams: x.teams, date: x.date, time: x.time, image: x.image, servers: svs };
+                parsedObj.parsedData = getLocalizedMatchData(parsedObj);
+                window.footballMatchesLocal.push(parsedObj);
             });
-            window.footballMatchesLocal.reverse(); 
+            window.footballMatchesLocal.sort((a, b) => {
+                let dataA = a.parsedData; let dataB = b.parsedData;
+                if (dataA.status === 'live' && dataB.status !== 'live') return -1;
+                if (dataA.status !== 'live' && dataB.status === 'live') return 1;
+                return (dataA.timestamp || 0) - (dataB.timestamp || 0); 
+            });
             localStorage.setItem('cache_football', JSON.stringify(window.footballMatchesLocal));
             updateView();
+
+            // REAL-TIME SERVER UPDATE FOR ACTIVE PLAYER
+            if (window.isPlayerOpen && window.currentPlayingType === 'football' && window.currentPlayingMatchId) {
+                let updatedMatch = window.footballMatchesLocal.find(m => m.id === window.currentPlayingMatchId);
+                if (updatedMatch) {
+                    window.renderPlayerOptions(updatedMatch.servers, 'football', false);
+                }
+            }
         });
 
         onValue(ref(db, 'highlights'), (s) => {
             const d = s.val(); window.highlightMatchesLocal = [];
-            if(d) {
-                Object.keys(d).forEach(k => window.highlightMatchesLocal.push({ id: k, ...d[k] }));
-            }
+            if(d) Object.keys(d).forEach(k => window.highlightMatchesLocal.push({ id: k, ...d[k] }));
             window.highlightMatchesLocal.reverse();
             if(document.getElementById('socoModalOverlay').classList.contains('active')) window.renderHighlightView();
         });
@@ -884,55 +761,170 @@
             if (window.currentViewMode === 'movies') window.renderFullGridMode('movies', window.moviesListLocal);
             else if (window.currentViewMode === 'animation') window.renderFullGridMode('animation', window.animationListLocal);
             else if (window.currentViewMode === 'series') window.renderFullGridMode('series', window.seriesListLocal);
-            else if (window.currentViewMode === 'football') window.renderFullFootballMode();
             else window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal); 
         }
 
         window.handleSearch = function(query) {
             let q = query.toLowerCase().trim();
-            if(q === "") { 
-                window.switchMainTab('home'); 
-                return; 
-            }
+            if(q === "") { window.switchMainTab('home'); return; }
             window.currentViewMode = 'search';
-            document.getElementById('bannerSection').style.display = 'none';
-            document.getElementById('movieSubNav').style.display = 'none';
-            
+            document.getElementById('bannerSection').style.display = 'none'; document.getElementById('movieSubNav').style.display = 'none';
             let fM = window.moviesListLocal.filter(m => m.title && m.title.toLowerCase().includes(q));
             let fS = window.seriesListLocal.filter(s => s.title && s.title.toLowerCase().includes(q));
             let fA = window.animationListLocal.filter(a => a.title && a.title.toLowerCase().includes(q));
             let fF = window.footballMatchesLocal.filter(f => f.teams && f.teams.toLowerCase().includes(q));
-            
             window.renderAppContent(fM, fS, fF, true, fA); 
         }
         document.getElementById('searchInput').addEventListener('input', (e) => window.handleSearch(e.target.value));
     </script>
 
+    <!-- CORE LOGIC (UI Switching, Player & API Fetch) -->
     <script>
         let isLandscapeMode = false;
-        let isPlayerOpen = false;
+        window.isPlayerOpen = false;
         let currentRatioIdx = 0; 
         const ratios = ['contain', 'fill', 'cover']; 
         const labels = ['16:9 (Fit)', 'Stretch (Full)', 'Zoom Crop'];
         
         window.currentViewMode = 'home'; 
-        window.vjsPlayer = null; 
-        window.currentRefererUrl = null; 
-        
-        window.currentDownloadUrl = ''; 
-        window.currentVideoType = '';
-        window.currentVideoOptions = [];
-        window.currentMovieTitle = '';
+        window.clapprObj = null; 
+        window.apiFootballMatchesLocal = [];
+        window.currentPlayingMatchId = null;
+        window.currentPlayingType = null;
+        let controlsTimeout;
 
+        // ⚽ VN2 API FETCHING LOGIC (For Live Tab)
+        window.fetchVN2FootballAPI = async function() {
+            const apiContainer = document.getElementById('apiFootballContainer');
+            apiContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#a1a1aa;">ပွဲစဉ်များ ရယူနေပါသည်...</p>`;
+
+            try {
+                const apiUrl = 'https://vercel-gate-fspnhneg.manus.space/gateway/bfa-api/api/get-matches?_t=' + Date.now();
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+
+                let vn2Data = data.context || data.data || data || [];
+                if (!Array.isArray(vn2Data)) vn2Data = Object.values(vn2Data);
+
+                let mappedData = vn2Data.map((m, i) => {
+                    let homeName = m.home_name || m.homeName || 'Home';
+                    let awayName = m.away_name || m.awayName || 'Away';
+                    let title = homeName + " VS " + awayName;
+                    let league = m.league || "FOOTBALL MATCH";
+                    
+                    let homeImg = m.home_img ? ('https://wsrv.nl/?url=' + encodeURIComponent(m.home_img) + '&w=100&h=100&fit=contain') : 'https://cdn-icons-png.flaticon.com/512/53/53254.png';
+                    let awayImg = m.away_img ? ('https://wsrv.nl/?url=' + encodeURIComponent(m.away_img) + '&w=100&h=100&fit=contain') : 'https://cdn-icons-png.flaticon.com/512/53/53254.png';
+                    
+                    let isLive = m.match_status ? true : false;
+                    let status = isLive ? 'live' : 'upcoming';
+                    
+                    let links = m.links || m.video_links || m.streams || [];
+                    
+                    let displayTime = '';
+                    let dateStr = '';
+                    if(m.match_time) {
+                        let start = new Date(m.match_time * 1000);
+                        let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                        displayTime = start.toLocaleTimeString('en-US', { timeZone: userTimeZone, hour: '2-digit', minute: '2-digit', hour12: true });
+                        dateStr = start.toLocaleDateString('en-CA', { timeZone: userTimeZone });
+                    }
+
+                    return {
+                        id: 'api_' + i, origIdx: i, league: league, home_name: homeName, away_name: awayName,
+                        home_img: homeImg, away_img: awayImg, teams: title, status: status,
+                        time: displayTime, date: dateStr, timestamp: m.match_time || 0, servers: links
+                    };
+                });
+
+                // Live matches at the top, then sort by time
+                mappedData.sort((a, b) => {
+                    if (a.status === 'live' && b.status !== 'live') return -1;
+                    if (a.status !== 'live' && b.status === 'live') return 1;
+                    return a.timestamp - b.timestamp;
+                });
+
+                window.apiFootballMatchesLocal = mappedData;
+                window.renderApiFootballMode();
+
+            } catch(err) {
+                console.error("API Error:", err);
+                apiContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#f43f5e;">API မှ အချက်အလက်ရယူရာတွင် အမှားအယွင်းရှိနေပါသည်။</p>`;
+            }
+        }
+
+        // ⚽ RENDER API UI EXACTLY LIKE THE SCREENSHOT
+        window.renderApiFootballMode = function() {
+            const fbContainer = document.getElementById('apiFootballContainer');
+            if(!fbContainer) return;
+            fbContainer.innerHTML = "";
+            
+            const combinedList = window.apiFootballMatchesLocal || [];
+
+            if(combinedList.length === 0) {
+                fbContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#71717a; font-size:13px;">ယခုအချိန်တွင် ပွဲစဉ်များ မရှိသေးပါ။</p>`;
+                return;
+            }
+
+            combinedList.forEach((m, cIdx) => {
+                let badgeHtml = m.status === 'live' 
+                    ? `<div class="api-badge api-live">LIVE</div>` 
+                    : `<div class="api-badge api-upcoming">ပွဲမစသိပါ</div>`;
+                
+                let timeStr = (m.date && m.time) ? `${m.date} | ${m.time}` : 'Updating...';
+                let clickAction = `clickApiFootballCard(${cIdx}, '${m.status}', 'toast_api_${cIdx}')`;
+
+                fbContainer.innerHTML += `
+                    <div class="api-fb-card" onclick="${clickAction}">
+                        <div class="inline-toast" id="toast_api_${cIdx}">ပွဲမစသိပါ။</div>
+                        ${badgeHtml}
+                        <div class="api-header-info">
+                            <div class="api-league">${m.league}</div>
+                            <div class="api-time">${timeStr}</div>
+                        </div>
+                        <div class="api-teams-row">
+                            <div class="api-team-col">
+                                <img src="${m.home_img}" class="api-team-logo" onerror="this.src='https://via.placeholder.com/40?text=H'">
+                                <div class="api-team-name">${m.home_name}</div>
+                            </div>
+                            <div class="api-vs">VS</div>
+                            <div class="api-team-col">
+                                <img src="${m.away_img}" class="api-team-logo" onerror="this.src='https://via.placeholder.com/40?text=A'">
+                                <div class="api-team-name">${m.away_name}</div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        window.clickApiFootballCard = function(idx, dynamicStatus, toastId) {
+            const f = window.apiFootballMatchesLocal[idx];
+            if(dynamicStatus === 'upcoming') {
+                const toast = document.getElementById(toastId); 
+                if(toast) { toast.style.display = 'flex'; setTimeout(() => toast.style.display = 'none', 2500); }
+            } else { 
+                let formattedServers = f.servers.map((s, i) => {
+                    return { name: s.name || `Server ${i+1}`, stream: s.url || s.link };
+                });
+                openVideoPlayer(f.teams, f.time, '', 'football', formattedServers, f.id); 
+            }
+        }
+
+        // ==========================================
+        // TAB SWITCHING LOGIC (HOME vs LIVE vs OTHERS)
+        // ==========================================
         window.switchMainTab = function(tab) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
             if(tab !== 'home') {
                 const navEl = document.getElementById('nav-' + tab);
                 if(navEl) navEl.classList.add('active');
+            } else {
+                document.getElementById('nav-home-btn').parentElement.classList.add('active');
             }
 
             document.getElementById('bannerSection').style.display = 'none';
-            document.getElementById('secFootball').style.display = 'none';
+            document.getElementById('secFootball').style.display = 'none'; 
+            document.getElementById('secApiFootball').style.display = 'none'; 
             document.getElementById('secMovies').style.display = 'none';
             document.getElementById('secAnimation').style.display = 'none';
             document.getElementById('secSeries').style.display = 'none';
@@ -942,10 +934,15 @@
 
             if(tab === 'home') {
                 window.goHomeView();
-            } else if(tab === 'football') {
-                document.getElementById('secFootball').style.display = 'block';
-                window.currentViewMode = 'football';
-                window.renderFullFootballMode();
+            } else if(tab === 'live') { 
+                document.getElementById('secApiFootball').style.display = 'block';
+                window.currentViewMode = 'api_football';
+                
+                if(!window.apiFootballMatchesLocal || window.apiFootballMatchesLocal.length === 0){
+                    window.fetchVN2FootballAPI();
+                } else {
+                    window.renderApiFootballMode();
+                }
             } else if(tab === 'movie') {
                 document.getElementById('movieSubNav').style.display = 'flex';
                 window.switchMovieSubTab('movies');
@@ -956,146 +953,76 @@
             }
         };
 
-        window.switchMovieSubTab = function(subTab) {
-            document.querySelectorAll('.sub-nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('sub-nav-' + subTab).classList.add('active');
+        window.goHomeView = function() {
+            window.currentViewMode = 'home';
+            document.getElementById('bannerSection').style.display = 'block';
+            document.getElementById('movieSubNav').style.display = 'none';
             
-            document.getElementById('secMovies').style.display = 'none';
-            document.getElementById('secAnimation').style.display = 'none';
-            
-            window.switchToMoreView(subTab, true);
-        };
-        
-        function initPlayerIfNeeded() {
-            if (!window.vjsPlayer) {
-                try {
-                    window.vjsPlayer = videojs('mainVideo', {
-                        fluid: false, autoplay: false, controls: true, preload: 'auto',
-                        html5: { 
-                            vhs: { 
-                                overrideNative: false, 
-                                maxBufferLength: 30, 
-                                fastQualityChange: true
-                            } 
-                        }
-                    });
-                    window.vjsPlayer.ready(function() {
-                        const player = this;
-                        if (player.tech_ && player.tech_.vhs && player.tech_.vhs.xhr) {
-                            player.tech_.vhs.xhr.beforeRequest = function(options) {
-                                if (window.currentRefererUrl) {
-                                    options.headers = options.headers || {};
-                                    options.headers['Referer'] = window.currentRefererUrl;
-                                }
-                                return options;
-                            };
-                        }
-
-                        player.on('useractive', function() {
-                            const skipDiv = document.getElementById('portraitSkipControls');
-                            const lsTop = document.getElementById('lsTopControls');
-                            const lsBot = document.getElementById('lsBottomControls');
-                            
-                            if (skipDiv) skipDiv.classList.remove('hidden-controls');
-                            if (lsTop) lsTop.classList.remove('hidden-controls');
-                            if (lsBot) lsBot.classList.remove('hidden-controls');
-                        });
-                        
-                        player.on('userinactive', function() {
-                            const skipDiv = document.getElementById('portraitSkipControls');
-                            const lsTop = document.getElementById('lsTopControls');
-                            const lsBot = document.getElementById('lsBottomControls');
-                            
-                            if (!player.paused()) {
-                                if (skipDiv) skipDiv.classList.add('hidden-controls');
-                                if (lsTop) lsTop.classList.add('hidden-controls');
-                                if (lsBot) lsBot.classList.add('hidden-controls');
-                            }
-                        });
-                    });
-                } catch(e) { console.log("VideoJS Setup Error, retrying...", e); }
-            }
-            return window.vjsPlayer;
-        }
-
-        function getLocalizedMatchData(m) {
-            let result = { status: m.status, displayTime: m.time };
-            try {
-                if (!m.time) return result;
-                const timeStr = m.time.toLowerCase();
-                const timeMatch = timeStr.match(/(\d{1,2}):(\d{2})/);
-                
-                if (timeMatch) {
-                    let hour = parseInt(timeMatch[1]); 
-                    let minute = parseInt(timeMatch[2]);
-                    if (timeStr.includes('pm') && hour < 12) hour += 12;
-                    if (timeStr.includes('am') && hour === 12) hour = 0;
-                    
-                    const now = new Date();
-                    let matchDate = new Date();
-                    
-                    if (m.date) {
-                        const parts = m.date.split('-'); 
-                        if (parts.length === 3) {
-                            matchDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), hour, minute, 0, 0);
-                        }
-                    } else {
-                        matchDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0, 0);
-                    }
-                    
-                    const diffMinutes = (-now.getTimezoneOffset()) - 390;
-                    let localizedMatchTime = new Date(matchDate.getTime() + (diffMinutes * 60 * 1000));
-
-                    let locHour = localizedMatchTime.getHours();
-                    let locMinute = localizedMatchTime.getMinutes();
-                    let ampm = locHour >= 12 ? 'PM' : 'AM';
-                    locHour = locHour % 12; locHour = locHour ? locHour : 12; 
-                    locMinute = locMinute < 10 ? '0' + locMinute : locMinute;
-                    
-                    result.displayTime = `${locHour}:${locMinute} ${ampm}`;
-                    
-                    let liveThreshold = new Date(localizedMatchTime.getTime() - 5 * 60 * 1000);
-                    
-                    if (m.status !== 'live' && now >= liveThreshold) {
-                        result.status = 'live';
-                    }
-                }
-            } catch (e) { console.log("Time conversion error:", e); }
-            return result;
-        }
-
-        window.renderAppContent = function(mList, sList, fList, isSearchActive = false, aList = []) {
-            document.getElementById('secFootball').style.display = 'block';
+            document.getElementById('secFootball').style.display = 'block'; 
             document.getElementById('secMovies').style.display = 'block';
             document.getElementById('secSeries').style.display = 'block';
             document.getElementById('secAnimation').style.display = 'block';
             
-            document.getElementById('moviesContainer').className = "horizontal-scroll";
-            document.getElementById('seriesContainer').className = "horizontal-scroll";
-            if(document.getElementById('animationContainer')) document.getElementById('animationContainer').className = "horizontal-scroll";
-            
-            const btnMovies = document.getElementById('btnSeeMoreMovies');
-            if(btnMovies) btnMovies.style.display = isSearchActive ? "none" : "block";
-            
-            const btnSeries = document.getElementById('btnSeeMoreSeries');
-            if(btnSeries) btnSeries.style.display = isSearchActive ? "none" : "block";
-            
-            const btnAnimation = document.getElementById('btnSeeMoreAnimation');
-            if(btnAnimation) btnAnimation.style.display = isSearchActive ? "none" : "block";
+            window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal);
+        }
 
+        window.switchMovieSubTab = function(subTab) {
+            document.querySelectorAll('.sub-nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('sub-nav-' + subTab).classList.add('active');
+            document.getElementById('secMovies').style.display = 'none';
+            document.getElementById('secAnimation').style.display = 'none';
+            window.switchToMoreView(subTab, true);
+        };
+
+        function getLocalizedMatchData(m) {
+            let result = { status: m.status, displayTime: m.time, timestamp: Infinity };
+            try {
+                if (!m.time) return result;
+                const timeStr = m.time.toLowerCase();
+                const timeMatch = timeStr.match(/(\d{1,2}):(\d{2})/);
+                if (timeMatch) {
+                    let hour = parseInt(timeMatch[1]); let minute = parseInt(timeMatch[2]);
+                    if (timeStr.includes('pm') && hour < 12) hour += 12;
+                    if (timeStr.includes('am') && hour === 12) hour = 0;
+                    
+                    const now = new Date(); let matchDate = new Date();
+                    if (m.date) {
+                        const parts = m.date.split('-'); 
+                        if (parts.length === 3) {
+                            if (parts[0].length === 4) matchDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), hour, minute, 0, 0);
+                            else matchDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]), hour, minute, 0, 0);
+                        }
+                    } else matchDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0, 0);
+                    
+                    let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    const diffMinutes = (-now.getTimezoneOffset()) - 390;
+                    let localizedMatchTime = new Date(matchDate.getTime() + (diffMinutes * 60 * 1000));
+                    result.timestamp = localizedMatchTime.getTime();
+
+                    result.displayTime = localizedMatchTime.toLocaleTimeString('en-US', { timeZone: userTimeZone, hour: '2-digit', minute: '2-digit', hour12: true });
+                    
+                    let liveThreshold = new Date(localizedMatchTime.getTime() - 5 * 60 * 1000);
+                    let endThreshold = new Date(localizedMatchTime.getTime() + 135 * 60000);
+                    
+                    if (m.status !== 'live' && now >= liveThreshold && now < endThreshold) result.status = 'live';
+                    else if (m.status === 'live' && now >= endThreshold) result.status = 'upcoming'; 
+                }
+            } catch (e) {} return result;
+        }
+
+        window.renderAppContent = function(mList, sList, fList, isSearchActive = false, aList = []) {
             const fbContainer = document.getElementById('footballContainer'); 
             if(fbContainer) {
-                fbContainer.className = "horizontal-scroll";
-                fbContainer.innerHTML = "";
-                if(!fList || fList.length === 0) {
-                    fbContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">လိုက်ဖ်ပွဲစဉ်တိမဟိန့်သိပါ</p>`;
-                } else {
-                    fList.forEach(m => {
+                fbContainer.className = "horizontal-scroll"; fbContainer.innerHTML = "";
+                if(!fList || fList.length === 0) fbContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">လိုက်ဖ်ပွဲစဉ်တိမဟိန့်သိပါ</p>`;
+                else {
+                    fList.forEach((m, idx) => {
                         let origIdx = window.footballMatchesLocal.findIndex(x => x.id === m.id);
-                        const localData = getLocalizedMatchData(m);
-                        const tag = localData.status === 'live' ? `<div class="live-tag">Live</div>` : `<div class="upcoming-tag">မစသိပါ</div>`;
+                        let localData = m.parsedData || getLocalizedMatchData(m);
+                        const tag = localData.status === 'live' ? `<div class="live-tag">LIVE</div>` : `<div class="upcoming-tag">ပွဲမစသိပါ</div>`;
+                            
                         fbContainer.innerHTML += `
-                            <div class="fb-card" onclick="clickFootballCard(${origIdx}, '${localData.status}')">
+                            <div class="fb-card" onclick="clickFootballCard(${origIdx}, '${localData.status}', 'toast_${origIdx}')">
                                 <div class="inline-toast" id="toast_${origIdx}">ပွဲမစသိပါ။</div>
                                 <div class="fb-poster-frame">${tag}<img src="${m.image || 'https://via.placeholder.com/180x101?text=IC+TV'}"></div>
                                 <div class="fb-info"><div class="fb-teams">${m.teams || 'Unknown Match'}</div><div class="fb-time">${localData.displayTime}</div></div>
@@ -1107,22 +1034,14 @@
             const mContainer = document.getElementById('moviesContainer'); 
             if(mContainer) {
                 mContainer.innerHTML = "";
-                if(!mList || mList.length === 0) {
-                    mContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">ဗီဒီယိုမဟိန့်သိပါ</p>`;
-                } else {
+                if(!mList || mList.length === 0) mContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">ဗီဒီယိုမဟိန့်သိပါ</p>`;
+                else {
                     const displayMovies = isSearchActive ? mList : mList.slice(0, 5);
                     displayMovies.forEach(m => {
                         let origIdx = window.moviesListLocal.findIndex(x => x.id === m.id);
-                        let yearBadge = m.year ? `<div class="badge-year">${m.year}</div>` : '';
-                        let ratingBadge = m.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${m.rating}</div>` : '';
-                        
-                        mContainer.innerHTML += `
-                            <div class="movie-card" onclick="playMovie(${origIdx})">
-                                ${yearBadge}
-                                ${ratingBadge}
-                                <img src="${m.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
-                                <div class="movie-title">${m.title || 'Untitled'}</div>
-                            </div>`;
+                        let yBadge = m.year ? `<div class="badge-year">${m.year}</div>` : '';
+                        let rBadge = m.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${m.rating}</div>` : '';
+                        mContainer.innerHTML += `<div class="movie-card" onclick="playMovie(${origIdx})">${yBadge}${rBadge}<img src="${m.image || 'https://via.placeholder.com/115x155?text=No+Poster'}"><div class="movie-title">${m.title || 'Untitled'}</div></div>`;
                     });
                 }
             }
@@ -1131,22 +1050,14 @@
             const targetAList = isSearchActive ? aList : window.animationListLocal;
             if(aContainer) {
                 aContainer.innerHTML = "";
-                if(!targetAList || targetAList.length === 0) { 
-                    aContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">အန်နီမေးရှင်းမဟိန့်သိပါ</p>`;
-                } else {
+                if(!targetAList || targetAList.length === 0) aContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">အန်နီမေးရှင်းမဟိန့်သိပါ</p>`;
+                else {
                     const displayAnim = isSearchActive ? targetAList : targetAList.slice(0, 5);
                     displayAnim.forEach(a => {
                         let origIdx = window.animationListLocal.findIndex(x => x.id === a.id);
-                        let yearBadge = a.year ? `<div class="badge-year">${a.year}</div>` : '';
-                        let ratingBadge = a.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${a.rating}</div>` : '';
-                        
-                        aContainer.innerHTML += `
-                            <div class="movie-card" onclick="playAnimation(${origIdx})">
-                                ${yearBadge}
-                                ${ratingBadge}
-                                <img src="${a.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
-                                <div class="movie-title">${a.title || 'Untitled'}</div>
-                            </div>`;
+                        let yBadge = a.year ? `<div class="badge-year">${a.year}</div>` : '';
+                        let rBadge = a.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${a.rating}</div>` : '';
+                        aContainer.innerHTML += `<div class="movie-card" onclick="playAnimation(${origIdx})">${yBadge}${rBadge}<img src="${a.image || 'https://via.placeholder.com/115x155?text=No+Poster'}"><div class="movie-title">${a.title || 'Untitled'}</div></div>`;
                     });
                 }
             }
@@ -1154,22 +1065,14 @@
             const sContainer = document.getElementById('seriesContainer'); 
             if(sContainer) {
                 sContainer.innerHTML = "";
-                if(!sList || sList.length === 0) {
-                    sContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">ဇာတ်လမ်းတွဲမဟိန့်သိပါ</p>`;
-                } else {
+                if(!sList || sList.length === 0) sContainer.innerHTML = `<p style="color:#71717a; font-size:12px; padding:10px;">ဇာတ်လမ်းတွဲမဟိန့်သိပါ</p>`;
+                else {
                     const displaySeries = isSearchActive ? sList : sList.slice(0, 5);
                     displaySeries.forEach(s => {
                         let origIdx = window.seriesListLocal.findIndex(x => x.id === s.id);
-                        let yearBadge = s.year ? `<div class="badge-year">${s.year}</div>` : '';
-                        let ratingBadge = s.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${s.rating}</div>` : '';
-                        
-                        sContainer.innerHTML += `
-                            <div class="movie-card" onclick="playSeries(${origIdx})">
-                                ${yearBadge}
-                                ${ratingBadge}
-                                <img src="${s.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
-                                <div class="movie-title">${s.title || 'Untitled'}</div>
-                            </div>`;
+                        let yBadge = s.year ? `<div class="badge-year">${s.year}</div>` : '';
+                        let rBadge = s.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${s.rating}</div>` : '';
+                        sContainer.innerHTML += `<div class="movie-card" onclick="playSeries(${origIdx})">${yBadge}${rBadge}<img src="${s.image || 'https://via.placeholder.com/115x155?text=No+Poster'}"><div class="movie-title">${s.title || 'Untitled'}</div></div>`;
                     });
                 }
             }
@@ -1179,44 +1082,24 @@
             window.currentViewMode = targetType;
             document.getElementById('bannerSection').style.display = 'none';
             document.getElementById('secFootball').style.display = 'none';
+            document.getElementById('secApiFootball').style.display = 'none';
             document.getElementById('secMovies').style.display = 'none';
             document.getElementById('secSeries').style.display = 'none';
             if(document.getElementById('secAnimation')) document.getElementById('secAnimation').style.display = 'none';
-            
             if(!fromSubNav) document.getElementById('movieSubNav').style.display = 'none';
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            if(targetType === 'movies') {
-                document.getElementById('secMovies').style.display = 'block';
-                window.renderFullGridMode('movies', window.moviesListLocal);
-            } else if (targetType === 'series') {
-                document.getElementById('secSeries').style.display = 'block';
-                window.renderFullGridMode('series', window.seriesListLocal);
-            } else if (targetType === 'animation') {
-                document.getElementById('secAnimation').style.display = 'block';
-                window.renderFullGridMode('animation', window.animationListLocal);
-            }
+            if(targetType === 'movies') { document.getElementById('secMovies').style.display = 'block'; window.renderFullGridMode('movies', window.moviesListLocal); } 
+            else if (targetType === 'series') { document.getElementById('secSeries').style.display = 'block'; window.renderFullGridMode('series', window.seriesListLocal); } 
+            else if (targetType === 'animation') { document.getElementById('secAnimation').style.display = 'block'; window.renderFullGridMode('animation', window.animationListLocal); }
         }
 
         window.renderFullGridMode = function(type, list) {
-            let targetContainerId = 'moviesContainer';
-            if(type === 'movies') targetContainerId = 'moviesContainer';
-            else if(type === 'series') targetContainerId = 'seriesContainer';
-            else if(type === 'animation') targetContainerId = 'animationContainer';
+            let targetContainerId = (type === 'movies') ? 'moviesContainer' : (type === 'series') ? 'seriesContainer' : 'animationContainer';
+            const container = document.getElementById(targetContainerId); if(!container) return;
+            container.className = "vertical-grid"; container.innerHTML = "";
 
-            const container = document.getElementById(targetContainerId);
-            if(!container) return;
-            container.className = "vertical-grid"; 
-            container.innerHTML = "";
-
-            const btnSeeMore = document.getElementById('btnSeeMore' + (type.charAt(0).toUpperCase() + type.slice(1)));
-            if(btnSeeMore) btnSeeMore.style.display = 'none';
-
-            if(!list || list.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#71717a; font-size:13px;">ဒေတာ မဟိန့်သိပါ။</p>`;
-                return;
-            }
+            if(!list || list.length === 0) { container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#71717a; font-size:13px;">ဒေတာ မဟိန့်သိပါ။</p>`; return; }
 
             list.forEach(item => {
                 let origIdx = 0; let clickAction = '';
@@ -1224,51 +1107,10 @@
                 else if(type === 'series') { origIdx = window.seriesListLocal.findIndex(x => x.id === item.id); clickAction = `playSeries(${origIdx})`; }
                 else if(type === 'animation') { origIdx = window.animationListLocal.findIndex(x => x.id === item.id); clickAction = `playAnimation(${origIdx})`; }
                 
-                let yearBadge = item.year ? `<div class="badge-year">${item.year}</div>` : '';
-                let ratingBadge = item.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${item.rating}</div>` : '';
-
-                container.innerHTML += `
-                    <div class="movie-card" onclick="${clickAction}">
-                        ${yearBadge}
-                        ${ratingBadge}
-                        <img src="${item.image || 'https://via.placeholder.com/115x155?text=No+Poster'}">
-                        <div class="movie-title">${item.title || 'Untitled'}</div>
-                    </div>`;
+                let yBadge = item.year ? `<div class="badge-year">${item.year}</div>` : '';
+                let rBadge = item.rating ? `<div class="badge-rating"><i class="fa-solid fa-star"></i> ${item.rating}</div>` : '';
+                container.innerHTML += `<div class="movie-card" onclick="${clickAction}">${yBadge}${rBadge}<img src="${item.image || 'https://via.placeholder.com/115x155?text=No+Poster'}"><div class="movie-title">${item.title || 'Untitled'}</div></div>`;
             });
-        }
-
-        window.renderFullFootballMode = function() {
-            const fbContainer = document.getElementById('footballContainer');
-            if(!fbContainer) return;
-            fbContainer.className = "fb-vertical-grid"; 
-            fbContainer.innerHTML = "";
-            const fList = window.footballMatchesLocal;
-
-            if(!fList || fList.length === 0) {
-                fbContainer.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#71717a; font-size:13px;">ပွဲစဉ်တိ မဟိန့်သိပါ။</p>`;
-                return;
-            }
-
-            fList.forEach(m => {
-                let origIdx = window.footballMatchesLocal.findIndex(x => x.id === m.id);
-                const localData = getLocalizedMatchData(m);
-                const tag = localData.status === 'live' ? `<div class="live-tag">Live</div>` : `<div class="upcoming-tag">မစသိပါ</div>`;
-                fbContainer.innerHTML += `
-                    <div class="fb-card" onclick="clickFootballCard(${origIdx}, '${localData.status}')">
-                        <div class="inline-toast" id="toast_${origIdx}">ပွဲမစသိပါ။</div>
-                        <div class="fb-poster-frame">${tag}<img src="${m.image || 'https://via.placeholder.com/180x101?text=IC+TV'}"></div>
-                        <div class="fb-info"><div class="fb-teams">${m.teams || 'Unknown Match'}</div><div class="fb-time">${localData.displayTime}</div></div>
-                    </div>`;
-            });
-        }
-
-        window.goHomeView = function() {
-            window.currentViewMode = 'home';
-            document.getElementById('bannerSection').style.display = 'block';
-            document.getElementById('movieSubNav').style.display = 'none';
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
-            window.renderAppContent(window.moviesListLocal, window.seriesListLocal, window.footballMatchesLocal, false, window.animationListLocal);
         }
 
         document.getElementById('menuIconBtn').addEventListener('click', () => toggleSidebar(true));
@@ -1278,67 +1120,27 @@
         document.getElementById('cancelSearchBtn').addEventListener('click', () => toggleSearch(false));
 
         function toggleSidebar(open) {
-            const overlay = document.getElementById('sidebarOverlay'); 
-            const box = document.getElementById('sidebarBox');
-            if(open) { overlay.classList.add('active'); box.classList.add('active'); } 
-            else { overlay.classList.remove('active'); box.classList.remove('active'); }
+            const overlay = document.getElementById('sidebarOverlay'); const box = document.getElementById('sidebarBox');
+            if(open) { overlay.classList.add('active'); box.classList.add('active'); } else { overlay.classList.remove('active'); box.classList.remove('active'); }
         }
         window.toggleSidebar = toggleSidebar; 
 
         function toggleSearch(open) {
-            const container = document.getElementById('searchContainer'); 
-            const input = document.getElementById('searchInput');
-            if(open) { 
-                container.classList.add('active'); 
-                input.focus(); 
-                document.getElementById('bottomNavMenu').style.display = 'none'; 
-            } else { 
-                container.classList.remove('active'); 
-                input.value = ""; 
-                document.getElementById('bottomNavMenu').style.display = 'flex';
-                window.switchMainTab('home'); 
-            }
+            const container = document.getElementById('searchContainer'); const input = document.getElementById('searchInput');
+            if(open) { container.classList.add('active'); input.focus(); document.getElementById('bottomNavMenu').style.display = 'none'; } 
+            else { container.classList.remove('active'); input.value = ""; document.getElementById('bottomNavMenu').style.display = 'flex'; window.switchMainTab('home'); }
         }
 
-        document.getElementById('socoApiMenuBtn').addEventListener('click', openHighlightModal);
+        function openHighlightModal() { toggleSidebar(false); document.getElementById('socoModalOverlay').classList.add('active'); window.renderHighlightView(); }
+        function closeHighlightModal() { document.getElementById('socoModalOverlay').classList.remove('active'); }
         document.getElementById('closeSocoModalBtn').addEventListener('click', closeHighlightModal);
         document.getElementById('socoModalOverlay').addEventListener('click', closeHighlightModal);
 
-        function openHighlightModal() {
-            toggleSidebar(false);
-            document.getElementById('socoModalOverlay').classList.add('active');
-            window.renderHighlightView();
-        }
-
-        function closeHighlightModal() {
-            document.getElementById('socoModalOverlay').classList.remove('active');
-        }
-
         window.renderHighlightView = function() {
-            const body = document.getElementById('socoModalBody');
-            if(!body) return;
-            body.innerHTML = "";
-            
-            if (!window.highlightMatchesLocal || window.highlightMatchesLocal.length === 0) {
-                body.innerHTML = `<p style="text-align:center; font-size:12px; color:#a1a1aa; padding:20px;">ပြသဖို့ Highlight ဗီဒီယိုတိ မဟိသိပါ။</p>`;
-                return;
-            }
-
-            window.highlightMatchesLocal.forEach((match, idx) => {
-                body.innerHTML += `
-                    <div class="soco-list-item" onclick="playHighlightMatch(${idx})">
-                        <div class="soco-item-league">${match.league || 'FOOTBALL HIGHLIGHT'}</div>
-                        <div class="soco-item-teams-row">
-                            <div class="soco-team-side home-side">
-                                <img class="soco-team-logo" src="${match.image || 'https://via.placeholder.com/22x22?text=FB'}" onerror="this.src='https://via.placeholder.com/22x22?text=FB'">
-                                <span class="soco-team-name">${match.title || 'Unknown Match'}</span>
-                            </div>
-                        </div>
-                        <div class="soco-item-footer">
-                            <div class="soco-item-time"><i class="fa-regular fa-clock"></i> ${match.date || ''}</div>
-                            <div class="soco-play-btn"><i class="fa-solid fa-play"></i> ကြည့်မည်</div>
-                        </div>
-                    </div>`;
+            const body = document.getElementById('socoModalBody'); if(!body) return; body.innerHTML = "";
+            if (!window.highlightMatchesLocal || window.highlightMatchesLocal.length === 0) { body.innerHTML = `<p style="text-align:center; font-size:12px; color:#a1a1aa; padding:20px;">ပြသဖို့ Highlight ဗီဒီယိုတိ မဟိသိပါ။</p>`; return; }
+            window.highlightMatchesLocal.forEach((m, idx) => {
+                body.innerHTML += `<div class="soco-list-item" onclick="playHighlightMatch(${idx})"><div class="soco-item-league">${m.league || 'FOOTBALL HIGHLIGHT'}</div><div class="soco-item-teams-row"><div class="soco-team-side home-side"><img class="soco-team-logo" src="${m.image || 'https://via.placeholder.com/22x22?text=FB'}" onerror="this.src='https://via.placeholder.com/22x22?text=FB'"><span class="soco-team-name">${m.title || 'Unknown Match'}</span></div></div><div class="soco-item-footer"><div class="soco-item-time"><i class="fa-regular fa-clock"></i> ${m.date || ''}</div><div class="soco-play-btn"><i class="fa-solid fa-play"></i> ကြည့်မည်</div></div></div>`;
             });
         }
 
@@ -1348,53 +1150,35 @@
         document.getElementById('lsZoomBtn').addEventListener('click', toggleAspectRatio);
         document.getElementById('forceLandscapeBtn').addEventListener('click', () => toggleForcedLandscape(true));
 
-        window.skipVideo = function(seconds) {
-            if(window.vjsPlayer) {
-                let currentTime = window.vjsPlayer.currentTime();
-                window.vjsPlayer.currentTime(currentTime + seconds);
-            }
-        };
-        
+        window.skipVideo = function(seconds) { if(window.clapprObj) window.clapprObj.seek(window.clapprObj.getCurrentTime() + seconds); };
         document.getElementById('overlayRewindBtn').addEventListener('click', () => skipVideo(-10));
         document.getElementById('overlayForwardBtn').addEventListener('click', () => skipVideo(10));
         document.getElementById('lsRewindBtn').addEventListener('click', () => skipVideo(-10));
         document.getElementById('lsForwardBtn').addEventListener('click', () => skipVideo(10));
 
+        document.getElementById('videoBoxWrapper').addEventListener('click', () => {
+            const skipDiv = document.getElementById('portraitSkipControls');
+            const lsTop = document.getElementById('lsTopControls');
+            const lsBot = document.getElementById('lsBottomControls');
+            skipDiv?.classList.remove('hidden-controls'); lsTop?.classList.remove('hidden-controls'); lsBot?.classList.remove('hidden-controls');
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => { skipDiv?.classList.add('hidden-controls'); lsTop?.classList.add('hidden-controls'); lsBot?.classList.add('hidden-controls'); }, 4000);
+        });
+
         function toggleForcedLandscape(shouldLandscape) {
-            const player = document.getElementById('playerPage');
-            const videoEl = document.querySelector('#mainVideo_html5_api') || document.getElementById('mainVideo');
-            const docEl = document.documentElement;
-            
+            const player = document.getElementById('playerPage'); const videoEl = document.querySelector('#clapprPlayer video'); const docEl = document.documentElement;
             if(shouldLandscape) {
-                isLandscapeMode = true;
-                player.classList.add('forced-landscape');
+                isLandscapeMode = true; player.classList.add('forced-landscape');
                 if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
                 history.pushState({ stateName: 'landscape_active' }, '');
-
-                if (docEl.requestFullscreen) {
-                    docEl.requestFullscreen().then(() => {
-                        if (screen.orientation && screen.orientation.lock) {
-                            screen.orientation.lock('landscape').catch(e => console.log(e));
-                        }
-                    }).catch(e => console.log(e));
-                }
-                else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
-                else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
+                if (docEl.requestFullscreen) { docEl.requestFullscreen().then(() => { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(e=>{}); }).catch(e=>{}); }
+                else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen(); else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
             } else {
                 if(isLandscapeMode) {
-                    isLandscapeMode = false;
-                    player.classList.remove('forced-landscape');
+                    isLandscapeMode = false; player.classList.remove('forced-landscape');
                     if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
-
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen().catch(() => {});
-                    }
-                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-                    else if (document.msExitFullscreen) document.msExitFullscreen();
-                    
-                    if (screen.orientation && screen.orientation.unlock) {
-                        screen.orientation.unlock();
-                    }
+                    if (document.exitFullscreen) document.exitFullscreen().catch(()=>{}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); else if (document.msExitFullscreen) document.msExitFullscreen();
+                    if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
                 }
             }
         }
@@ -1404,108 +1188,120 @@
 
         window.addEventListener('popstate', function(event) {
             if(isLandscapeMode) { toggleForcedLandscape(false); history.pushState({ stateName: 'player_portrait' }, ''); } 
-            else if (isPlayerOpen) { closePlayer(); }
+            else if (window.isPlayerOpen) closePlayer(); 
         });
 
         function toggleAspectRatio() {
-            const videoEl = document.querySelector('#mainVideo_html5_api') || document.getElementById('mainVideo');
+            const videoEl = document.querySelector('#clapprPlayer video');
             currentRatioIdx = (currentRatioIdx + 1) % ratios.length;
             if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx]; 
             document.getElementById('ratioStatus').innerText = labels[currentRatioIdx];
             document.getElementById('lsRatioStatus').innerText = labels[currentRatioIdx];
         }
 
-        function playMovie(idx) { const m = window.moviesListLocal[idx]; openVideoPlayer(m.title, '', m.stream, 'movie', []); }
-        function playAnimation(idx) { const a = window.animationListLocal[idx]; openVideoPlayer(a.title, '', a.stream, 'movie', []); }
-        function playSeries(idx) { const s = window.seriesListLocal[idx]; openVideoPlayer(s.title, '', '', 'series', s.episodes); }
-        
-        function clickFootballCard(idx, dynamicStatus) {
-            const f = window.footballMatchesLocal[idx];
-            if(dynamicStatus === 'upcoming') {
-                const toast = document.getElementById(`toast_${idx}`); 
-                toast.style.display = 'flex'; setTimeout(() => toast.style.display = 'none', 2500);
-            } else { openVideoPlayer(f.teams, f.time, '', 'football', f.servers); }
-        }
-
-        function openVideoPlayer(title, sub, url, type, options) {
-            isPlayerOpen = true;
-            document.getElementById('playerPage').classList.add('active');
-            document.getElementById('bottomNavMenu').style.display = 'none';
-            
-            window.currentVideoType = type;
-            window.currentVideoOptions = options;
-            window.currentMovieTitle = title;
-            
-            const p = initPlayerIfNeeded();
-            if(p) { try { p.pause(); p.src(''); } catch(e) {} }
-
-            document.getElementById('pMainTitle').innerText = title;
-            const subTxt = document.getElementById('pMainSub');
-            const downloadBtn = document.getElementById('downloadVideoBtn'); 
-            const dlHintText = document.getElementById('dlHintText');
-            
-            if(sub) { 
-                if(type === 'football') {
-                    let matchMock = { status: 'upcoming', time: sub, date: options.dateStr };
-                    let localData = getLocalizedMatchData(matchMock);
-                    subTxt.innerText = localData.displayTime; 
-                } else { subTxt.innerText = sub; }
-                subTxt.style.display = 'block'; 
-            } else { subTxt.style.display = 'none'; }
-
-            const grid = document.getElementById('pOptionGrid'); grid.innerHTML = "";
+        /* ---------------------------------
+           REAL-TIME RENDER OPTIONS
+        ----------------------------------- */
+        window.renderPlayerOptions = function(options, type, autoPlayFirst) {
+            const grid = document.getElementById('pOptionGrid');
+            grid.innerHTML = "";
             const zone = document.getElementById('pOptionZone');
 
-            if (type === 'football' || type === 'highlight') {
-                downloadBtn.style.display = 'none';
-                dlHintText.style.display = 'none';
-            } else {
-                downloadBtn.style.display = 'flex'; 
-                dlHintText.style.display = 'block';
-            }
-
-            if(type === 'movie' || type === 'highlight') { 
-                zone.style.display = 'none'; bootStream(url); 
-            } else {
+            if(options && options.length > 0) {
                 zone.style.display = 'block';
                 document.getElementById('pOptionTitle').innerText = type === 'series' ? "EPISODES:" : "SELECT SERVER:";
                 options.forEach((opt, oIdx) => {
                     let cls = type === 'football' ? (oIdx===0?'opt-btn fb-active':'opt-btn') : (oIdx===0?'opt-btn active':'opt-btn');
                     grid.innerHTML += `<button class="${cls}" id="ob_${oIdx}" onclick="switchStream('${opt.stream}', ${oIdx}, '${type}')">${opt.name}</button>`;
                 });
-                if(options.length > 0) bootStream(options[0].stream);
+                if(autoPlayFirst) bootStream(options[0].stream);
+            } else {
+                zone.style.display = 'none';
+            }
+        }
+
+        function playMovie(idx) { const m = window.moviesListLocal[idx]; openVideoPlayer(m.title, '', m.stream, 'movie', [], m.id); }
+        function playAnimation(idx) { const a = window.animationListLocal[idx]; openVideoPlayer(a.title, '', a.stream, 'movie', [], a.id); }
+        function playSeries(idx) { const s = window.seriesListLocal[idx]; openVideoPlayer(s.title, '', '', 'series', s.episodes, s.id); }
+        
+        window.clickFootballCard = function(idx, dynamicStatus, toastId) {
+            const f = window.footballMatchesLocal[idx];
+            if(dynamicStatus === 'upcoming') {
+                const toast = document.getElementById(toastId); 
+                if(toast) { toast.style.display = 'flex'; setTimeout(() => toast.style.display = 'none', 2500); }
+            } else openVideoPlayer(f.teams, f.time, '', 'football', f.servers, f.id); 
+        }
+
+        function openVideoPlayer(title, sub, url, type, options, matchId = null) {
+            window.isPlayerOpen = true;
+            window.currentPlayingType = type;
+            window.currentPlayingMatchId = matchId;
+            
+            document.getElementById('playerPage').classList.add('active');
+            document.getElementById('bottomNavMenu').style.display = 'none';
+            
+            if(window.clapprObj) { window.clapprObj.destroy(); window.clapprObj = null; }
+
+            document.getElementById('pMainTitle').innerText = title;
+            const subTxt = document.getElementById('pMainSub');
+            const downloadBtn = document.getElementById('downloadVideoBtn'); 
+            
+            if(sub) { 
+                if(type === 'football') {
+                    let matchMock = { status: 'upcoming', time: sub, date: (options.dateStr || '') };
+                    let localData = getLocalizedMatchData(matchMock);
+                    subTxt.innerText = localData.displayTime; 
+                } else subTxt.innerText = sub; 
+                subTxt.style.display = 'block'; 
+            } else subTxt.style.display = 'none'; 
+
+            const zone = document.getElementById('pOptionZone');
+
+            if (type === 'football' || type === 'highlight') { downloadBtn.style.display = 'none'; } 
+            else { downloadBtn.style.display = 'flex'; }
+
+            if(type === 'movie' || type === 'highlight') { 
+                zone.style.display = 'none'; bootStream(url); 
+            } else {
+                window.renderPlayerOptions(options, type, true);
             }
             history.pushState({ stateName: 'player_portrait' }, '');
         }
 
         function bootStream(url) {
-            const p = initPlayerIfNeeded();
-            if(!url || !p) return;
-
-            let videoUrl = url; window.currentRefererUrl = null; 
-            if (/\|Referer=/i.test(url)) {
-                const parts = url.split(/\|Referer=/i);
-                videoUrl = parts[0].trim(); window.currentRefererUrl = parts[1].trim();     
+            if(!url) return;
+            if (url.startsWith("go:")) { window.location.href = url; return; }
+            if (url.startsWith("intent://")) {
+                let finalIntentUrl = url;
+                if (url.includes("package=com.mxtech.videoplayer.ad") && !url.includes("browser_fallback_url")) finalIntentUrl = url.replace(";end", ";S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.mxtech.videoplayer.ad;end");
+                window.location.href = finalIntentUrl;
+                if (window.clapprObj) { window.clapprObj.destroy(); window.clapprObj = null; }
+                const clapprDiv = document.getElementById('clapprPlayer');
+                if (clapprDiv) clapprDiv.innerHTML = `<div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; width:100%; background:#000;"><i class="fa-solid fa-mobile-screen" style="color:#00a859; font-size:40px; margin-bottom:15px;"></i><p style="color:#fff; font-size:14px; font-weight:bold;">MX Player နက် ဖွင့်နိန်ပါသည်</p></div>`;
+                return; 
+            }
+            if (url.startsWith("iframe:")) {
+                const iframeUrl = url.replace("iframe:", "").trim();
+                if (window.clapprObj) { window.clapprObj.destroy(); window.clapprObj = null; }
+                document.getElementById('clapprPlayer').innerHTML = `<iframe src="${iframeUrl}" width="100%" height="100%" frameborder="0" allowfullscreen style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 5; background: #000;"></iframe>`;
+                document.getElementById('portraitSkipControls')?.classList.add('hidden-controls');
+                return;
             }
 
-            window.currentDownloadUrl = videoUrl;
+            let videoUrl = url; let currentRefererUrl = null;
+            if (/\|Referer=/i.test(url)) { const parts = url.split(/\|Referer=/i); videoUrl = parts[0].trim(); currentRefererUrl = parts[1] ? parts[1].trim() : null; }
+            if (window.clapprObj) { window.clapprObj.destroy(); document.getElementById('clapprPlayer').innerHTML = ""; }
 
-            let type = 'video/mp4';
-            if (videoUrl.includes('.m3u8')) type = 'application/x-mpegURL';
+            let playerOptions = { source: videoUrl, parentId: "#clapprPlayer", width: '100%', height: '100%', autoPlay: true, mediacontrol: { seekbar: "#e50914", buttons: "#ffffff" } };
+            if (currentRefererUrl) { playerOptions.playback = { hlsjsConfig: { xhrSetup: function(xhr) { try { xhr.setRequestHeader('Referer', currentRefererUrl); } catch (e) {} } } }; }
+            window.clapprObj = new Clappr.Player(playerOptions);
 
-            try {
-                p.src({ src: videoUrl, type: type });
-                p.ready(() => {
-                    p.play().catch(e => console.log("Auto-play blocked:", e));
-                    
-                    const videoEl = document.querySelector('#mainVideo_html5_api');
-                    if(videoEl) videoEl.style.objectFit = ratios[currentRatioIdx];
-                    
-                    document.getElementById('portraitSkipControls')?.classList.remove('hidden-controls');
-                    document.getElementById('lsTopControls')?.classList.remove('hidden-controls');
-                    document.getElementById('lsBottomControls')?.classList.remove('hidden-controls');
-                });
-            } catch (err) { console.log("Streaming error: ", err); }
+            setTimeout(() => { const videoEl = document.querySelector('#clapprPlayer video'); if (videoEl) videoEl.style.objectFit = ratios[currentRatioIdx]; }, 300);
+            document.getElementById('portraitSkipControls')?.classList.remove('hidden-controls');
+            document.getElementById('lsTopControls')?.classList.remove('hidden-controls');
+            document.getElementById('lsBottomControls')?.classList.remove('hidden-controls');
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => { document.getElementById('portraitSkipControls')?.classList.add('hidden-controls'); document.getElementById('lsTopControls')?.classList.add('hidden-controls'); document.getElementById('lsBottomControls')?.classList.add('hidden-controls'); }, 4000);
         }
 
         function switchStream(url, idx, type) {
@@ -1516,75 +1312,17 @@
         }
 
         function closePlayer() { 
-            isPlayerOpen = false;
-            toggleForcedLandscape(false);
-            if(window.vjsPlayer) { try { window.vjsPlayer.pause(); window.vjsPlayer.src(''); } catch(e){} }
+            window.isPlayerOpen = false; window.currentPlayingMatchId = null; toggleForcedLandscape(false);
+            if(window.clapprObj) { window.clapprObj.stop(); window.clapprObj.destroy(); window.clapprObj = null; }
             document.getElementById('playerPage').classList.remove('active');
             document.getElementById('bottomNavMenu').style.display = 'flex';
         }
 
         document.getElementById('downloadVideoBtn').addEventListener('click', function() {
-            try {
-                if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-                    Notification.requestPermission();
-                }
-            } catch (e) {}
-
-            if (window.currentVideoType === 'series' && window.currentVideoOptions && window.currentVideoOptions.length > 0) {
-                const body = document.getElementById('downloadModalBody');
-                body.innerHTML = '';
-                window.currentVideoOptions.forEach((opt) => {
-                    body.innerHTML += `
-                        <div class="soco-list-item" onclick="triggerDownload('${opt.stream}', '${window.currentMovieTitle + ' - ' + opt.name}')" style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: #fff; font-size: 13px; font-weight: bold;">${opt.name}</span>
-                            <i class="fa-solid fa-download" style="color: #3b82f6;"></i>
-                        </div>
-                    `;
-                });
-                document.getElementById('downloadModalOverlay').classList.add('active');
-            } else if (window.currentDownloadUrl) {
-                triggerDownload(window.currentDownloadUrl, window.currentMovieTitle);
-            } else {
-                window.showAlert("ဒေါင်းလုဒ်လုပ်ဖို့ လင့်ခ် မတွိ့ပါ!");
-            }
+            window.showAlert("ဒေါင်းလုဒ်လုပ်ဖို့ လင့်ခ် မတွိ့ပါ!");
         });
+        window.closeDownloadModal = function() { document.getElementById('downloadModalOverlay').classList.remove('active'); };
 
-        window.closeDownloadModal = function() {
-            document.getElementById('downloadModalOverlay').classList.remove('active');
-        };
-
-        window.triggerDownload = function(url, title) {
-            let cleanUrl = url;
-            if (/\|Referer=/i.test(cleanUrl)) {
-                cleanUrl = cleanUrl.split(/\|Referer=/i)[0].trim();
-            }
-
-            try {
-                if (Notification.permission === "granted") {
-                    new Notification("IC TV", {
-                        body: (title ? title : "Video") + " ကို ဒေါင်းလုဒ်စတင်နေပါပြီ...",
-                        icon: "https://i.supaimg.com/b3780d1f-6d4f-443c-9520-c60638ea6697/e35ba590-f179-4c8e-adb5-28d406383558.png" 
-                    });
-                }
-            } catch(e) {}
-
-            const a = document.createElement('a');
-            a.href = cleanUrl;
-            a.download = title ? title + ".mp4" : "download.mp4";
-            a.target = "_blank"; 
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => document.body.removeChild(a), 100);
-            
-            closeDownloadModal();
-        };
-
-        window.playMovie = playMovie; 
-        window.playAnimation = playAnimation;
-        window.playSeries = playSeries;
-        window.clickFootballCard = clickFootballCard; 
-        window.switchStream = switchStream; 
-        window.playHighlightMatch = playHighlightMatch;
     </script>
 </body>
 </html>
